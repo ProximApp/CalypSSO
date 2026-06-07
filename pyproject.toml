@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "CalypSSO"
+name = "CalypSSO-Proximapp"
 dynamic = ["version"]
 description = "A small and static Next.js frontend for Hyperion"
 readme = "README.md"
@@ -22,7 +22,7 @@ classifiers = [
 dependencies = ["jinja2>=3.1", "starlette>=0.37"]
 
 [project.urls]
-Source = "https://github.com/aeecleclair/CalypSSO"
+Source = "https://github.com/ProximApp/CalypSSO"
 
 [tool.hatch.version]
 path = "python/calypsso/__about__.py"
