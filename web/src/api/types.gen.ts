@@ -7,7 +7,7 @@ export type AccessToken = {
 
 /**
  * Various account types that can be created in Hyperion.
- * These values should match GroupType's. They are the lower level groups in Hyperion
+ * Each account type is associated with a set of permissions.
  */
 export type AccountType = 'student' | 'former_student' | 'staff' | 'association' | 'external' | 'other_school_student' | 'demo';
 
@@ -43,6 +43,34 @@ export type AdvertUpdate = {
 };
 
 export type AmapSlotType = 'midi' | 'soir';
+
+export type Answer = {
+    question_id: string;
+    answer: AnswerText | AnswerNumber | AnswerBoolean;
+    id: string;
+};
+
+export type AnswerBoolean = {
+    answer_type: "boolean";
+    answer: boolean;
+};
+
+export type AnswerCreate = {
+    question_id: string;
+    answer: AnswerText | AnswerNumber | AnswerBoolean;
+};
+
+export type AnswerNumber = {
+    answer_type: "number";
+    answer: number;
+};
+
+export type AnswerText = {
+    answer_type: "text";
+    answer: string;
+};
+
+export type AnswerType = 'text' | 'number' | 'boolean';
 
 export type Applicant = {
     name: string;
@@ -81,11 +109,13 @@ export type AssociationEdit = {
 
 export type AssociationGroupement = {
     name: string;
+    manager_group_id: string;
     id: string;
 };
 
 export type AssociationGroupementBase = {
     name: string;
+    manager_group_id: string;
 };
 
 export type AssociationGroupsEdit = {
@@ -97,6 +127,12 @@ export type AssociationUpdate = {
     group_id?: string | null;
 };
 
+export type BatchPurchase = {
+    user_emails: Array<(string)>;
+    product_variant_id: string;
+    quantity: number;
+};
+
 /**
  * Return a dictionary of {key: error message} indicating which element of failed.
  */
@@ -106,7 +142,21 @@ export type BatchResult = {
     };
 };
 
-export type Body_authorize_validation_auth_authorization_flow_authorize_validation_post = {
+export type BatchValidation = {
+    user_emails: Array<(string)>;
+    product_variant_id: string;
+    validated: boolean;
+};
+
+export type Body_post_advert_adverts__advert_id__picture = {
+    image: (Blob | File);
+};
+
+export type Body_post_associations__association_id__logo = {
+    image: (Blob | File);
+};
+
+export type Body_post_auth_authorization_flow_authorize_validation = {
     client_id: string;
     redirect_uri?: string | null;
     response_type: string;
@@ -119,71 +169,7 @@ export type Body_authorize_validation_auth_authorization_flow_authorize_validati
     password: string;
 };
 
-export type Body_create_advert_image_advert_adverts__advert_id__picture_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_association_logo_associations__association_id__logo_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_association_logo_phonebook_associations__association_id__picture_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_campaigns_logo_campaign_lists__list_id__logo_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_campaigns_logo_cinema_sessions__session_id__poster_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_current_raffle_logo_tombola_raffles__raffle_id__logo_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_current_user_profile_picture_users_me_profile_picture_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_event_image_calendar_events__event_id__image_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_group_logo_groups__group_id__logo_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_paper_pdf_and_cover_ph__paper_id__pdf_post = {
-    pdf: (Blob | File);
-};
-
-export type Body_create_prize_picture_tombola_prizes__prize_id__picture_post = {
-    image: (Blob | File);
-};
-
-export type Body_create_recommendation_image_recommendation_recommendations__recommendation_id__picture_post = {
-    image: (Blob | File);
-};
-
-export type Body_introspect_auth_introspect_post = {
-    token: string;
-    token_type_hint?: string | null;
-    client_id?: string | null;
-    client_secret?: string | null;
-};
-
-export type Body_login_for_access_token_auth_simple_token_post = {
-    grant_type?: string | null;
-    username: string;
-    password: string;
-    scope?: string;
-    client_id?: string | null;
-    client_secret?: string | null;
-};
-
-export type Body_post_authorize_page_auth_authorize_post = {
+export type Body_post_auth_authorize = {
     response_type: string;
     client_id: string;
     redirect_uri: string;
@@ -194,15 +180,23 @@ export type Body_post_authorize_page_auth_authorize_post = {
     code_challenge_method?: string | null;
 };
 
-export type Body_recover_user_users_recover_post = {
-    email: string;
+export type Body_post_auth_introspect = {
+    token: string;
+    token_type_hint?: string | null;
+    client_id?: string | null;
+    client_secret?: string | null;
 };
 
-export type Body_register_firebase_device_notification_devices_post = {
-    firebase_token: string;
+export type Body_post_auth_simple_token = {
+    grant_type?: string | null;
+    username: string;
+    password: string;
+    scope?: string;
+    client_id?: string | null;
+    client_secret?: string | null;
 };
 
-export type Body_token_auth_token_post = {
+export type Body_post_auth_token = {
     refresh_token?: string | null;
     grant_type: string;
     code?: string | null;
@@ -212,8 +206,60 @@ export type Body_token_auth_token_post = {
     code_verifier?: string | null;
 };
 
-export type Body_upload_document_raid_document__document_type__post = {
+export type Body_post_calendar_events__event_id__image = {
+    image: (Blob | File);
+};
+
+export type Body_post_campaign_lists__list_id__logo = {
+    image: (Blob | File);
+};
+
+export type Body_post_cinema_sessions__session_id__poster = {
+    image: (Blob | File);
+};
+
+export type Body_post_competition_participants_sports__sport_id__certificate = {
+    certificate: (Blob | File);
+};
+
+export type Body_post_groups__group_id__logo = {
+    image: (Blob | File);
+};
+
+export type Body_post_notification_devices = {
+    firebase_token: string;
+};
+
+export type Body_post_ph__paper_id__pdf = {
+    pdf: (Blob | File);
+};
+
+export type Body_post_phonebook_associations__association_id__picture = {
+    image: (Blob | File);
+};
+
+export type Body_post_raid_document__document_type_ = {
     file: (Blob | File);
+};
+
+export type Body_post_recommendation_recommendations__recommendation_id__picture = {
+    image: (Blob | File);
+};
+
+export type Body_post_tombola_prizes__prize_id__picture = {
+    image: (Blob | File);
+};
+
+export type Body_post_tombola_raffles__raffle_id__logo = {
+    image: (Blob | File);
+};
+
+export type Body_post_users_me_profile_picture = {
+    image: (Blob | File);
+};
+
+export type Body_post_users_recover = {
+    email: string;
 };
 
 export type BookingBase = {
@@ -250,7 +296,7 @@ export type BookingReturn = {
     recurrence_rule?: string | null;
     entity?: string | null;
     id: string;
-    decision: Decision;
+    decision: app__modules__booking__types_booking__Decision;
     applicant_id: string;
     room: RoomComplete;
 };
@@ -266,7 +312,7 @@ export type BookingReturnApplicant = {
     recurrence_rule?: string | null;
     entity?: string | null;
     id: string;
-    decision: Decision;
+    decision: app__modules__booking__types_booking__Decision;
     applicant_id: string;
     room: RoomComplete;
     applicant: Applicant;
@@ -283,20 +329,69 @@ export type BookingReturnSimpleApplicant = {
     recurrence_rule?: string | null;
     entity?: string | null;
     id: string;
-    decision: Decision;
+    decision: app__modules__booking__types_booking__Decision;
     applicant_id: string;
     room: RoomComplete;
     applicant: CoreUserSimple;
 };
 
-export type CashComplete = {
-    balance: number;
-    user_id: string;
-    user: CoreUserSimple;
+export type Category = {
+    id: string;
+    event_id: string;
+    name: string;
+    price: number;
+    required_membership: string | null;
+    disabled: boolean;
 };
 
-export type CashEdit = {
-    balance: number;
+export type CategoryAdmin = {
+    id: string;
+    event_id: string;
+    name: string;
+    price: number;
+    required_membership: string | null;
+    disabled: boolean;
+    quota: number | null;
+    tickets_in_checkout: number;
+    tickets_sold: number;
+};
+
+/**
+ * Correspond to a Category in the database
+ */
+export type CategoryComplete = {
+    id: string;
+    event_id: string;
+    name: string;
+    price: number;
+    required_membership: string | null;
+    disabled: boolean;
+    quota: number | null;
+};
+
+export type CategoryCreate = {
+    name: string;
+    price: number;
+    quota: number | null;
+    required_membership: string | null;
+};
+
+export type CategoryPublic = {
+    id: string;
+    event_id: string;
+    name: string;
+    price: number;
+    required_membership: string | null;
+    disabled: boolean;
+    sold_out: boolean;
+};
+
+export type CategoryUpdate = {
+    name?: string | null;
+    price?: number | null;
+    quota?: number | null;
+    required_membership?: string | null;
+    disabled?: boolean | null;
 };
 
 export type CdrStatus = 'pending' | 'online' | 'onsite' | 'closed';
@@ -324,6 +419,7 @@ export type CdrUserPreview = {
     account_type: AccountType;
     school_id: string;
     curriculum?: CurriculumComplete | null;
+    promo?: number | null;
 };
 
 export type CdrUserUpdate = {
@@ -335,10 +431,28 @@ export type CdrUserUpdate = {
     floor?: string | null;
 };
 
+export type CdrYear = {
+    year?: number;
+};
+
 export type ChangePasswordRequest = {
     email: string;
     old_password: string;
     new_password: string;
+};
+
+export type Checkout = {
+    category_id: string;
+    session_id: string;
+    answers: Array<AnswerCreate>;
+    mypayment_request_method: RequestType;
+    mypayment_transfer_redirect_url: string;
+};
+
+export type CheckoutResponse = {
+    price: number;
+    expiration: string;
+    payment_url: string | null;
 };
 
 export type CineSessionBase = {
@@ -367,6 +481,89 @@ export type CineSessionUpdate = {
     overview?: string | null;
     genre?: string | null;
     tagline?: string | null;
+};
+
+export type CompetitionEdition = {
+    name: string;
+    year: number;
+    start_date: string;
+    end_date: string;
+    active?: boolean;
+    inscription_enabled?: boolean;
+    id: string;
+};
+
+export type CompetitionEditionBase = {
+    name: string;
+    year: number;
+    start_date: string;
+    end_date: string;
+    active?: boolean;
+    inscription_enabled?: boolean;
+};
+
+export type CompetitionEditionEdit = {
+    name?: string | null;
+    year?: number | null;
+    start_date?: string | null;
+    end_date?: string | null;
+};
+
+export type CompetitionGroupType = 'sport_manager' | 'schools_bds';
+
+/**
+ * A user with additional fields for competition purposes.
+ * This is used to represent a user in the context of a competition.
+ */
+export type CompetitionUser = {
+    sport_category: SportCategory;
+    is_pompom?: boolean;
+    is_fanfare?: boolean;
+    is_cameraman?: boolean;
+    is_athlete?: boolean;
+    allow_pictures?: boolean;
+    user_id: string;
+    edition_id: string;
+    created_at: string;
+    validated?: boolean;
+    user: CoreUser;
+};
+
+export type CompetitionUserBase = {
+    sport_category: SportCategory;
+    is_pompom?: boolean;
+    is_fanfare?: boolean;
+    is_cameraman?: boolean;
+    is_athlete?: boolean;
+    allow_pictures?: boolean;
+};
+
+export type CompetitionUserEdit = {
+    sport_category?: SportCategory | null;
+    validated?: boolean | null;
+    is_pompom?: boolean | null;
+    is_fanfare?: boolean | null;
+    is_cameraman?: boolean | null;
+    is_athlete?: boolean | null;
+    allow_pictures?: boolean | null;
+};
+
+export type CompetitionUserSimple = {
+    sport_category: SportCategory;
+    is_pompom?: boolean;
+    is_fanfare?: boolean;
+    is_cameraman?: boolean;
+    is_athlete?: boolean;
+    allow_pictures?: boolean;
+    user_id: string;
+    edition_id: string;
+    created_at: string;
+    validated?: boolean;
+};
+
+export type CoreAccountTypePermission = {
+    permission_name: string;
+    account_type: AccountType;
 };
 
 /**
@@ -411,6 +608,11 @@ export type CoreGroupCreate = {
     description?: string | null;
 };
 
+export type CoreGroupPermission = {
+    permission_name: string;
+    group_id: string;
+};
+
 /**
  * Simplified schema for group's model, used when getting all groups
  */
@@ -449,6 +651,12 @@ export type CoreMembership = {
 export type CoreMembershipDelete = {
     user_id: string;
     group_id: string;
+};
+
+export type CorePermission = {
+    permission_name: string;
+    groups: Array<(string)>;
+    account_types: Array<AccountType>;
 };
 
 export type CoreSchool = {
@@ -605,20 +813,21 @@ export type CustomDataComplete = {
 
 export type CustomDataFieldBase = {
     name: string;
+    can_user_answer: boolean;
 };
 
 export type CustomDataFieldComplete = {
     name: string;
+    can_user_answer: boolean;
     id: string;
     product_id: string;
 };
-
-export type Decision = 'approved' | 'declined' | 'pending';
 
 /**
  * Base schema for AMAP deliveries
  */
 export type DeliveryBase = {
+    name: string;
     delivery_date: string;
     products_ids?: Array<(string)>;
 };
@@ -628,6 +837,7 @@ export type DeliveryProductsUpdate = {
 };
 
 export type DeliveryReturn = {
+    name: string;
     delivery_date: string;
     products?: Array<app__modules__amap__schemas_amap__ProductComplete>;
     id: string;
@@ -637,6 +847,7 @@ export type DeliveryReturn = {
 export type DeliveryStatusType = 'creation' | 'orderable' | 'locked' | 'delivered' | 'archived';
 
 export type DeliveryUpdate = {
+    name?: string | null;
     delivery_date?: string | null;
 };
 
@@ -676,6 +887,21 @@ export type EmergencyContact = {
     phone?: string | null;
 };
 
+export type EventAdmin = {
+    id: string;
+    name: string;
+    store_id: string;
+    open_datetime: string;
+    close_datetime: string | null;
+    disabled: boolean;
+    quota: number | null;
+    sessions: Array<SessionAdmin>;
+    categories: Array<CategoryAdmin>;
+    questions: Array<QuestionAdmin>;
+    tickets_in_checkout: number;
+    tickets_sold: number;
+};
+
 export type EventBaseCreation = {
     name: string;
     start: string;
@@ -688,22 +914,7 @@ export type EventBaseCreation = {
     notification: boolean;
     association_id: string;
     ticket_url?: string | null;
-};
-
-export type EventComplete = {
-    name: string;
-    start: string;
-    end: string;
-    all_day: boolean;
-    location: string;
-    description?: string | null;
-    recurrence_rule?: string | null;
-    ticket_url_opening?: string | null;
-    notification: boolean;
-    association_id: string;
-    id: string;
-    association: Association;
-    decision: Decision;
+    ticket_event_id?: string | null;
 };
 
 export type EventCompleteTicketUrl = {
@@ -719,8 +930,20 @@ export type EventCompleteTicketUrl = {
     association_id: string;
     id: string;
     association: Association;
-    decision: Decision;
+    decision: app__modules__booking__types_booking__Decision;
     ticket_url?: string | null;
+    ticket_event_id?: string | null;
+};
+
+export type EventCreate = {
+    store_id: string;
+    name: string;
+    quota: number | null;
+    open_datetime: string;
+    close_datetime: string | null;
+    sessions: Array<SessionCreate>;
+    categories: Array<CategoryCreate>;
+    questions: Array<QuestionCreate>;
 };
 
 export type EventEdit = {
@@ -733,12 +956,45 @@ export type EventEdit = {
     recurrence_rule?: string | null;
     ticket_url_opening?: string | null;
     ticket_url?: string | null;
+    ticket_event_id?: string | null;
     notification?: boolean | null;
+};
+
+export type EventPublic = {
+    id: string;
+    name: string;
+    store_id: string;
+    open_datetime: string;
+    close_datetime: string | null;
+    disabled: boolean;
+    sessions: Array<SessionPublic>;
+    categories: Array<CategoryPublic>;
+    questions: Array<QuestionPublic>;
+    sold_out: boolean;
+};
+
+export type EventSimple = {
+    id: string;
+    name: string;
+    store_id: string;
+    open_datetime: string;
+    close_datetime: string | null;
+    disabled: boolean;
 };
 
 export type EventTicketUrl = {
     ticket_url: string;
 };
+
+export type EventUpdate = {
+    name?: string | null;
+    quota?: number | null;
+    open_datetime?: string | null;
+    close_datetime?: string | null;
+    disabled?: boolean | null;
+};
+
+export type ExcelExportParams = 'participants' | 'purchases' | 'payments';
 
 export type FirebaseDevice = {
     /**
@@ -796,6 +1052,7 @@ export type HTTPValidationError = {
 export type History = {
     id: string;
     type: HistoryType;
+    direction: HistoryDirection;
     other_wallet_name: string;
     total: number;
     creation: string;
@@ -803,12 +1060,14 @@ export type History = {
     refund?: HistoryRefund | null;
 };
 
+export type HistoryDirection = 'credited' | 'debited';
+
 export type HistoryRefund = {
     total: number;
     creation: string;
 };
 
-export type HistoryType = 'transfer' | 'received' | 'given' | 'refund_credited' | 'refund_debited';
+export type HistoryType = 'refund' | 'direct_transfer' | 'request_transfer' | 'direct_transaction' | 'request_transaction';
 
 export type IcalSecret = {
     secret: string;
@@ -1014,7 +1273,7 @@ export type LoanExtend = {
 };
 
 /**
- * When the client asks to update the Loan with a PATCH request, they should be able to change the loan items.
+ * A schema used to represent an update to a loan in a request by the client
  */
 export type LoanUpdate = {
     borrower_id?: string | null;
@@ -1048,6 +1307,43 @@ export type LoanerUpdate = {
     group_manager_id?: string | null;
 };
 
+export type Location = {
+    name: string;
+    description?: string | null;
+    address?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    id: string;
+    edition_id: string;
+};
+
+export type LocationBase = {
+    name: string;
+    description?: string | null;
+    address?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+};
+
+export type LocationComplete = {
+    name: string;
+    description?: string | null;
+    address?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    id: string;
+    edition_id: string;
+    matches?: Array<MatchComplete>;
+};
+
+export type LocationEdit = {
+    name?: string | null;
+    description?: string | null;
+    address?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+};
+
 export type MailMigrationRequest = {
     new_email: string;
 };
@@ -1078,6 +1374,60 @@ export type ManagerBase = {
 export type ManagerUpdate = {
     name?: string | null;
     group_id?: string | null;
+};
+
+export type Match = {
+    name: string;
+    team1_id: string;
+    team2_id: string;
+    location_id: string;
+    date?: string | null;
+    score_team1?: number | null;
+    score_team2?: number | null;
+    winner_id?: string | null;
+    id: string;
+    sport_id: string;
+    edition_id: string;
+};
+
+export type MatchBase = {
+    name: string;
+    team1_id: string;
+    team2_id: string;
+    location_id: string;
+    date?: string | null;
+    score_team1?: number | null;
+    score_team2?: number | null;
+    winner_id?: string | null;
+};
+
+export type MatchComplete = {
+    name: string;
+    team1_id: string;
+    team2_id: string;
+    location_id: string;
+    date?: string | null;
+    score_team1?: number | null;
+    score_team2?: number | null;
+    winner_id?: string | null;
+    id: string;
+    sport_id: string;
+    edition_id: string;
+    team1: Team;
+    team2: Team;
+    location: Location;
+};
+
+export type MatchEdit = {
+    name?: string | null;
+    sport_id?: string | null;
+    team1_id?: string | null;
+    team2_id?: string | null;
+    date?: string | null;
+    location_id?: string | null;
+    score_team1?: number | null;
+    score_team2?: number | null;
+    winner_id?: string | null;
 };
 
 export type MeetingPlace = 'centrale' | 'bellecour' | 'anyway';
@@ -1121,18 +1471,6 @@ export type MembershipUserMappingEmail = {
     user_email: string;
     start_date: string;
     end_date: string;
-};
-
-export type ModuleVisibility = {
-    root: string;
-    allowed_group_ids: Array<(string)>;
-    allowed_account_types: Array<AccountType>;
-};
-
-export type ModuleVisibilityCreate = {
-    root: string;
-    allowed_group_id?: string | null;
-    allowed_account_type?: AccountType | null;
 };
 
 /**
@@ -1183,6 +1521,7 @@ export type OrderEdit = {
 export type OrderReturn = {
     user: CoreUserSimple;
     delivery_id: string;
+    delivery_name: string;
     productsdetail: Array<ProductQuantity>;
     collection_slot: AmapSlotType;
     order_id: string;
@@ -1210,6 +1549,8 @@ export type PackTicketSimple = {
     id: string;
 };
 
+export type PaiementMethodType = 'manual' | 'helloasso';
+
 /**
  * Base schema for paper's model
  */
@@ -1230,98 +1571,38 @@ export type PaperUpdate = {
 };
 
 export type Participant = {
-    name: string;
-    firstname: string;
-    birthday: string;
-    phone: string;
-    email: string;
-    id: string;
-    bike_size: Size | null;
-    t_shirt_size: Size | null;
-    situation: string | null;
-    validation_progress: number;
-    payment: boolean;
-    t_shirt_payment: boolean;
-    number_of_document: number;
-    number_of_validated_document: number;
-    address: string | null;
-    other_school?: string | null;
-    company?: string | null;
-    diet?: string | null;
-    id_card: Document | null;
-    medical_certificate: Document | null;
-    security_file: SecurityFile | null;
-    student_card?: Document | null;
-    raid_rules?: Document | null;
-    parent_authorization?: Document | null;
-    attestation_on_honour: boolean;
-    is_minor: boolean;
-};
-
-export type ParticipantBase = {
-    name: string;
-    firstname: string;
-    birthday: string;
-    phone: string;
-    email: string;
-};
-
-export type ParticipantPreview = {
-    name: string;
-    firstname: string;
-    birthday: string;
-    phone: string;
-    email: string;
-    id: string;
-    bike_size: Size | null;
-    t_shirt_size: Size | null;
-    situation: string | null;
-    validation_progress: number;
-    payment: boolean;
-    t_shirt_payment: boolean;
-    number_of_document: number;
-    number_of_validated_document: number;
-};
-
-export type ParticipantUpdate = {
-    name?: string | null;
-    firstname?: string | null;
-    birthday?: string | null;
-    address?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    bike_size?: Size | null;
-    t_shirt_size?: Size | null;
-    situation?: string | null;
-    other_school?: string | null;
-    company?: string | null;
-    diet?: string | null;
-    attestation_on_honour?: boolean | null;
-    id_card_id?: string | null;
-    medical_certificate_id?: string | null;
-    security_file_id?: string | null;
-    student_card_id?: string | null;
-    raid_rules_id?: string | null;
-    parent_authorization_id?: string | null;
-};
-
-export type PaymentBase = {
-    total: number;
-    payment_type: PaymentType;
-};
-
-export type PaymentComplete = {
-    total: number;
-    payment_type: PaymentType;
-    id: string;
     user_id: string;
+    sport_id: string;
+    edition_id: string;
+    school_id: string;
+    license?: string | null;
+    certificate_file_id?: string | null;
+    is_license_valid: boolean;
+    substitute?: boolean;
+    team_id: string;
+};
+
+export type ParticipantComplete = {
+    user_id: string;
+    sport_id: string;
+    edition_id: string;
+    school_id: string;
+    license?: string | null;
+    certificate_file_id?: string | null;
+    is_license_valid: boolean;
+    substitute?: boolean;
+    team_id: string;
+    user: CompetitionUser;
+    team: Team;
+};
+
+export type ParticipantInfo = {
+    license?: string | null;
+    substitute?: boolean;
+    team_id?: string | null;
 };
 
 export type PaymentType = 'cash' | 'check' | 'HelloAsso' | 'card' | 'archived';
-
-export type PaymentUrl = {
-    url: string;
-};
 
 export type PlantComplete = {
     id: string;
@@ -1394,16 +1675,12 @@ export type PrizeSimple = {
     id: string;
 };
 
-export type ProductBase = {
-    name_fr: string;
-    name_en?: string | null;
-    description_fr?: string | null;
-    description_en?: string | null;
-    available_online: boolean;
-    related_membership?: MembershipSimple | null;
-    tickets?: Array<GenerateTicketBase>;
-    product_constraints: Array<(string)>;
-    document_constraints: Array<(string)>;
+export type Product = {
+    name: string;
+    required?: boolean;
+    description?: string | null;
+    id: string;
+    edition_id: string;
 };
 
 export type ProductCompleteNoConstraint = {
@@ -1412,17 +1689,23 @@ export type ProductCompleteNoConstraint = {
     description_fr?: string | null;
     description_en?: string | null;
     available_online: boolean;
+    needs_validation: boolean;
+    year: number;
     id: string;
     seller_id: string;
-    variants?: Array<ProductVariantComplete>;
+    variants?: Array<app__modules__cdr__schemas_cdr__ProductVariantComplete>;
     related_membership?: MembershipSimple | null;
     tickets: Array<GenerateTicketComplete>;
 };
+
+export type ProductPublicType = 'pompom' | 'fanfare' | 'cameraman' | 'athlete';
 
 export type ProductQuantity = {
     quantity: number;
     product: app__modules__amap__schemas_amap__ProductComplete;
 };
+
+export type ProductSchoolType = 'centrale' | 'from_lyon' | 'others';
 
 export type ProductSimple = {
     name: string;
@@ -1430,56 +1713,48 @@ export type ProductSimple = {
     category: string;
 };
 
-export type ProductVariantBase = {
-    name_fr: string;
-    name_en?: string | null;
-    description_fr?: string | null;
-    description_en?: string | null;
-    price: number;
-    enabled: boolean;
-    unique: boolean;
-    allowed_curriculum: Array<(string)>;
-    related_membership_added_duration?: string | null;
-};
-
-export type ProductVariantComplete = {
-    id: string;
+export type ProductVariant = {
     product_id: string;
-    name_fr: string;
-    name_en?: string | null;
-    description_fr?: string | null;
-    description_en?: string | null;
+    name: string;
+    description?: string | null;
     price: number;
-    enabled: boolean;
+    enabled?: boolean;
     unique: boolean;
-    allowed_curriculum?: Array<CurriculumComplete>;
-    related_membership_added_duration?: string | null;
+    school_type?: ProductSchoolType | null;
+    public_type?: ProductPublicType | null;
+    edition_id: string;
+    id: string;
 };
 
-export type ProductVariantEdit = {
-    name_fr?: string | null;
-    name_en?: string | null;
-    description_fr?: string | null;
-    description_en?: string | null;
-    price?: number | null;
-    enabled?: boolean | null;
-    unique?: boolean | null;
-    allowed_curriculum?: Array<(string)> | null;
-    related_membership_added_duration?: string | null;
+export type ProductVariantStats = {
+    product_id: string;
+    name: string;
+    description?: string | null;
+    price: number;
+    enabled?: boolean;
+    unique: boolean;
+    school_type?: ProductSchoolType | null;
+    public_type?: ProductPublicType | null;
+    edition_id: string;
+    id: string;
+    booked: number;
+    paid: number;
 };
 
 export type PropagationMethod = 'bouture' | 'graine';
 
-export type PurchaseBase = {
-    quantity: number;
-};
-
-export type PurchaseComplete = {
+export type Purchase = {
+    product_variant_id: string;
     quantity: number;
     user_id: string;
-    product_variant_id: string;
+    edition_id: string;
     validated: boolean;
     purchased_on: string;
+};
+
+export type PurchaseEdit = {
+    quantity?: number | null;
+    validated?: boolean | null;
 };
 
 export type PurchaseReturn = {
@@ -1491,6 +1766,51 @@ export type PurchaseReturn = {
     price: number;
     product: app__modules__cdr__schemas_cdr__ProductComplete;
     seller: SellerComplete;
+};
+
+export type Question = {
+    id: string;
+    event_id: string;
+    question: string;
+    answer_type: AnswerType;
+    price: number | null;
+    required: boolean;
+    disabled: boolean;
+};
+
+export type QuestionAdmin = {
+    id: string;
+    event_id: string;
+    question: string;
+    answer_type: AnswerType;
+    price: number | null;
+    required: boolean;
+    disabled: boolean;
+};
+
+export type QuestionCreate = {
+    question: string;
+    answer_type: AnswerType;
+    price: number | null;
+    required: boolean;
+};
+
+export type QuestionPublic = {
+    id: string;
+    event_id: string;
+    question: string;
+    answer_type: AnswerType;
+    price: number | null;
+    required: boolean;
+    disabled: boolean;
+};
+
+export type QuestionUpdate = {
+    question?: string | null;
+    answer_type?: AnswerType | null;
+    price?: number | null;
+    required?: boolean | null;
+    disabled?: boolean | null;
 };
 
 /**
@@ -1541,11 +1861,121 @@ export type RaidInformation = {
     raid_information_id?: string | null;
 };
 
+export type RaidParticipant = {
+    name: string;
+    firstname: string;
+    birthday: string;
+    phone: string;
+    email: string;
+    id: string;
+    bike_size: Size | null;
+    t_shirt_size: Size | null;
+    situation: string | null;
+    validation_progress: number;
+    payment: boolean;
+    t_shirt_payment: boolean;
+    number_of_document: number;
+    number_of_validated_document: number;
+    address: string | null;
+    other_school?: string | null;
+    company?: string | null;
+    diet?: string | null;
+    id_card: Document | null;
+    medical_certificate: Document | null;
+    security_file: SecurityFile | null;
+    student_card?: Document | null;
+    raid_rules?: Document | null;
+    parent_authorization?: Document | null;
+    attestation_on_honour: boolean;
+    is_minor: boolean;
+};
+
+export type RaidParticipantBase = {
+    name: string;
+    firstname: string;
+    birthday: string;
+    phone: string;
+    email: string;
+};
+
+export type RaidParticipantPreview = {
+    name: string;
+    firstname: string;
+    birthday: string;
+    phone: string;
+    email: string;
+    id: string;
+    bike_size: Size | null;
+    t_shirt_size: Size | null;
+    situation: string | null;
+    validation_progress: number;
+    payment: boolean;
+    t_shirt_payment: boolean;
+    number_of_document: number;
+    number_of_validated_document: number;
+};
+
+export type RaidParticipantUpdate = {
+    name?: string | null;
+    firstname?: string | null;
+    birthday?: string | null;
+    address?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    bike_size?: Size | null;
+    t_shirt_size?: Size | null;
+    situation?: string | null;
+    other_school?: string | null;
+    company?: string | null;
+    diet?: string | null;
+    attestation_on_honour?: boolean | null;
+    id_card_id?: string | null;
+    medical_certificate_id?: string | null;
+    security_file_id?: string | null;
+    student_card_id?: string | null;
+    raid_rules_id?: string | null;
+    parent_authorization_id?: string | null;
+};
+
 export type RaidPrice = {
     student_price?: number | null;
     partner_price?: number | null;
     external_price?: number | null;
     t_shirt_price?: number | null;
+};
+
+export type RaidTeam = {
+    name: string;
+    id: string;
+    number: number | null;
+    captain: RaidParticipant;
+    second: RaidParticipant | null;
+    difficulty: Difficulty | null;
+    meeting_place: MeetingPlace | null;
+    validation_progress: number;
+    file_id: string | null;
+};
+
+export type RaidTeamBase = {
+    name: string;
+};
+
+export type RaidTeamPreview = {
+    name: string;
+    id: string;
+    number: number | null;
+    captain: RaidParticipantPreview;
+    second: RaidParticipantPreview | null;
+    difficulty: Difficulty | null;
+    meeting_place: MeetingPlace | null;
+    validation_progress: number;
+};
+
+export type RaidTeamUpdate = {
+    name?: string | null;
+    number?: number | null;
+    difficulty?: Difficulty | null;
+    meeting_place?: MeetingPlace | null;
 };
 
 export type Recommendation = {
@@ -1586,6 +2016,25 @@ export type RefundInfo = {
     amount?: number | null;
 };
 
+export type Request = {
+    id: string;
+    wallet_id: string;
+    creation: string;
+    expiration_date: string;
+    total: number;
+    store_id: string;
+    name: string;
+    store_note?: string | null;
+    module: string;
+    object_id: string;
+    status: RequestStatus;
+    transaction_id?: string | null;
+};
+
+export type RequestStatus = 'proposed' | 'accepted' | 'refused';
+
+export type RequestType = 'transfer_request' | 'transaction_request';
+
 export type ResetPasswordRequest = {
     reset_token: string;
     new_password: string;
@@ -1614,6 +2063,89 @@ export type ScanInfo = {
     store: boolean;
     signature: string;
     bypass_membership?: boolean;
+};
+
+export type SchoolExtension = {
+    school_id: string;
+    from_lyon: boolean;
+    active?: boolean;
+    inscription_enabled?: boolean;
+    school: CoreSchool;
+};
+
+export type SchoolExtensionBase = {
+    school_id: string;
+    from_lyon: boolean;
+    active?: boolean;
+    inscription_enabled?: boolean;
+};
+
+export type SchoolExtensionEdit = {
+    from_lyon?: boolean | null;
+    active?: boolean | null;
+    inscription_enabled?: boolean | null;
+};
+
+export type SchoolGeneralQuota = {
+    athlete_quota?: number | null;
+    cameraman_quota?: number | null;
+    pompom_quota?: number | null;
+    fanfare_quota?: number | null;
+    athlete_cameraman_quota?: number | null;
+    athlete_pompom_quota?: number | null;
+    athlete_fanfare_quota?: number | null;
+    non_athlete_cameraman_quota?: number | null;
+    non_athlete_pompom_quota?: number | null;
+    non_athlete_fanfare_quota?: number | null;
+    school_id: string;
+    edition_id: string;
+};
+
+export type SchoolGeneralQuotaBase = {
+    athlete_quota?: number | null;
+    cameraman_quota?: number | null;
+    pompom_quota?: number | null;
+    fanfare_quota?: number | null;
+    athlete_cameraman_quota?: number | null;
+    athlete_pompom_quota?: number | null;
+    athlete_fanfare_quota?: number | null;
+    non_athlete_cameraman_quota?: number | null;
+    non_athlete_pompom_quota?: number | null;
+    non_athlete_fanfare_quota?: number | null;
+};
+
+export type SchoolProductQuota = {
+    product_id: string;
+    quota: number;
+    school_id: string;
+    edition_id: string;
+};
+
+export type SchoolProductQuotaBase = {
+    product_id: string;
+    quota: number;
+};
+
+export type SchoolProductQuotaEdit = {
+    quota: number;
+};
+
+export type SchoolResult = {
+    school_id: string;
+    total_points: number;
+};
+
+export type SchoolSportQuota = {
+    participant_quota?: number | null;
+    team_quota?: number | null;
+    school_id: string;
+    sport_id: string;
+    edition_id: string;
+};
+
+export type SchoolSportQuotaEdit = {
+    participant_quota?: number | null;
+    team_quota?: number | null;
 };
 
 /**
@@ -1680,6 +2212,7 @@ export type Seller = {
     can_see_history: boolean;
     can_cancel: boolean;
     can_manage_sellers: boolean;
+    can_manage_events: boolean;
     user: CoreUserSimple;
 };
 
@@ -1702,6 +2235,7 @@ export type SellerCreation = {
     can_see_history: boolean;
     can_cancel: boolean;
     can_manage_sellers: boolean;
+    can_manage_events?: boolean;
 };
 
 export type SellerEdit = {
@@ -1715,6 +2249,60 @@ export type SellerUpdate = {
     can_see_history?: boolean | null;
     can_cancel?: boolean | null;
     can_manage_sellers?: boolean | null;
+    can_manage_events?: boolean | null;
+};
+
+export type Session = {
+    id: string;
+    event_id: string;
+    name: string;
+    start_datetime: string;
+    disabled: boolean;
+};
+
+export type SessionAdmin = {
+    id: string;
+    event_id: string;
+    name: string;
+    start_datetime: string;
+    disabled: boolean;
+    quota: number | null;
+    tickets_in_checkout: number;
+    tickets_sold: number;
+};
+
+/**
+ * Correspond to a Session in the database
+ */
+export type SessionComplete = {
+    id: string;
+    event_id: string;
+    name: string;
+    start_datetime: string;
+    disabled: boolean;
+    quota: number | null;
+};
+
+export type SessionCreate = {
+    name: string;
+    start_datetime: string;
+    quota: number | null;
+};
+
+export type SessionPublic = {
+    id: string;
+    event_id: string;
+    name: string;
+    start_datetime: string;
+    disabled: boolean;
+    sold_out: boolean;
+};
+
+export type SessionUpdate = {
+    name?: string | null;
+    start_datetime?: string | null;
+    quota?: number | null;
+    disabled?: boolean | null;
 };
 
 export type SignatureBase = {
@@ -1727,6 +2315,15 @@ export type SignatureComplete = {
     numeric_signature_id?: string | null;
     user_id: string;
     document_id: string;
+};
+
+export type SignedContent = {
+    id: string;
+    tot: number;
+    iat: string;
+    key: string;
+    store: boolean;
+    signature: string;
 };
 
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'None';
@@ -1774,6 +2371,42 @@ export type SpeciesTypesReturn = {
     species_type: Array<SpeciesType>;
 };
 
+export type Sport = {
+    name: string;
+    team_size: number;
+    substitute_max?: number | null;
+    sport_category?: SportCategory | null;
+    active?: boolean;
+    id: string;
+};
+
+export type SportBase = {
+    name: string;
+    team_size: number;
+    substitute_max?: number | null;
+    sport_category?: SportCategory | null;
+    active?: boolean;
+};
+
+export type SportCategory = 'masculine' | 'feminine';
+
+export type SportEdit = {
+    name?: string | null;
+    team_size?: number | null;
+    substitute_max?: number | null;
+    sport_category?: SportCategory | null;
+    active?: boolean | null;
+};
+
+export type SportPodiumRankings = {
+    rankings: Array<TeamSportResultBase>;
+};
+
+export type SportQuotaInfo = {
+    participant_quota?: number | null;
+    team_quota?: number | null;
+};
+
 export type Status = {
     status?: CdrStatus;
 };
@@ -1785,6 +2418,7 @@ export type StatusType = 'waiting' | 'open' | 'closed' | 'counting' | 'published
 
 export type Store = {
     name: string;
+    association_id?: string | null;
     id: string;
     structure_id: string;
     wallet_id: string;
@@ -1794,10 +2428,12 @@ export type Store = {
 
 export type StoreBase = {
     name: string;
+    association_id?: string | null;
 };
 
 export type StoreSimple = {
     name: string;
+    association_id?: string | null;
     id: string;
     structure_id: string;
     wallet_id: string;
@@ -1806,6 +2442,7 @@ export type StoreSimple = {
 
 export type StoreUpdate = {
     name?: string | null;
+    association_id?: string | null;
 };
 
 export type Structure = {
@@ -1852,6 +2489,7 @@ export type StructureTranfert = {
 
 export type StructureUpdate = {
     name?: string | null;
+    short_id?: string | null;
     association_membership_id?: string | null;
     siret?: string | null;
     siege_address_street?: string | null;
@@ -1879,36 +2517,61 @@ export type TOSSignatureResponse = {
 
 export type Team = {
     name: string;
+    edition_id: string;
+    school_id: string;
+    sport_id: string;
+    captain_id: string;
     id: string;
-    number: number | null;
-    captain: Participant;
-    second: Participant | null;
-    difficulty: Difficulty | null;
-    meeting_place: MeetingPlace | null;
-    validation_progress: number;
-    file_id: string | null;
+    created_at: string;
 };
 
-export type TeamBase = {
+export type TeamComplete = {
     name: string;
-};
-
-export type TeamPreview = {
-    name: string;
+    edition_id: string;
+    school_id: string;
+    sport_id: string;
+    captain_id: string;
     id: string;
-    number: number | null;
-    captain: ParticipantPreview;
-    second: ParticipantPreview | null;
-    difficulty: Difficulty | null;
-    meeting_place: MeetingPlace | null;
-    validation_progress: number;
+    created_at: string;
+    participants: Array<ParticipantComplete>;
 };
 
-export type TeamUpdate = {
+export type TeamEdit = {
     name?: string | null;
-    number?: number | null;
-    difficulty?: Difficulty | null;
-    meeting_place?: MeetingPlace | null;
+    captain_id?: string | null;
+};
+
+export type TeamInfo = {
+    name: string;
+    school_id: string;
+    sport_id: string;
+    captain_id: string;
+};
+
+export type TeamSportResult = {
+    school_id: string;
+    sport_id: string;
+    team_id: string;
+    points: number;
+    edition_id: string;
+    rank: number;
+};
+
+export type TeamSportResultBase = {
+    school_id: string;
+    sport_id: string;
+    team_id: string;
+    points: number;
+};
+
+export type TeamSportResultComplete = {
+    school_id: string;
+    sport_id: string;
+    team_id: string;
+    points: number;
+    edition_id: string;
+    rank: number;
+    team: Team;
 };
 
 export type TheMovieDB = {
@@ -1922,24 +2585,9 @@ export type TheMovieDB = {
     tagline: string;
 };
 
-export type Ticket = {
-    id: string;
-    product_variant: ProductVariantComplete;
-    user: UserTicket;
-    scan_left: number;
-    tags: string;
-    expiration: string;
-    name: string;
-};
-
-export type TicketComplete = {
-    pack_id: string;
-    user_id: string;
-    winning_prize?: string | null;
-    id: string;
-    prize?: PrizeSimple | null;
-    pack_ticket: PackTicketSimple;
-    user: CoreUserSimple;
+export type TicketChangeOverInvitation = {
+    ticket_id: string;
+    email: string;
 };
 
 export type TicketScan = {
@@ -1959,14 +2607,12 @@ export type TicketSimple = {
 
 export type TokenResponse = {
     access_token: string;
-    token_type?: 'bearer';
+    token_type?: "bearer";
     expires_in?: number;
     scope?: string;
     refresh_token: string;
     id_token?: string | null;
 };
-
-export type token_type = 'bearer';
 
 export type TopicUser = {
     id: string;
@@ -1996,17 +2642,20 @@ export type TransactionBase = {
  */
 export type TransactionStatus = 'confirmed' | 'canceled' | 'refunded' | 'pending';
 
-export type TransactionType = 'direct' | 'request' | 'refund';
+export type TransactionType = 'direct' | 'request';
 
 export type Transfer = {
     id: string;
-    type: TransferType;
+    origin: TransferOrigin;
     transfer_identifier: string;
     approver_user_id: string | null;
     wallet_id: string;
     total: number;
     creation: string;
     confirmed: boolean;
+    module: string | null;
+    object_id: string | null;
+    type: TransferType;
 };
 
 export type TransferInfo = {
@@ -2014,7 +2663,22 @@ export type TransferInfo = {
     redirect_url: string;
 };
 
-export type TransferType = 'hello_asso';
+export type TransferOrigin = 'hello_asso';
+
+export type TransferType = 'direct' | 'request';
+
+export type UserGroupMembership = {
+    user_id: string;
+    group: CompetitionGroupType;
+    edition_id: string;
+};
+
+export type UserGroupMembershipComplete = {
+    user_id: string;
+    group: CompetitionGroupType;
+    edition_id: string;
+    user: CoreUser;
+};
 
 export type UserMembershipBase = {
     association_membership_id: string;
@@ -2038,6 +2702,7 @@ export type UserMembershipEdit = {
 
 export type UserStore = {
     name: string;
+    association_id?: string | null;
     id: string;
     structure_id: string;
     wallet_id: string;
@@ -2067,6 +2732,63 @@ export type ValidationError = {
     type: string;
 };
 
+export type VolunteerRegistrationComplete = {
+    user_id: string;
+    edition_id: string;
+    shift_id: string;
+    registered_at: string;
+    validated: boolean;
+    shift: VolunteerShiftComplete;
+};
+
+export type VolunteerShift = {
+    name: string;
+    manager_id: string;
+    description?: string | null;
+    value: number;
+    start_time: string;
+    end_time: string;
+    location?: string | null;
+    max_volunteers: number;
+    id: string;
+    edition_id: string;
+};
+
+export type VolunteerShiftBase = {
+    name: string;
+    manager_id: string;
+    description?: string | null;
+    value: number;
+    start_time: string;
+    end_time: string;
+    location?: string | null;
+    max_volunteers: number;
+};
+
+export type VolunteerShiftComplete = {
+    name: string;
+    manager_id: string;
+    description?: string | null;
+    value: number;
+    start_time: string;
+    end_time: string;
+    location?: string | null;
+    max_volunteers: number;
+    id: string;
+    edition_id: string;
+    manager: CoreUser;
+};
+
+export type VolunteerShiftEdit = {
+    name?: string | null;
+    description?: string | null;
+    value?: number | null;
+    start_time?: string | null;
+    end_time?: string | null;
+    location?: string | null;
+    max_volunteers?: number | null;
+};
+
 /**
  * Base schema for a vote.
  */
@@ -2081,13 +2803,6 @@ export type VoteStats = {
 
 export type VoteStatus = {
     status: StatusType;
-};
-
-/**
- * Base schema for voters (groups allowed to vote).
- */
-export type VoterGroup = {
-    group_id: string;
 };
 
 export type Wallet = {
@@ -2114,7 +2829,7 @@ export type WalletDevice = {
 
 export type WalletDeviceCreation = {
     name: string;
-    ed25519_public_key: (Blob | File);
+    ed25519_public_key: string;
 };
 
 export type WalletDeviceStatus = 'inactive' | 'active' | 'revoked';
@@ -2126,9 +2841,49 @@ export type app__core__associations__schemas_associations__AssociationBase = {
     group_id: string;
 };
 
+export type app__core__checkout__schemas_checkout__PaymentUrl = {
+    url: string;
+};
+
 export type app__core__memberships__schemas_memberships__MembershipBase = {
     name: string;
     manager_group_id: string;
+};
+
+export type app__core__tickets__schemas_tickets__Ticket = {
+    id: string;
+    user_id: string;
+    price: number;
+    scanned: boolean;
+    event_id: string;
+    category_id: string;
+    session_id: string;
+    category: Category;
+    session: Session;
+    user: CoreUserSimple;
+    answers: Array<Answer>;
+};
+
+export type app__core__tickets__schemas_tickets__TicketComplete = {
+    id: string;
+    user_id: string;
+    price: number;
+    scanned: boolean;
+    event_id: string;
+    category_id: string;
+    session_id: string;
+    category: Category;
+    session: Session;
+    user: CoreUserSimple;
+    answers: Array<Answer>;
+    event: EventSimple;
+};
+
+export type app__modules__amap__schemas_amap__CashComplete = {
+    balance: number;
+    user_id: string;
+    user: CoreUserSimple;
+    last_order_date: string;
 };
 
 export type app__modules__amap__schemas_amap__ProductComplete = {
@@ -2144,9 +2899,37 @@ export type app__modules__amap__schemas_amap__ProductEdit = {
     price?: number | null;
 };
 
+export type app__modules__booking__types_booking__Decision = 'approved' | 'declined' | 'pending';
+
 export type app__modules__campaign__schemas_campaign__Result = {
     list_id: string;
     count: number;
+};
+
+export type app__modules__cdr__schemas_cdr__PaymentBase = {
+    total: number;
+    payment_type: PaymentType;
+};
+
+export type app__modules__cdr__schemas_cdr__PaymentComplete = {
+    total: number;
+    payment_type: PaymentType;
+    id: string;
+    user_id: string;
+    year: number;
+};
+
+export type app__modules__cdr__schemas_cdr__ProductBase = {
+    name_fr: string;
+    name_en?: string | null;
+    description_fr?: string | null;
+    description_en?: string | null;
+    available_online: boolean;
+    needs_validation?: boolean;
+    related_membership?: MembershipSimple | null;
+    tickets?: Array<GenerateTicketBase>;
+    product_constraints: Array<(string)>;
+    document_constraints: Array<(string)>;
 };
 
 export type app__modules__cdr__schemas_cdr__ProductComplete = {
@@ -2155,9 +2938,11 @@ export type app__modules__cdr__schemas_cdr__ProductComplete = {
     description_fr?: string | null;
     description_en?: string | null;
     available_online: boolean;
+    needs_validation: boolean;
     id: string;
+    year: number;
     seller_id: string;
-    variants?: Array<ProductVariantComplete>;
+    variants?: Array<app__modules__cdr__schemas_cdr__ProductVariantComplete>;
     related_membership?: MembershipSimple | null;
     product_constraints?: Array<ProductCompleteNoConstraint>;
     document_constraints?: Array<DocumentComplete>;
@@ -2174,6 +2959,67 @@ export type app__modules__cdr__schemas_cdr__ProductEdit = {
     related_membership?: MembershipSimple | null;
     product_constraints?: Array<(string)> | null;
     document_constraints?: Array<(string)> | null;
+};
+
+export type app__modules__cdr__schemas_cdr__ProductVariantBase = {
+    name_fr: string;
+    name_en?: string | null;
+    description_fr?: string | null;
+    description_en?: string | null;
+    price: number;
+    enabled: boolean;
+    unique: boolean;
+    allowed_curriculum: Array<(string)>;
+    related_membership_added_duration?: string | null;
+};
+
+export type app__modules__cdr__schemas_cdr__ProductVariantComplete = {
+    id: string;
+    year: number;
+    product_id: string;
+    name_fr: string;
+    name_en?: string | null;
+    description_fr?: string | null;
+    description_en?: string | null;
+    price: number;
+    enabled: boolean;
+    unique: boolean;
+    allowed_curriculum?: Array<CurriculumComplete>;
+    related_membership_added_duration?: string | null;
+};
+
+export type app__modules__cdr__schemas_cdr__ProductVariantEdit = {
+    name_fr?: string | null;
+    name_en?: string | null;
+    description_fr?: string | null;
+    description_en?: string | null;
+    price?: number | null;
+    enabled?: boolean | null;
+    unique?: boolean | null;
+    allowed_curriculum?: Array<(string)> | null;
+    related_membership_added_duration?: string | null;
+};
+
+export type app__modules__cdr__schemas_cdr__PurchaseBase = {
+    quantity: number;
+};
+
+export type app__modules__cdr__schemas_cdr__PurchaseComplete = {
+    quantity: number;
+    user_id: string;
+    product_variant_id: string;
+    validated: boolean;
+    purchased_on: string;
+};
+
+export type app__modules__cdr__schemas_cdr__Ticket = {
+    id: string;
+    product_variant: app__modules__cdr__schemas_cdr__ProductVariantComplete;
+    user: UserTicket;
+    scan_left: number;
+    tags: string;
+    expiration: string;
+    name: string;
 };
 
 export type app__modules__phonebook__schemas_phonebook__AssociationBase = {
@@ -2194,1428 +3040,165 @@ export type app__modules__phonebook__schemas_phonebook__MembershipBase = {
     member_order: number;
 };
 
+export type app__modules__raffle__schemas_raffle__CashComplete = {
+    balance: number;
+    user_id: string;
+    user: CoreUserSimple;
+};
+
+export type app__modules__raffle__schemas_raffle__CashEdit = {
+    balance: number;
+};
+
+export type app__modules__raffle__schemas_raffle__TicketComplete = {
+    pack_id: string;
+    user_id: string;
+    winning_prize?: string | null;
+    id: string;
+    prize?: PrizeSimple | null;
+    pack_ticket: PackTicketSimple;
+    user: CoreUserSimple;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__PaymentBase = {
+    total: number;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__PaymentComplete = {
+    total: number;
+    id: string;
+    user_id: string;
+    edition_id: string;
+    method: PaiementMethodType;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductBase = {
+    name: string;
+    required?: boolean;
+    description?: string | null;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductComplete = {
+    name: string;
+    required?: boolean;
+    description?: string | null;
+    id: string;
+    edition_id: string;
+    variants?: Array<ProductVariantStats>;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductEdit = {
+    name?: string | null;
+    required?: boolean | null;
+    description?: string | null;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductVariantBase = {
+    product_id: string;
+    name: string;
+    description?: string | null;
+    price: number;
+    enabled?: boolean;
+    unique: boolean;
+    school_type?: ProductSchoolType | null;
+    public_type?: ProductPublicType | null;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductVariantComplete = {
+    product_id: string;
+    name: string;
+    description?: string | null;
+    price: number;
+    enabled?: boolean;
+    unique: boolean;
+    school_type?: ProductSchoolType | null;
+    public_type?: ProductPublicType | null;
+    edition_id: string;
+    id: string;
+    product: Product;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__ProductVariantEdit = {
+    name?: string | null;
+    description?: string | null;
+    price?: number | null;
+    enabled?: boolean | null;
+    unique?: boolean | null;
+    school_type?: ProductSchoolType | null;
+    public_type?: ProductPublicType | null;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__PurchaseBase = {
+    product_variant_id: string;
+    quantity: number;
+};
+
+export type app__modules__sport_competition__schemas_sport_competition__PurchaseComplete = {
+    product_variant_id: string;
+    quantity: number;
+    user_id: string;
+    edition_id: string;
+    validated: boolean;
+    purchased_on: string;
+    product_variant: ProductVariant;
+};
+
 export type app__types__standard_responses__Result = {
     success?: boolean;
 };
 
-export type GetAdvertAdvertsData = {
-    query?: {
-        advertisers?: Array<(string)>;
-    };
-};
-
-export type GetAdvertAdvertsResponse = Array<AdvertComplete>;
-
-export type GetAdvertAdvertsError = unknown;
-
-export type PostAdvertAdvertsData = {
-    body: AdvertBase;
-};
-
-export type PostAdvertAdvertsResponse = AdvertComplete;
-
-export type PostAdvertAdvertsError = unknown;
-
-export type GetAdvertAdvertsAdvertIdData = {
-    path: {
-        advert_id: string;
-    };
-};
-
-export type GetAdvertAdvertsAdvertIdResponse = AdvertComplete;
-
-export type GetAdvertAdvertsAdvertIdError = unknown;
-
-export type PatchAdvertAdvertsAdvertIdData = {
-    body: AdvertUpdate;
-    path: {
-        advert_id: string;
-    };
-};
-
-export type PatchAdvertAdvertsAdvertIdResponse = void;
-
-export type PatchAdvertAdvertsAdvertIdError = unknown;
-
-export type DeleteAdvertAdvertsAdvertIdData = {
-    path: {
-        advert_id: string;
-    };
-};
-
-export type DeleteAdvertAdvertsAdvertIdResponse = void;
-
-export type DeleteAdvertAdvertsAdvertIdError = unknown;
-
-export type GetAdvertAdvertsAdvertIdPictureData = {
-    path: {
-        advert_id: string;
-    };
-};
-
-export type GetAdvertAdvertsAdvertIdPictureResponse = unknown;
-
-export type GetAdvertAdvertsAdvertIdPictureError = unknown;
-
-export type PostAdvertAdvertsAdvertIdPictureData = {
-    path: {
-        advert_id: string;
-    };
-};
-
-export type PostAdvertAdvertsAdvertIdPictureResponse = void;
-
-export type PostAdvertAdvertsAdvertIdPictureError = unknown;
-
-export type GetAmapProductsResponse = Array<app__modules__amap__schemas_amap__ProductComplete>;
-
-export type GetAmapProductsError = unknown;
-
-export type PostAmapProductsData = {
-    body: ProductSimple;
-};
-
-export type PostAmapProductsResponse = app__modules__amap__schemas_amap__ProductComplete;
-
-export type PostAmapProductsError = unknown;
-
-export type GetAmapProductsProductIdData = {
-    path: {
-        product_id: string;
-    };
-};
-
-export type GetAmapProductsProductIdResponse = app__modules__amap__schemas_amap__ProductComplete;
-
-export type GetAmapProductsProductIdError = unknown;
-
-export type PatchAmapProductsProductIdData = {
-    body: app__modules__amap__schemas_amap__ProductEdit;
-    path: {
-        product_id: string;
-    };
-};
-
-export type PatchAmapProductsProductIdResponse = void;
-
-export type PatchAmapProductsProductIdError = unknown;
-
-export type DeleteAmapProductsProductIdData = {
-    path: {
-        product_id: string;
-    };
-};
-
-export type DeleteAmapProductsProductIdResponse = void;
-
-export type DeleteAmapProductsProductIdError = unknown;
-
-export type GetAmapDeliveriesResponse = Array<DeliveryReturn>;
-
-export type GetAmapDeliveriesError = unknown;
-
-export type PostAmapDeliveriesData = {
-    body: DeliveryBase;
-};
-
-export type PostAmapDeliveriesResponse = DeliveryReturn;
-
-export type PostAmapDeliveriesError = unknown;
-
-export type DeleteAmapDeliveriesDeliveryIdData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type DeleteAmapDeliveriesDeliveryIdResponse = void;
-
-export type DeleteAmapDeliveriesDeliveryIdError = unknown;
-
-export type PatchAmapDeliveriesDeliveryIdData = {
-    body: DeliveryUpdate;
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PatchAmapDeliveriesDeliveryIdResponse = void;
-
-export type PatchAmapDeliveriesDeliveryIdError = unknown;
-
-export type PostAmapDeliveriesDeliveryIdProductsData = {
-    body: DeliveryProductsUpdate;
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PostAmapDeliveriesDeliveryIdProductsResponse = unknown;
-
-export type PostAmapDeliveriesDeliveryIdProductsError = unknown;
-
-export type DeleteAmapDeliveriesDeliveryIdProductsData = {
-    body: DeliveryProductsUpdate;
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type DeleteAmapDeliveriesDeliveryIdProductsResponse = void;
-
-export type DeleteAmapDeliveriesDeliveryIdProductsError = unknown;
-
-export type GetAmapDeliveriesDeliveryIdOrdersData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type GetAmapDeliveriesDeliveryIdOrdersResponse = Array<OrderReturn>;
-
-export type GetAmapDeliveriesDeliveryIdOrdersError = unknown;
-
-export type GetAmapOrdersOrderIdData = {
-    path: {
-        order_id: string;
-    };
-};
-
-export type GetAmapOrdersOrderIdResponse = OrderReturn;
-
-export type GetAmapOrdersOrderIdError = unknown;
-
-export type PatchAmapOrdersOrderIdData = {
-    body: OrderEdit;
-    path: {
-        order_id: string;
-    };
-};
-
-export type PatchAmapOrdersOrderIdResponse = void;
-
-export type PatchAmapOrdersOrderIdError = unknown;
-
-export type DeleteAmapOrdersOrderIdData = {
-    path: {
-        order_id: string;
-    };
-};
-
-export type DeleteAmapOrdersOrderIdResponse = void;
-
-export type DeleteAmapOrdersOrderIdError = unknown;
-
-export type PostAmapOrdersData = {
-    body: OrderBase;
-};
-
-export type PostAmapOrdersResponse = OrderReturn;
-
-export type PostAmapOrdersError = unknown;
-
-export type PostAmapDeliveriesDeliveryIdOpenorderingData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PostAmapDeliveriesDeliveryIdOpenorderingResponse = void;
-
-export type PostAmapDeliveriesDeliveryIdOpenorderingError = unknown;
-
-export type PostAmapDeliveriesDeliveryIdLockData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PostAmapDeliveriesDeliveryIdLockResponse = void;
-
-export type PostAmapDeliveriesDeliveryIdLockError = unknown;
-
-export type PostAmapDeliveriesDeliveryIdDeliveredData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PostAmapDeliveriesDeliveryIdDeliveredResponse = void;
-
-export type PostAmapDeliveriesDeliveryIdDeliveredError = unknown;
-
-export type PostAmapDeliveriesDeliveryIdArchiveData = {
-    path: {
-        delivery_id: string;
-    };
-};
-
-export type PostAmapDeliveriesDeliveryIdArchiveResponse = void;
-
-export type PostAmapDeliveriesDeliveryIdArchiveError = unknown;
-
-export type GetAmapUsersCashResponse = Array<CashComplete>;
-
-export type GetAmapUsersCashError = unknown;
-
-export type GetAmapUsersUserIdCashData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetAmapUsersUserIdCashResponse = CashComplete;
-
-export type GetAmapUsersUserIdCashError = unknown;
-
-export type PostAmapUsersUserIdCashData = {
-    body: CashEdit;
-    path: {
-        user_id: string;
-    };
-};
-
-export type PostAmapUsersUserIdCashResponse = CashComplete;
-
-export type PostAmapUsersUserIdCashError = unknown;
-
-export type PatchAmapUsersUserIdCashData = {
-    body: CashEdit;
-    path: {
-        user_id: string;
-    };
-};
-
-export type PatchAmapUsersUserIdCashResponse = void;
-
-export type PatchAmapUsersUserIdCashError = unknown;
-
-export type GetAmapUsersUserIdOrdersData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetAmapUsersUserIdOrdersResponse = Array<OrderReturn>;
-
-export type GetAmapUsersUserIdOrdersError = unknown;
-
-export type GetAmapInformationResponse = Information;
-
-export type GetAmapInformationError = unknown;
-
-export type PatchAmapInformationData = {
-    body: InformationEdit;
-};
-
-export type PatchAmapInformationResponse = void;
-
-export type PatchAmapInformationError = unknown;
-
-export type GetBookingManagersResponse = Array<Manager>;
-
-export type GetBookingManagersError = unknown;
-
-export type PostBookingManagersData = {
-    body: ManagerBase;
-};
-
-export type PostBookingManagersResponse = Manager;
-
-export type PostBookingManagersError = unknown;
-
-export type PatchBookingManagersManagerIdData = {
-    body: ManagerUpdate;
-    path: {
-        manager_id: string;
-    };
-};
-
-export type PatchBookingManagersManagerIdResponse = void;
-
-export type PatchBookingManagersManagerIdError = unknown;
-
-export type DeleteBookingManagersManagerIdData = {
-    path: {
-        manager_id: string;
-    };
-};
-
-export type DeleteBookingManagersManagerIdResponse = void;
-
-export type DeleteBookingManagersManagerIdError = unknown;
-
-export type GetBookingManagersUsersMeResponse = Array<Manager>;
-
-export type GetBookingManagersUsersMeError = unknown;
-
-export type GetBookingBookingsUsersMeManageResponse = Array<BookingReturnApplicant>;
-
-export type GetBookingBookingsUsersMeManageError = unknown;
-
-export type GetBookingBookingsConfirmedUsersMeManageResponse = Array<BookingReturnApplicant>;
-
-export type GetBookingBookingsConfirmedUsersMeManageError = unknown;
-
-export type GetBookingBookingsConfirmedResponse = Array<BookingReturnSimpleApplicant>;
-
-export type GetBookingBookingsConfirmedError = unknown;
-
-export type GetBookingBookingsUsersMeResponse = Array<BookingReturn>;
-
-export type GetBookingBookingsUsersMeError = unknown;
-
-export type PostBookingBookingsData = {
-    body: BookingBase;
-};
-
-export type PostBookingBookingsResponse = BookingReturn;
-
-export type PostBookingBookingsError = unknown;
-
-export type PatchBookingBookingsBookingIdData = {
-    body: BookingEdit;
-    path: {
-        booking_id: string;
-    };
-};
-
-export type PatchBookingBookingsBookingIdResponse = void;
-
-export type PatchBookingBookingsBookingIdError = unknown;
-
-export type DeleteBookingBookingsBookingIdData = {
-    path: {
-        booking_id: string;
-    };
-};
-
-export type DeleteBookingBookingsBookingIdResponse = void;
-
-export type DeleteBookingBookingsBookingIdError = unknown;
-
-export type PatchBookingBookingsBookingIdReplyDecisionData = {
-    path: {
-        booking_id: string;
-        decision: Decision;
-    };
-};
-
-export type PatchBookingBookingsBookingIdReplyDecisionResponse = void;
-
-export type PatchBookingBookingsBookingIdReplyDecisionError = unknown;
-
-export type GetBookingRoomsResponse = Array<RoomComplete>;
-
-export type GetBookingRoomsError = unknown;
-
-export type PostBookingRoomsData = {
-    body: RoomBase;
-};
-
-export type PostBookingRoomsResponse = RoomComplete;
-
-export type PostBookingRoomsError = unknown;
-
-export type PatchBookingRoomsRoomIdData = {
-    body: RoomBase;
-    path: {
-        room_id: string;
-    };
-};
-
-export type PatchBookingRoomsRoomIdResponse = void;
-
-export type PatchBookingRoomsRoomIdError = unknown;
-
-export type DeleteBookingRoomsRoomIdData = {
-    path: {
-        room_id: string;
-    };
-};
-
-export type DeleteBookingRoomsRoomIdResponse = void;
-
-export type DeleteBookingRoomsRoomIdError = unknown;
-
-export type GetCalendarEventsResponse = Array<EventComplete>;
-
-export type GetCalendarEventsError = unknown;
-
-export type PostCalendarEventsData = {
-    body: EventBaseCreation;
-};
-
-export type PostCalendarEventsResponse = EventCompleteTicketUrl;
-
-export type PostCalendarEventsError = unknown;
-
-export type GetCalendarEventsConfirmedResponse = Array<EventComplete>;
-
-export type GetCalendarEventsConfirmedError = unknown;
-
-export type GetCalendarEventsAssociationsAssociationIdData = {
-    path: {
-        association_id: string;
-    };
-};
-
-export type GetCalendarEventsAssociationsAssociationIdResponse = Array<EventCompleteTicketUrl>;
-
-export type GetCalendarEventsAssociationsAssociationIdError = unknown;
-
-export type GetCalendarEventsEventIdData = {
-    path: {
-        event_id: string;
-    };
-};
-
-export type GetCalendarEventsEventIdResponse = EventCompleteTicketUrl;
-
-export type GetCalendarEventsEventIdError = unknown;
-
-export type PatchCalendarEventsEventIdData = {
-    body: EventEdit;
-    path: {
-        event_id: string;
-    };
-};
-
-export type PatchCalendarEventsEventIdResponse = void;
-
-export type PatchCalendarEventsEventIdError = unknown;
-
-export type DeleteCalendarEventsEventIdData = {
-    path: {
-        event_id: unknown;
-    };
-};
-
-export type DeleteCalendarEventsEventIdResponse = void;
-
-export type DeleteCalendarEventsEventIdError = unknown;
-
-export type GetCalendarEventsEventIdTicketUrlData = {
-    path: {
-        event_id: string;
-    };
-};
-
-export type GetCalendarEventsEventIdTicketUrlResponse = EventTicketUrl;
-
-export type GetCalendarEventsEventIdTicketUrlError = unknown;
-
-export type GetCalendarEventsEventIdImageData = {
-    path: {
-        event_id: string;
-    };
-};
-
-export type GetCalendarEventsEventIdImageResponse = unknown;
-
-export type GetCalendarEventsEventIdImageError = unknown;
-
-export type PostCalendarEventsEventIdImageData = {
-    path: {
-        event_id: string;
-    };
-};
-
-export type PostCalendarEventsEventIdImageResponse = void;
-
-export type PostCalendarEventsEventIdImageError = unknown;
-
-export type PatchCalendarEventsEventIdReplyDecisionData = {
-    path: {
-        decision: Decision;
-        event_id: string;
-    };
-};
-
-export type PatchCalendarEventsEventIdReplyDecisionResponse = void;
-
-export type PatchCalendarEventsEventIdReplyDecisionError = unknown;
-
-export type GetCalendarIcalUrlResponse = IcalSecret;
-
-export type GetCalendarIcalUrlError = unknown;
-
-export type PostCalendarIcalCreateResponse = void;
-
-export type PostCalendarIcalCreateError = unknown;
-
-export type GetCalendarIcalData = {
-    query: {
-        secret: string;
-    };
-};
-
-export type GetCalendarIcalResponse = unknown;
-
-export type GetCalendarIcalError = unknown;
-
-export type GetCampaignSectionsResponse = Array<SectionComplete>;
-
-export type GetCampaignSectionsError = unknown;
-
-export type PostCampaignSectionsData = {
-    body: SectionBase;
-};
-
-export type PostCampaignSectionsResponse = SectionComplete;
-
-export type PostCampaignSectionsError = unknown;
-
-export type DeleteCampaignSectionsSectionIdData = {
-    path: {
-        section_id: string;
-    };
-};
-
-export type DeleteCampaignSectionsSectionIdResponse = void;
-
-export type DeleteCampaignSectionsSectionIdError = unknown;
-
-export type GetCampaignListsResponse = Array<ListReturn>;
-
-export type GetCampaignListsError = unknown;
-
-export type PostCampaignListsData = {
-    body: ListBase;
-};
-
-export type PostCampaignListsResponse = ListReturn;
-
-export type PostCampaignListsError = unknown;
-
-export type DeleteCampaignListsListIdData = {
-    path: {
-        list_id: string;
-    };
-};
-
-export type DeleteCampaignListsListIdResponse = void;
-
-export type DeleteCampaignListsListIdError = unknown;
-
-export type PatchCampaignListsListIdData = {
-    body: ListEdit;
-    path: {
-        list_id: string;
-    };
-};
-
-export type PatchCampaignListsListIdResponse = void;
-
-export type PatchCampaignListsListIdError = unknown;
-
-export type DeleteCampaignListsData = {
-    query?: {
-        list_type?: ListType | null;
-    };
-};
-
-export type DeleteCampaignListsResponse = void;
-
-export type DeleteCampaignListsError = unknown;
-
-export type GetCampaignVotersResponse = Array<VoterGroup>;
-
-export type GetCampaignVotersError = unknown;
-
-export type PostCampaignVotersData = {
-    body: VoterGroup;
-};
-
-export type PostCampaignVotersResponse = VoterGroup;
-
-export type PostCampaignVotersError = unknown;
-
-export type DeleteCampaignVotersResponse = void;
-
-export type DeleteCampaignVotersError = unknown;
-
-export type DeleteCampaignVotersGroupIdData = {
-    path: {
-        group_id: string;
-    };
-};
-
-export type DeleteCampaignVotersGroupIdResponse = void;
-
-export type DeleteCampaignVotersGroupIdError = unknown;
-
-export type PostCampaignStatusOpenResponse = void;
-
-export type PostCampaignStatusOpenError = unknown;
-
-export type PostCampaignStatusCloseResponse = void;
-
-export type PostCampaignStatusCloseError = unknown;
-
-export type PostCampaignStatusCountingResponse = void;
-
-export type PostCampaignStatusCountingError = unknown;
-
-export type PostCampaignStatusPublishedResponse = void;
-
-export type PostCampaignStatusPublishedError = unknown;
-
-export type PostCampaignStatusResetResponse = void;
-
-export type PostCampaignStatusResetError = unknown;
-
-export type GetCampaignVotesResponse = Array<(string)>;
-
-export type GetCampaignVotesError = unknown;
-
-export type PostCampaignVotesData = {
-    body: VoteBase;
-};
-
-export type PostCampaignVotesResponse = void;
-
-export type PostCampaignVotesError = unknown;
-
-export type GetCampaignResultsResponse = Array<app__modules__campaign__schemas_campaign__Result>;
-
-export type GetCampaignResultsError = unknown;
-
-export type GetCampaignStatusResponse = VoteStatus;
-
-export type GetCampaignStatusError = unknown;
-
-export type GetCampaignStatsSectionIdData = {
-    path: {
-        section_id: string;
-    };
-};
-
-export type GetCampaignStatsSectionIdResponse = VoteStats;
-
-export type GetCampaignStatsSectionIdError = unknown;
-
-export type PostCampaignListsListIdLogoData = {
-    path: {
-        list_id: string;
-    };
-};
-
-export type PostCampaignListsListIdLogoResponse = app__types__standard_responses__Result;
-
-export type PostCampaignListsListIdLogoError = unknown;
-
-export type GetCampaignListsListIdLogoData = {
-    path: {
-        list_id: string;
-    };
-};
-
-export type GetCampaignListsListIdLogoResponse = unknown;
-
-export type GetCampaignListsListIdLogoError = unknown;
-
-export type GetCdrUsersResponse = Array<CdrUserPreview>;
-
-export type GetCdrUsersError = unknown;
-
-export type GetCdrUsersPendingResponse = Array<CdrUserPreview>;
-
-export type GetCdrUsersPendingError = unknown;
-
-export type GetCdrUsersUserIdData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetCdrUsersUserIdResponse = CdrUser;
-
-export type GetCdrUsersUserIdError = unknown;
-
-export type PatchCdrUsersUserIdData = {
-    body: CdrUserUpdate;
-    path: {
-        user_id: string;
-    };
-};
-
-export type PatchCdrUsersUserIdResponse = void;
-
-export type PatchCdrUsersUserIdError = unknown;
-
-export type GetCdrSellersResponse = Array<SellerComplete>;
-
-export type GetCdrSellersError = unknown;
-
-export type PostCdrSellersData = {
-    body: SellerBase;
-};
-
-export type PostCdrSellersResponse = SellerComplete;
-
-export type PostCdrSellersError = unknown;
-
-export type GetCdrUsersMeSellersResponse = Array<SellerComplete>;
-
-export type GetCdrUsersMeSellersError = unknown;
-
-export type GetCdrOnlineSellersResponse = Array<SellerComplete>;
-
-export type GetCdrOnlineSellersError = unknown;
-
-export type GetCdrSellersSellerIdResultsData = {
-    path: {
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdResultsResponse = unknown;
-
-export type GetCdrSellersSellerIdResultsError = unknown;
-
-export type GetCdrOnlineProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-
-export type GetCdrOnlineProductsError = unknown;
-
-export type GetCdrProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-
-export type GetCdrProductsError = unknown;
-
-export type PatchCdrSellersSellerIdData = {
-    body: SellerEdit;
-    path: {
-        seller_id: string;
-    };
-};
-
-export type PatchCdrSellersSellerIdResponse = void;
-
-export type PatchCdrSellersSellerIdError = unknown;
-
-export type DeleteCdrSellersSellerIdData = {
-    path: {
-        seller_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdResponse = void;
-
-export type DeleteCdrSellersSellerIdError = unknown;
-
-export type GetCdrSellersSellerIdProductsData = {
-    path: {
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-
-export type GetCdrSellersSellerIdProductsError = unknown;
-
-export type PostCdrSellersSellerIdProductsData = {
-    body: ProductBase;
-    path: {
-        seller_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdProductsResponse = app__modules__cdr__schemas_cdr__ProductComplete;
-
-export type PostCdrSellersSellerIdProductsError = unknown;
-
-export type GetCdrOnlineSellersSellerIdProductsData = {
-    path: {
-        seller_id: string;
-    };
-};
-
-export type GetCdrOnlineSellersSellerIdProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-
-export type GetCdrOnlineSellersSellerIdProductsError = unknown;
-
-export type PatchCdrSellersSellerIdProductsProductIdData = {
-    body: app__modules__cdr__schemas_cdr__ProductEdit;
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type PatchCdrSellersSellerIdProductsProductIdResponse = void;
-
-export type PatchCdrSellersSellerIdProductsProductIdError = unknown;
-
-export type DeleteCdrSellersSellerIdProductsProductIdData = {
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdProductsProductIdResponse = void;
-
-export type DeleteCdrSellersSellerIdProductsProductIdError = unknown;
-
-export type PostCdrSellersSellerIdProductsProductIdVariantsData = {
-    body: ProductVariantBase;
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdProductsProductIdVariantsResponse = ProductVariantComplete;
-
-export type PostCdrSellersSellerIdProductsProductIdVariantsError = unknown;
-
-export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdData = {
-    body: ProductVariantEdit;
-    path: {
-        product_id: string;
-        seller_id: string;
-        variant_id: string;
-    };
-};
-
-export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdResponse = void;
-
-export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdError = unknown;
-
-export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdData = {
-    path: {
-        product_id: string;
-        seller_id: string;
-        variant_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdResponse = void;
-
-export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdError = unknown;
-
-export type GetCdrSellersSellerIdDocumentsData = {
-    path: {
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdDocumentsResponse = Array<DocumentComplete>;
-
-export type GetCdrSellersSellerIdDocumentsError = unknown;
-
-export type PostCdrSellersSellerIdDocumentsData = {
-    body: DocumentBase;
-    path: {
-        seller_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdDocumentsResponse = DocumentComplete;
-
-export type PostCdrSellersSellerIdDocumentsError = unknown;
-
-export type GetCdrDocumentsResponse = Array<DocumentComplete>;
-
-export type GetCdrDocumentsError = unknown;
-
-export type DeleteCdrSellersSellerIdDocumentsDocumentIdData = {
-    path: {
-        document_id: string;
-        seller_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdDocumentsDocumentIdResponse = void;
-
-export type DeleteCdrSellersSellerIdDocumentsDocumentIdError = unknown;
-
-export type GetCdrUsersUserIdPurchasesData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetCdrUsersUserIdPurchasesResponse = Array<PurchaseReturn>;
-
-export type GetCdrUsersUserIdPurchasesError = unknown;
-
-export type GetCdrMePurchasesResponse = Array<PurchaseReturn>;
-
-export type GetCdrMePurchasesError = unknown;
-
-export type GetCdrSellersSellerIdUsersUserIdPurchasesData = {
-    path: {
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdUsersUserIdPurchasesResponse = Array<PurchaseReturn>;
-
-export type GetCdrSellersSellerIdUsersUserIdPurchasesError = unknown;
-
-export type PostCdrUsersUserIdPurchasesProductVariantIdData = {
-    body: PurchaseBase;
-    path: {
-        product_variant_id: string;
-        user_id: string;
-    };
-};
-
-export type PostCdrUsersUserIdPurchasesProductVariantIdResponse = PurchaseComplete;
-
-export type PostCdrUsersUserIdPurchasesProductVariantIdError = unknown;
-
-export type DeleteCdrUsersUserIdPurchasesProductVariantIdData = {
-    path: {
-        product_variant_id: string;
-        user_id: string;
-    };
-};
-
-export type DeleteCdrUsersUserIdPurchasesProductVariantIdResponse = void;
-
-export type DeleteCdrUsersUserIdPurchasesProductVariantIdError = unknown;
-
-export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedData = {
-    path: {
-        product_variant_id: string;
-        user_id: string;
-    };
-    query: {
-        validated: boolean;
-    };
-};
-
-export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedResponse = void;
-
-export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedError = unknown;
-
-export type GetCdrUsersUserIdSignaturesData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetCdrUsersUserIdSignaturesResponse = Array<SignatureComplete>;
-
-export type GetCdrUsersUserIdSignaturesError = unknown;
-
-export type GetCdrSellersSellerIdUsersUserIdSignaturesData = {
-    path: {
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdUsersUserIdSignaturesResponse = Array<SignatureComplete>;
-
-export type GetCdrSellersSellerIdUsersUserIdSignaturesError = unknown;
-
-export type PostCdrUsersUserIdSignaturesDocumentIdData = {
-    body: SignatureBase;
-    path: {
-        document_id: string;
-        user_id: string;
-    };
-};
-
-export type PostCdrUsersUserIdSignaturesDocumentIdResponse = SignatureComplete;
-
-export type PostCdrUsersUserIdSignaturesDocumentIdError = unknown;
-
-export type DeleteCdrUsersUserIdSignaturesDocumentIdData = {
-    path: {
-        document_id: string;
-        user_id: string;
-    };
-};
-
-export type DeleteCdrUsersUserIdSignaturesDocumentIdResponse = void;
-
-export type DeleteCdrUsersUserIdSignaturesDocumentIdError = unknown;
-
-export type GetCdrCurriculumsResponse = Array<CurriculumComplete>;
-
-export type GetCdrCurriculumsError = unknown;
-
-export type PostCdrCurriculumsData = {
-    body: CurriculumBase;
-};
-
-export type PostCdrCurriculumsResponse = CurriculumComplete;
-
-export type PostCdrCurriculumsError = unknown;
-
-export type DeleteCdrCurriculumsCurriculumIdData = {
-    path: {
-        curriculum_id: string;
-    };
-};
-
-export type DeleteCdrCurriculumsCurriculumIdResponse = void;
-
-export type DeleteCdrCurriculumsCurriculumIdError = unknown;
-
-export type PostCdrUsersUserIdCurriculumsCurriculumIdData = {
-    path: {
-        curriculum_id: string;
-        user_id: string;
-    };
-};
-
-export type PostCdrUsersUserIdCurriculumsCurriculumIdResponse = unknown;
-
-export type PostCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
-
-export type PatchCdrUsersUserIdCurriculumsCurriculumIdData = {
-    path: {
-        curriculum_id: string;
-        user_id: string;
-    };
-};
-
-export type PatchCdrUsersUserIdCurriculumsCurriculumIdResponse = void;
-
-export type PatchCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
-
-export type DeleteCdrUsersUserIdCurriculumsCurriculumIdData = {
-    path: {
-        curriculum_id: string;
-        user_id: string;
-    };
-};
-
-export type DeleteCdrUsersUserIdCurriculumsCurriculumIdResponse = void;
-
-export type DeleteCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
-
-export type GetCdrUsersUserIdPaymentsData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetCdrUsersUserIdPaymentsResponse = Array<PaymentComplete>;
-
-export type GetCdrUsersUserIdPaymentsError = unknown;
-
-export type PostCdrUsersUserIdPaymentsData = {
-    body: PaymentBase;
-    path: {
-        user_id: string;
-    };
-};
+export type GetRecommendationRecommendationsResponse = Array<Recommendation>;
 
-export type PostCdrUsersUserIdPaymentsResponse = PaymentComplete;
+export type GetRecommendationRecommendationsError = unknown;
 
-export type PostCdrUsersUserIdPaymentsError = unknown;
-
-export type DeleteCdrUsersUserIdPaymentsPaymentIdData = {
-    path: {
-        payment_id: string;
-        user_id: string;
-    };
-};
-
-export type DeleteCdrUsersUserIdPaymentsPaymentIdResponse = void;
-
-export type DeleteCdrUsersUserIdPaymentsPaymentIdError = unknown;
-
-export type PostCdrPayResponse = PaymentUrl;
-
-export type PostCdrPayError = unknown;
-
-export type GetCdrStatusResponse = Status;
-
-export type GetCdrStatusError = unknown;
-
-export type PatchCdrStatusData = {
-    body: Status;
-};
-
-export type PatchCdrStatusResponse = void;
-
-export type PatchCdrStatusError = unknown;
-
-export type GetCdrUsersMeTicketsResponse = Array<Ticket>;
-
-export type GetCdrUsersMeTicketsError = unknown;
-
-export type GetCdrUsersUserIdTicketsData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetCdrUsersUserIdTicketsResponse = Array<Ticket>;
-
-export type GetCdrUsersUserIdTicketsError = unknown;
-
-export type GetCdrUsersMeTicketsTicketIdSecretData = {
-    path: {
-        ticket_id: string;
-    };
-};
-
-export type GetCdrUsersMeTicketsTicketIdSecretResponse = TicketSecret;
-
-export type GetCdrUsersMeTicketsTicketIdSecretError = unknown;
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData = {
-    path: {
-        generator_id: string;
-        product_id: string;
-        secret: string;
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretResponse = Ticket;
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretError = unknown;
-
-export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData = {
-    body: TicketScan;
-    path: {
-        generator_id: string;
-        product_id: string;
-        secret: string;
-        seller_id: string;
-    };
-};
-
-export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretResponse = void;
-
-export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretError = unknown;
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagData = {
-    path: {
-        generator_id: string;
-        product_id: string;
-        seller_id: string;
-        tag: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagResponse = Array<CoreUserSimple>;
-
-export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagError = unknown;
-
-export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdData = {
-    path: {
-        generator_id: string;
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdResponse = Array<(string)>;
-
-export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdError = unknown;
-
-export type PostCdrSellersSellerIdProductsProductIdTicketsData = {
-    body: GenerateTicketBase;
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdProductsProductIdTicketsResponse = app__modules__cdr__schemas_cdr__ProductComplete;
-
-export type PostCdrSellersSellerIdProductsProductIdTicketsError = unknown;
-
-export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdData = {
-    path: {
-        product_id: string;
-        seller_id: string;
-        ticket_generator_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdResponse = void;
-
-export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdError = unknown;
-
-export type GetCdrSellersSellerIdProductsProductIdDataData = {
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsProductIdDataResponse = Array<CustomDataFieldComplete>;
-
-export type GetCdrSellersSellerIdProductsProductIdDataError = unknown;
-
-export type PostCdrSellersSellerIdProductsProductIdDataData = {
-    body: CustomDataFieldBase;
-    path: {
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdProductsProductIdDataResponse = CustomDataFieldComplete;
-
-export type PostCdrSellersSellerIdProductsProductIdDataError = unknown;
-
-export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdData = {
-    path: {
-        field_id: string;
-        product_id: string;
-        seller_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdResponse = void;
-
-export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdError = unknown;
-
-export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
-    path: {
-        field_id: string;
-        product_id: string;
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = CustomDataComplete;
-
-export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
-
-export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
-    body: CustomDataBase;
-    path: {
-        field_id: string;
-        product_id: string;
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = CustomDataComplete;
-
-export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
-
-export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
-    body: CustomDataBase;
-    path: {
-        field_id: string;
-        product_id: string;
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = void;
-
-export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
-
-export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
-    path: {
-        field_id: string;
-        product_id: string;
-        seller_id: string;
-        user_id: string;
-    };
-};
-
-export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = void;
-
-export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
-
-export type GetCinemaThemoviedbThemoviedbIdData = {
-    path: {
-        themoviedb_id: string;
-    };
-};
-
-export type GetCinemaThemoviedbThemoviedbIdResponse = TheMovieDB;
-
-export type GetCinemaThemoviedbThemoviedbIdError = unknown;
-
-export type GetCinemaSessionsResponse = Array<CineSessionComplete>;
-
-export type GetCinemaSessionsError = unknown;
-
-export type PostCinemaSessionsData = {
-    body: CineSessionBase;
-};
-
-export type PostCinemaSessionsResponse = CineSessionComplete;
-
-export type PostCinemaSessionsError = unknown;
-
-export type PatchCinemaSessionsSessionIdData = {
-    body: CineSessionUpdate;
-    path: {
-        session_id: string;
-    };
+export type PostRecommendationRecommendationsData = {
+    body: RecommendationBase;
 };
 
-export type PatchCinemaSessionsSessionIdResponse = unknown;
+export type PostRecommendationRecommendationsResponse = Recommendation;
 
-export type PatchCinemaSessionsSessionIdError = unknown;
+export type PostRecommendationRecommendationsError = unknown;
 
-export type DeleteCinemaSessionsSessionIdData = {
+export type PatchRecommendationRecommendationsRecommendationIdData = {
+    body: RecommendationEdit;
     path: {
-        session_id: string;
+        recommendation_id: string;
     };
 };
 
-export type DeleteCinemaSessionsSessionIdResponse = void;
+export type PatchRecommendationRecommendationsRecommendationIdResponse = void;
 
-export type DeleteCinemaSessionsSessionIdError = unknown;
+export type PatchRecommendationRecommendationsRecommendationIdError = unknown;
 
-export type PostCinemaSessionsSessionIdPosterData = {
+export type DeleteRecommendationRecommendationsRecommendationIdData = {
     path: {
-        session_id: string;
+        recommendation_id: string;
     };
 };
 
-export type PostCinemaSessionsSessionIdPosterResponse = app__types__standard_responses__Result;
+export type DeleteRecommendationRecommendationsRecommendationIdResponse = void;
 
-export type PostCinemaSessionsSessionIdPosterError = unknown;
+export type DeleteRecommendationRecommendationsRecommendationIdError = unknown;
 
-export type GetCinemaSessionsSessionIdPosterData = {
+export type GetRecommendationRecommendationsRecommendationIdPictureData = {
     path: {
-        session_id: string;
+        recommendation_id: string;
     };
-};
-
-export type GetCinemaSessionsSessionIdPosterResponse = unknown;
-
-export type GetCinemaSessionsSessionIdPosterError = unknown;
-
-export type GetFlappybirdScoresResponse = Array<FlappyBirdScoreInDB>;
-
-export type GetFlappybirdScoresError = unknown;
-
-export type PostFlappybirdScoresData = {
-    body: FlappyBirdScoreBase;
 };
-
-export type PostFlappybirdScoresResponse = FlappyBirdScoreBase;
-
-export type PostFlappybirdScoresError = unknown;
 
-export type GetFlappybirdScoresMeResponse = FlappyBirdScoreCompleteFeedBack;
+export type GetRecommendationRecommendationsRecommendationIdPictureResponse = (Blob | File);
 
-export type GetFlappybirdScoresMeError = unknown;
+export type GetRecommendationRecommendationsRecommendationIdPictureError = unknown;
 
-export type DeleteFlappybirdScoresTargetedUserIdData = {
+export type PostRecommendationRecommendationsRecommendationIdPictureData = {
     path: {
-        targeted_user_id: string;
+        recommendation_id: string;
     };
 };
 
-export type DeleteFlappybirdScoresTargetedUserIdResponse = void;
+export type PostRecommendationRecommendationsRecommendationIdPictureResponse = app__types__standard_responses__Result;
 
-export type DeleteFlappybirdScoresTargetedUserIdError = unknown;
+export type PostRecommendationRecommendationsRecommendationIdPictureError = unknown;
 
 export type GetLoansLoanersResponse = Array<Loaner>;
 
@@ -3771,72 +3354,437 @@ export type PostLoansLoanIdExtendResponse = void;
 
 export type PostLoansLoanIdExtendError = unknown;
 
-export type GetPhPaperIdPdfData = {
+export type GetCalendarEventsResponse = Array<EventCompleteTicketUrl>;
+
+export type GetCalendarEventsError = unknown;
+
+export type PostCalendarEventsData = {
+    body: EventBaseCreation;
+};
+
+export type PostCalendarEventsResponse = EventCompleteTicketUrl;
+
+export type PostCalendarEventsError = unknown;
+
+export type GetCalendarEventsConfirmedResponse = Array<EventCompleteTicketUrl>;
+
+export type GetCalendarEventsConfirmedError = unknown;
+
+export type GetCalendarEventsAssociationsAssociationIdData = {
     path: {
-        paper_id: string;
+        association_id: string;
     };
 };
 
-export type GetPhPaperIdPdfResponse = unknown;
+export type GetCalendarEventsAssociationsAssociationIdResponse = Array<EventCompleteTicketUrl>;
 
-export type GetPhPaperIdPdfError = unknown;
+export type GetCalendarEventsAssociationsAssociationIdError = unknown;
 
-export type PostPhPaperIdPdfData = {
+export type GetCalendarEventsEventIdData = {
     path: {
-        paper_id: string;
+        event_id: string;
     };
 };
 
-export type PostPhPaperIdPdfResponse = unknown;
+export type GetCalendarEventsEventIdResponse = EventCompleteTicketUrl;
 
-export type PostPhPaperIdPdfError = unknown;
+export type GetCalendarEventsEventIdError = unknown;
 
-export type GetPhResponse = Array<PaperComplete>;
-
-export type GetPhError = unknown;
-
-export type PostPhData = {
-    body: PaperBase;
-};
-
-export type PostPhResponse = PaperComplete;
-
-export type PostPhError = unknown;
-
-export type GetPhAdminResponse = Array<PaperComplete>;
-
-export type GetPhAdminError = unknown;
-
-export type GetPhPaperIdCoverData = {
+export type PatchCalendarEventsEventIdData = {
+    body: EventEdit;
     path: {
-        paper_id: string;
+        event_id: string;
     };
 };
 
-export type GetPhPaperIdCoverResponse = unknown;
+export type PatchCalendarEventsEventIdResponse = void;
 
-export type GetPhPaperIdCoverError = unknown;
+export type PatchCalendarEventsEventIdError = unknown;
 
-export type PatchPhPaperIdData = {
-    body: PaperUpdate;
+export type DeleteCalendarEventsEventIdData = {
     path: {
-        paper_id: string;
+        event_id: unknown;
     };
 };
 
-export type PatchPhPaperIdResponse = void;
+export type DeleteCalendarEventsEventIdResponse = void;
 
-export type PatchPhPaperIdError = unknown;
+export type DeleteCalendarEventsEventIdError = unknown;
 
-export type DeletePhPaperIdData = {
+export type GetCalendarEventsEventIdTicketUrlData = {
     path: {
-        paper_id: string;
+        event_id: string;
     };
 };
 
-export type DeletePhPaperIdResponse = void;
+export type GetCalendarEventsEventIdTicketUrlResponse = EventTicketUrl;
 
-export type DeletePhPaperIdError = unknown;
+export type GetCalendarEventsEventIdTicketUrlError = unknown;
+
+export type GetCalendarEventsEventIdImageData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type GetCalendarEventsEventIdImageResponse = (Blob | File);
+
+export type GetCalendarEventsEventIdImageError = unknown;
+
+export type PostCalendarEventsEventIdImageData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type PostCalendarEventsEventIdImageResponse = void;
+
+export type PostCalendarEventsEventIdImageError = unknown;
+
+export type PatchCalendarEventsEventIdReplyDecisionData = {
+    path: {
+        decision: app__modules__booking__types_booking__Decision;
+        event_id: string;
+    };
+};
+
+export type PatchCalendarEventsEventIdReplyDecisionResponse = void;
+
+export type PatchCalendarEventsEventIdReplyDecisionError = unknown;
+
+export type GetCalendarIcalUrlResponse = IcalSecret;
+
+export type GetCalendarIcalUrlError = unknown;
+
+export type PostCalendarIcalCreateResponse = void;
+
+export type PostCalendarIcalCreateError = unknown;
+
+export type GetCalendarIcalData = {
+    query: {
+        secret: string;
+    };
+};
+
+export type GetCalendarIcalResponse = (Blob | File);
+
+export type GetCalendarIcalError = unknown;
+
+export type GetCinemaThemoviedbThemoviedbIdData = {
+    path: {
+        themoviedb_id: string;
+    };
+};
+
+export type GetCinemaThemoviedbThemoviedbIdResponse = TheMovieDB;
+
+export type GetCinemaThemoviedbThemoviedbIdError = unknown;
+
+export type GetCinemaSessionsResponse = Array<CineSessionComplete>;
+
+export type GetCinemaSessionsError = unknown;
+
+export type PostCinemaSessionsData = {
+    body: CineSessionBase;
+};
+
+export type PostCinemaSessionsResponse = CineSessionComplete;
+
+export type PostCinemaSessionsError = unknown;
+
+export type PatchCinemaSessionsSessionIdData = {
+    body: CineSessionUpdate;
+    path: {
+        session_id: string;
+    };
+};
+
+export type PatchCinemaSessionsSessionIdResponse = unknown;
+
+export type PatchCinemaSessionsSessionIdError = unknown;
+
+export type DeleteCinemaSessionsSessionIdData = {
+    path: {
+        session_id: string;
+    };
+};
+
+export type DeleteCinemaSessionsSessionIdResponse = void;
+
+export type DeleteCinemaSessionsSessionIdError = unknown;
+
+export type PostCinemaSessionsSessionIdPosterData = {
+    path: {
+        session_id: string;
+    };
+};
+
+export type PostCinemaSessionsSessionIdPosterResponse = app__types__standard_responses__Result;
+
+export type PostCinemaSessionsSessionIdPosterError = unknown;
+
+export type GetCinemaSessionsSessionIdPosterData = {
+    path: {
+        session_id: string;
+    };
+};
+
+export type GetCinemaSessionsSessionIdPosterResponse = (Blob | File);
+
+export type GetCinemaSessionsSessionIdPosterError = unknown;
+
+export type GetBookingManagersResponse = Array<Manager>;
+
+export type GetBookingManagersError = unknown;
+
+export type PostBookingManagersData = {
+    body: ManagerBase;
+};
+
+export type PostBookingManagersResponse = Manager;
+
+export type PostBookingManagersError = unknown;
+
+export type PatchBookingManagersManagerIdData = {
+    body: ManagerUpdate;
+    path: {
+        manager_id: string;
+    };
+};
+
+export type PatchBookingManagersManagerIdResponse = void;
+
+export type PatchBookingManagersManagerIdError = unknown;
+
+export type DeleteBookingManagersManagerIdData = {
+    path: {
+        manager_id: string;
+    };
+};
+
+export type DeleteBookingManagersManagerIdResponse = void;
+
+export type DeleteBookingManagersManagerIdError = unknown;
+
+export type GetBookingManagersUsersMeResponse = Array<Manager>;
+
+export type GetBookingManagersUsersMeError = unknown;
+
+export type GetBookingBookingsUsersMeManageResponse = Array<BookingReturnApplicant>;
+
+export type GetBookingBookingsUsersMeManageError = unknown;
+
+export type GetBookingBookingsConfirmedUsersMeManageResponse = Array<BookingReturnApplicant>;
+
+export type GetBookingBookingsConfirmedUsersMeManageError = unknown;
+
+export type GetBookingBookingsConfirmedResponse = Array<BookingReturnSimpleApplicant>;
+
+export type GetBookingBookingsConfirmedError = unknown;
+
+export type GetBookingBookingsUsersMeResponse = Array<BookingReturn>;
+
+export type GetBookingBookingsUsersMeError = unknown;
+
+export type PostBookingBookingsData = {
+    body: BookingBase;
+};
+
+export type PostBookingBookingsResponse = BookingReturn;
+
+export type PostBookingBookingsError = unknown;
+
+export type PatchBookingBookingsBookingIdData = {
+    body: BookingEdit;
+    path: {
+        booking_id: string;
+    };
+};
+
+export type PatchBookingBookingsBookingIdResponse = void;
+
+export type PatchBookingBookingsBookingIdError = unknown;
+
+export type DeleteBookingBookingsBookingIdData = {
+    path: {
+        booking_id: string;
+    };
+};
+
+export type DeleteBookingBookingsBookingIdResponse = void;
+
+export type DeleteBookingBookingsBookingIdError = unknown;
+
+export type PatchBookingBookingsBookingIdReplyDecisionData = {
+    path: {
+        booking_id: string;
+        decision: app__modules__booking__types_booking__Decision;
+    };
+};
+
+export type PatchBookingBookingsBookingIdReplyDecisionResponse = void;
+
+export type PatchBookingBookingsBookingIdReplyDecisionError = unknown;
+
+export type GetBookingRoomsResponse = Array<RoomComplete>;
+
+export type GetBookingRoomsError = unknown;
+
+export type PostBookingRoomsData = {
+    body: RoomBase;
+};
+
+export type PostBookingRoomsResponse = RoomComplete;
+
+export type PostBookingRoomsError = unknown;
+
+export type PatchBookingRoomsRoomIdData = {
+    body: RoomBase;
+    path: {
+        room_id: string;
+    };
+};
+
+export type PatchBookingRoomsRoomIdResponse = void;
+
+export type PatchBookingRoomsRoomIdError = unknown;
+
+export type DeleteBookingRoomsRoomIdData = {
+    path: {
+        room_id: string;
+    };
+};
+
+export type DeleteBookingRoomsRoomIdResponse = void;
+
+export type DeleteBookingRoomsRoomIdError = unknown;
+
+export type GetSeedLibrarySpeciesResponse = Array<SpeciesComplete>;
+
+export type GetSeedLibrarySpeciesError = unknown;
+
+export type PostSeedLibrarySpeciesData = {
+    body: SpeciesBase;
+};
+
+export type PostSeedLibrarySpeciesResponse = SpeciesComplete;
+
+export type PostSeedLibrarySpeciesError = unknown;
+
+export type GetSeedLibrarySpeciesTypesResponse = SpeciesTypesReturn;
+
+export type GetSeedLibrarySpeciesTypesError = unknown;
+
+export type PatchSeedLibrarySpeciesSpeciesIdData = {
+    body: SpeciesEdit;
+    path: {
+        species_id: string;
+    };
+};
+
+export type PatchSeedLibrarySpeciesSpeciesIdResponse = void;
+
+export type PatchSeedLibrarySpeciesSpeciesIdError = unknown;
+
+export type DeleteSeedLibrarySpeciesSpeciesIdData = {
+    path: {
+        species_id: string;
+    };
+};
+
+export type DeleteSeedLibrarySpeciesSpeciesIdResponse = void;
+
+export type DeleteSeedLibrarySpeciesSpeciesIdError = unknown;
+
+export type GetSeedLibraryPlantsWaitingResponse = Array<PlantSimple>;
+
+export type GetSeedLibraryPlantsWaitingError = unknown;
+
+export type GetSeedLibraryPlantsUsersMeResponse = Array<PlantSimple>;
+
+export type GetSeedLibraryPlantsUsersMeError = unknown;
+
+export type GetSeedLibraryPlantsUsersUserIdData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetSeedLibraryPlantsUsersUserIdResponse = Array<PlantSimple>;
+
+export type GetSeedLibraryPlantsUsersUserIdError = unknown;
+
+export type GetSeedLibraryPlantsPlantIdData = {
+    path: {
+        plant_id: string;
+    };
+};
+
+export type GetSeedLibraryPlantsPlantIdResponse = PlantComplete;
+
+export type GetSeedLibraryPlantsPlantIdError = unknown;
+
+export type PatchSeedLibraryPlantsPlantIdData = {
+    body: PlantEdit;
+    path: {
+        plant_id: string;
+    };
+};
+
+export type PatchSeedLibraryPlantsPlantIdResponse = void;
+
+export type PatchSeedLibraryPlantsPlantIdError = unknown;
+
+export type DeleteSeedLibraryPlantsPlantIdData = {
+    path: {
+        plant_id: string;
+    };
+};
+
+export type DeleteSeedLibraryPlantsPlantIdResponse = void;
+
+export type DeleteSeedLibraryPlantsPlantIdError = unknown;
+
+export type PostSeedLibraryPlantsData = {
+    body: PlantCreation;
+};
+
+export type PostSeedLibraryPlantsResponse = PlantSimple;
+
+export type PostSeedLibraryPlantsError = unknown;
+
+export type PatchSeedLibraryPlantsPlantIdAdminData = {
+    body: PlantEdit;
+    path: {
+        plant_id: string;
+    };
+};
+
+export type PatchSeedLibraryPlantsPlantIdAdminResponse = void;
+
+export type PatchSeedLibraryPlantsPlantIdAdminError = unknown;
+
+export type PatchSeedLibraryPlantsPlantIdBorrowData = {
+    path: {
+        plant_id: string;
+    };
+};
+
+export type PatchSeedLibraryPlantsPlantIdBorrowResponse = void;
+
+export type PatchSeedLibraryPlantsPlantIdBorrowError = unknown;
+
+export type GetSeedLibraryInformationResponse = SeedLibraryInformation;
+
+export type GetSeedLibraryInformationError = unknown;
+
+export type PatchSeedLibraryInformationData = {
+    body: SeedLibraryInformation;
+};
+
+export type PatchSeedLibraryInformationResponse = void;
+
+export type PatchSeedLibraryInformationError = unknown;
 
 export type GetPhonebookAssociationsResponse = Array<AssociationComplete>;
 
@@ -4005,288 +3953,803 @@ export type GetPhonebookAssociationsAssociationIdPictureData = {
     };
 };
 
-export type GetPhonebookAssociationsAssociationIdPictureResponse = unknown;
+export type GetPhonebookAssociationsAssociationIdPictureResponse = (Blob | File);
 
 export type GetPhonebookAssociationsAssociationIdPictureError = unknown;
 
-export type GetTombolaRafflesResponse = Array<RaffleComplete>;
-
-export type GetTombolaRafflesError = unknown;
-
-export type PostTombolaRafflesData = {
-    body: RaffleBase;
-};
-
-export type PostTombolaRafflesResponse = RaffleComplete;
-
-export type PostTombolaRafflesError = unknown;
-
-export type PatchTombolaRafflesRaffleIdData = {
-    body: RaffleEdit;
-    path: {
-        raffle_id: string;
+export type GetAdvertAdvertsData = {
+    query?: {
+        advertisers?: Array<(string)>;
     };
 };
 
-export type PatchTombolaRafflesRaffleIdResponse = void;
+export type GetAdvertAdvertsResponse = Array<AdvertComplete>;
 
-export type PatchTombolaRafflesRaffleIdError = unknown;
+export type GetAdvertAdvertsError = unknown;
 
-export type DeleteTombolaRafflesRaffleIdData = {
+export type PostAdvertAdvertsData = {
+    body: AdvertBase;
+};
+
+export type PostAdvertAdvertsResponse = AdvertComplete;
+
+export type PostAdvertAdvertsError = unknown;
+
+export type GetAdvertAdvertsAdvertIdData = {
     path: {
-        raffle_id: string;
+        advert_id: string;
     };
 };
 
-export type DeleteTombolaRafflesRaffleIdResponse = void;
+export type GetAdvertAdvertsAdvertIdResponse = AdvertComplete;
 
-export type DeleteTombolaRafflesRaffleIdError = unknown;
+export type GetAdvertAdvertsAdvertIdError = unknown;
 
-export type GetTombolaGroupGroupIdRafflesData = {
+export type PatchAdvertAdvertsAdvertIdData = {
+    body: AdvertUpdate;
     path: {
-        group_id: string;
+        advert_id: string;
     };
 };
 
-export type GetTombolaGroupGroupIdRafflesResponse = Array<RaffleComplete>;
+export type PatchAdvertAdvertsAdvertIdResponse = void;
 
-export type GetTombolaGroupGroupIdRafflesError = unknown;
+export type PatchAdvertAdvertsAdvertIdError = unknown;
 
-export type GetTombolaRafflesRaffleIdStatsData = {
+export type DeleteAdvertAdvertsAdvertIdData = {
     path: {
-        raffle_id: string;
+        advert_id: string;
     };
 };
 
-export type GetTombolaRafflesRaffleIdStatsResponse = RaffleStats;
+export type DeleteAdvertAdvertsAdvertIdResponse = void;
 
-export type GetTombolaRafflesRaffleIdStatsError = unknown;
+export type DeleteAdvertAdvertsAdvertIdError = unknown;
 
-export type PostTombolaRafflesRaffleIdLogoData = {
+export type GetAdvertAdvertsAdvertIdPictureData = {
     path: {
-        raffle_id: string;
+        advert_id: string;
     };
 };
 
-export type PostTombolaRafflesRaffleIdLogoResponse = app__types__standard_responses__Result;
+export type GetAdvertAdvertsAdvertIdPictureResponse = (Blob | File);
 
-export type PostTombolaRafflesRaffleIdLogoError = unknown;
+export type GetAdvertAdvertsAdvertIdPictureError = unknown;
 
-export type GetTombolaRafflesRaffleIdLogoData = {
+export type PostAdvertAdvertsAdvertIdPictureData = {
     path: {
-        raffle_id: string;
+        advert_id: string;
     };
 };
 
-export type GetTombolaRafflesRaffleIdLogoResponse = unknown;
+export type PostAdvertAdvertsAdvertIdPictureResponse = void;
 
-export type GetTombolaRafflesRaffleIdLogoError = unknown;
+export type PostAdvertAdvertsAdvertIdPictureError = unknown;
 
-export type GetTombolaPackTicketsResponse = Array<PackTicketSimple>;
+export type GetCdrUsersResponse = Array<CdrUserPreview>;
 
-export type GetTombolaPackTicketsError = unknown;
+export type GetCdrUsersError = unknown;
 
-export type PostTombolaPackTicketsData = {
-    body: PackTicketBase;
-};
+export type GetCdrUsersPendingResponse = Array<CdrUserPreview>;
 
-export type PostTombolaPackTicketsResponse = PackTicketSimple;
+export type GetCdrUsersPendingError = unknown;
 
-export type PostTombolaPackTicketsError = unknown;
-
-export type PatchTombolaPackTicketsPackticketIdData = {
-    body: PackTicketEdit;
-    path: {
-        packticket_id: string;
-    };
-};
-
-export type PatchTombolaPackTicketsPackticketIdResponse = void;
-
-export type PatchTombolaPackTicketsPackticketIdError = unknown;
-
-export type DeleteTombolaPackTicketsPackticketIdData = {
-    path: {
-        packticket_id: string;
-    };
-};
-
-export type DeleteTombolaPackTicketsPackticketIdResponse = void;
-
-export type DeleteTombolaPackTicketsPackticketIdError = unknown;
-
-export type GetTombolaRafflesRaffleIdPackTicketsData = {
-    path: {
-        raffle_id: string;
-    };
-};
-
-export type GetTombolaRafflesRaffleIdPackTicketsResponse = Array<PackTicketSimple>;
-
-export type GetTombolaRafflesRaffleIdPackTicketsError = unknown;
-
-export type GetTombolaTicketsResponse = Array<TicketSimple>;
-
-export type GetTombolaTicketsError = unknown;
-
-export type PostTombolaTicketsBuyPackIdData = {
-    path: {
-        pack_id: string;
-    };
-};
-
-export type PostTombolaTicketsBuyPackIdResponse = Array<TicketComplete>;
-
-export type PostTombolaTicketsBuyPackIdError = unknown;
-
-export type GetTombolaUsersUserIdTicketsData = {
+export type GetCdrUsersUserIdData = {
     path: {
         user_id: string;
     };
 };
 
-export type GetTombolaUsersUserIdTicketsResponse = Array<TicketComplete>;
+export type GetCdrUsersUserIdResponse = CdrUser;
 
-export type GetTombolaUsersUserIdTicketsError = unknown;
+export type GetCdrUsersUserIdError = unknown;
 
-export type GetTombolaRafflesRaffleIdTicketsData = {
-    path: {
-        raffle_id: string;
-    };
-};
-
-export type GetTombolaRafflesRaffleIdTicketsResponse = Array<TicketComplete>;
-
-export type GetTombolaRafflesRaffleIdTicketsError = unknown;
-
-export type GetTombolaPrizesResponse = Array<PrizeSimple>;
-
-export type GetTombolaPrizesError = unknown;
-
-export type PostTombolaPrizesData = {
-    body: PrizeBase;
-};
-
-export type PostTombolaPrizesResponse = PrizeSimple;
-
-export type PostTombolaPrizesError = unknown;
-
-export type PatchTombolaPrizesPrizeIdData = {
-    body: PrizeEdit;
-    path: {
-        prize_id: string;
-    };
-};
-
-export type PatchTombolaPrizesPrizeIdResponse = void;
-
-export type PatchTombolaPrizesPrizeIdError = unknown;
-
-export type DeleteTombolaPrizesPrizeIdData = {
-    path: {
-        prize_id: string;
-    };
-};
-
-export type DeleteTombolaPrizesPrizeIdResponse = void;
-
-export type DeleteTombolaPrizesPrizeIdError = unknown;
-
-export type GetTombolaRafflesRaffleIdPrizesData = {
-    path: {
-        raffle_id: string;
-    };
-};
-
-export type GetTombolaRafflesRaffleIdPrizesResponse = Array<PrizeSimple>;
-
-export type GetTombolaRafflesRaffleIdPrizesError = unknown;
-
-export type PostTombolaPrizesPrizeIdPictureData = {
-    path: {
-        prize_id: string;
-    };
-};
-
-export type PostTombolaPrizesPrizeIdPictureResponse = app__types__standard_responses__Result;
-
-export type PostTombolaPrizesPrizeIdPictureError = unknown;
-
-export type GetTombolaPrizesPrizeIdPictureData = {
-    path: {
-        prize_id: string;
-    };
-};
-
-export type GetTombolaPrizesPrizeIdPictureResponse = unknown;
-
-export type GetTombolaPrizesPrizeIdPictureError = unknown;
-
-export type GetTombolaUsersCashResponse = Array<CashComplete>;
-
-export type GetTombolaUsersCashError = unknown;
-
-export type GetTombolaUsersUserIdCashData = {
+export type PatchCdrUsersUserIdData = {
+    body: CdrUserUpdate;
     path: {
         user_id: string;
     };
 };
 
-export type GetTombolaUsersUserIdCashResponse = CashComplete;
+export type PatchCdrUsersUserIdResponse = void;
 
-export type GetTombolaUsersUserIdCashError = unknown;
+export type PatchCdrUsersUserIdError = unknown;
 
-export type PostTombolaUsersUserIdCashData = {
-    body: CashEdit;
+export type GetCdrSellersResponse = Array<SellerComplete>;
+
+export type GetCdrSellersError = unknown;
+
+export type PostCdrSellersData = {
+    body: SellerBase;
+};
+
+export type PostCdrSellersResponse = SellerComplete;
+
+export type PostCdrSellersError = unknown;
+
+export type GetCdrUsersMeSellersResponse = Array<SellerComplete>;
+
+export type GetCdrUsersMeSellersError = unknown;
+
+export type GetCdrOnlineSellersResponse = Array<SellerComplete>;
+
+export type GetCdrOnlineSellersError = unknown;
+
+export type GetCdrSellersSellerIdResultsData = {
+    path: {
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdResultsResponse = (Blob | File);
+
+export type GetCdrSellersSellerIdResultsError = unknown;
+
+export type GetCdrOnlineProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+
+export type GetCdrOnlineProductsError = unknown;
+
+export type GetCdrProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+
+export type GetCdrProductsError = unknown;
+
+export type PatchCdrSellersSellerIdData = {
+    body: SellerEdit;
+    path: {
+        seller_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdResponse = void;
+
+export type PatchCdrSellersSellerIdError = unknown;
+
+export type DeleteCdrSellersSellerIdData = {
+    path: {
+        seller_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdResponse = void;
+
+export type DeleteCdrSellersSellerIdError = unknown;
+
+export type GetCdrSellersSellerIdProductsData = {
+    path: {
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+
+export type GetCdrSellersSellerIdProductsError = unknown;
+
+export type PostCdrSellersSellerIdProductsData = {
+    body: app__modules__cdr__schemas_cdr__ProductBase;
+    path: {
+        seller_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdProductsResponse = app__modules__cdr__schemas_cdr__ProductComplete;
+
+export type PostCdrSellersSellerIdProductsError = unknown;
+
+export type GetCdrOnlineSellersSellerIdProductsData = {
+    path: {
+        seller_id: string;
+    };
+};
+
+export type GetCdrOnlineSellersSellerIdProductsResponse = Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+
+export type GetCdrOnlineSellersSellerIdProductsError = unknown;
+
+export type PatchCdrSellersSellerIdProductsProductIdData = {
+    body: app__modules__cdr__schemas_cdr__ProductEdit;
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdProductsProductIdResponse = void;
+
+export type PatchCdrSellersSellerIdProductsProductIdError = unknown;
+
+export type DeleteCdrSellersSellerIdProductsProductIdData = {
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdProductsProductIdResponse = void;
+
+export type DeleteCdrSellersSellerIdProductsProductIdError = unknown;
+
+export type PostCdrSellersSellerIdProductsProductIdVariantsData = {
+    body: app__modules__cdr__schemas_cdr__ProductVariantBase;
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdProductsProductIdVariantsResponse = app__modules__cdr__schemas_cdr__ProductVariantComplete;
+
+export type PostCdrSellersSellerIdProductsProductIdVariantsError = unknown;
+
+export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdData = {
+    body: app__modules__cdr__schemas_cdr__ProductVariantEdit;
+    path: {
+        product_id: string;
+        seller_id: string;
+        variant_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdResponse = void;
+
+export type PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdError = unknown;
+
+export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdData = {
+    path: {
+        product_id: string;
+        seller_id: string;
+        variant_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdResponse = void;
+
+export type DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdError = unknown;
+
+export type GetCdrSellersSellerIdDocumentsData = {
+    path: {
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdDocumentsResponse = Array<DocumentComplete>;
+
+export type GetCdrSellersSellerIdDocumentsError = unknown;
+
+export type PostCdrSellersSellerIdDocumentsData = {
+    body: DocumentBase;
+    path: {
+        seller_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdDocumentsResponse = DocumentComplete;
+
+export type PostCdrSellersSellerIdDocumentsError = unknown;
+
+export type GetCdrDocumentsResponse = Array<DocumentComplete>;
+
+export type GetCdrDocumentsError = unknown;
+
+export type DeleteCdrSellersSellerIdDocumentsDocumentIdData = {
+    path: {
+        document_id: string;
+        seller_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdDocumentsDocumentIdResponse = void;
+
+export type DeleteCdrSellersSellerIdDocumentsDocumentIdError = unknown;
+
+export type GetCdrUsersUserIdPurchasesData = {
     path: {
         user_id: string;
     };
 };
 
-export type PostTombolaUsersUserIdCashResponse = CashComplete;
+export type GetCdrUsersUserIdPurchasesResponse = Array<PurchaseReturn>;
 
-export type PostTombolaUsersUserIdCashError = unknown;
+export type GetCdrUsersUserIdPurchasesError = unknown;
 
-export type PatchTombolaUsersUserIdCashData = {
-    body: CashEdit;
+export type GetCdrMePurchasesResponse = Array<PurchaseReturn>;
+
+export type GetCdrMePurchasesError = unknown;
+
+export type GetCdrMePurchasesAllResponse = Array<PurchaseReturn>;
+
+export type GetCdrMePurchasesAllError = unknown;
+
+export type GetCdrSellersSellerIdUsersUserIdPurchasesData = {
+    path: {
+        seller_id: string;
+        user_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdUsersUserIdPurchasesResponse = Array<PurchaseReturn>;
+
+export type GetCdrSellersSellerIdUsersUserIdPurchasesError = unknown;
+
+export type PostCdrUsersUserIdPurchasesProductVariantIdData = {
+    body: app__modules__cdr__schemas_cdr__PurchaseBase;
+    path: {
+        product_variant_id: string;
+        user_id: string;
+    };
+};
+
+export type PostCdrUsersUserIdPurchasesProductVariantIdResponse = app__modules__cdr__schemas_cdr__PurchaseComplete;
+
+export type PostCdrUsersUserIdPurchasesProductVariantIdError = unknown;
+
+export type DeleteCdrUsersUserIdPurchasesProductVariantIdData = {
+    path: {
+        product_variant_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCdrUsersUserIdPurchasesProductVariantIdResponse = void;
+
+export type DeleteCdrUsersUserIdPurchasesProductVariantIdError = unknown;
+
+export type PostCdrBatchPurchasesData = {
+    body: BatchPurchase;
+};
+
+export type PostCdrBatchPurchasesResponse = void;
+
+export type PostCdrBatchPurchasesError = unknown;
+
+export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedData = {
+    path: {
+        product_variant_id: string;
+        user_id: string;
+    };
+    query: {
+        validated: boolean;
+    };
+};
+
+export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedResponse = void;
+
+export type PatchCdrUsersUserIdPurchasesProductVariantIdValidatedError = unknown;
+
+export type PostCdrBatchValidationData = {
+    body: BatchValidation;
+};
+
+export type PostCdrBatchValidationResponse = void;
+
+export type PostCdrBatchValidationError = unknown;
+
+export type GetCdrUsersUserIdSignaturesData = {
     path: {
         user_id: string;
     };
 };
 
-export type PatchTombolaUsersUserIdCashResponse = void;
+export type GetCdrUsersUserIdSignaturesResponse = Array<SignatureComplete>;
 
-export type PatchTombolaUsersUserIdCashError = unknown;
+export type GetCdrUsersUserIdSignaturesError = unknown;
 
-export type PostTombolaPrizesPrizeIdDrawData = {
+export type GetCdrSellersSellerIdUsersUserIdSignaturesData = {
     path: {
-        prize_id: string;
+        seller_id: string;
+        user_id: string;
     };
 };
 
-export type PostTombolaPrizesPrizeIdDrawResponse = Array<TicketComplete>;
+export type GetCdrSellersSellerIdUsersUserIdSignaturesResponse = Array<SignatureComplete>;
 
-export type PostTombolaPrizesPrizeIdDrawError = unknown;
+export type GetCdrSellersSellerIdUsersUserIdSignaturesError = unknown;
 
-export type PatchTombolaRafflesRaffleIdOpenData = {
+export type PostCdrUsersUserIdSignaturesDocumentIdData = {
+    body: SignatureBase;
     path: {
-        raffle_id: string;
+        document_id: string;
+        user_id: string;
     };
 };
 
-export type PatchTombolaRafflesRaffleIdOpenResponse = void;
+export type PostCdrUsersUserIdSignaturesDocumentIdResponse = SignatureComplete;
 
-export type PatchTombolaRafflesRaffleIdOpenError = unknown;
+export type PostCdrUsersUserIdSignaturesDocumentIdError = unknown;
 
-export type PatchTombolaRafflesRaffleIdLockData = {
+export type DeleteCdrUsersUserIdSignaturesDocumentIdData = {
     path: {
-        raffle_id: string;
+        document_id: string;
+        user_id: string;
     };
 };
 
-export type PatchTombolaRafflesRaffleIdLockResponse = void;
+export type DeleteCdrUsersUserIdSignaturesDocumentIdResponse = void;
 
-export type PatchTombolaRafflesRaffleIdLockError = unknown;
+export type DeleteCdrUsersUserIdSignaturesDocumentIdError = unknown;
+
+export type GetCdrCurriculumsResponse = Array<CurriculumComplete>;
+
+export type GetCdrCurriculumsError = unknown;
+
+export type PostCdrCurriculumsData = {
+    body: CurriculumBase;
+};
+
+export type PostCdrCurriculumsResponse = CurriculumComplete;
+
+export type PostCdrCurriculumsError = unknown;
+
+export type DeleteCdrCurriculumsCurriculumIdData = {
+    path: {
+        curriculum_id: string;
+    };
+};
+
+export type DeleteCdrCurriculumsCurriculumIdResponse = void;
+
+export type DeleteCdrCurriculumsCurriculumIdError = unknown;
+
+export type PostCdrUsersUserIdCurriculumsCurriculumIdData = {
+    path: {
+        curriculum_id: string;
+        user_id: string;
+    };
+};
+
+export type PostCdrUsersUserIdCurriculumsCurriculumIdResponse = void;
+
+export type PostCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
+
+export type PatchCdrUsersUserIdCurriculumsCurriculumIdData = {
+    path: {
+        curriculum_id: string;
+        user_id: string;
+    };
+};
+
+export type PatchCdrUsersUserIdCurriculumsCurriculumIdResponse = void;
+
+export type PatchCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
+
+export type DeleteCdrUsersUserIdCurriculumsCurriculumIdData = {
+    path: {
+        curriculum_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCdrUsersUserIdCurriculumsCurriculumIdResponse = void;
+
+export type DeleteCdrUsersUserIdCurriculumsCurriculumIdError = unknown;
+
+export type GetCdrUsersUserIdPaymentsData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCdrUsersUserIdPaymentsResponse = Array<app__modules__cdr__schemas_cdr__PaymentComplete>;
+
+export type GetCdrUsersUserIdPaymentsError = unknown;
+
+export type PostCdrUsersUserIdPaymentsData = {
+    body: app__modules__cdr__schemas_cdr__PaymentBase;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PostCdrUsersUserIdPaymentsResponse = app__modules__cdr__schemas_cdr__PaymentComplete;
+
+export type PostCdrUsersUserIdPaymentsError = unknown;
+
+export type DeleteCdrUsersUserIdPaymentsPaymentIdData = {
+    path: {
+        payment_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCdrUsersUserIdPaymentsPaymentIdResponse = void;
+
+export type DeleteCdrUsersUserIdPaymentsPaymentIdError = unknown;
+
+export type PostCdrPayResponse = app__core__checkout__schemas_checkout__PaymentUrl;
+
+export type PostCdrPayError = unknown;
+
+export type GetCdrYearResponse = CdrYear;
+
+export type GetCdrYearError = unknown;
+
+export type PatchCdrYearData = {
+    body: CdrYear;
+};
+
+export type PatchCdrYearResponse = void;
+
+export type PatchCdrYearError = unknown;
+
+export type GetCdrStatusResponse = Status;
+
+export type GetCdrStatusError = unknown;
+
+export type PatchCdrStatusData = {
+    body: Status;
+};
+
+export type PatchCdrStatusResponse = void;
+
+export type PatchCdrStatusError = unknown;
+
+export type GetCdrUsersMeTicketsResponse = Array<app__modules__cdr__schemas_cdr__Ticket>;
+
+export type GetCdrUsersMeTicketsError = unknown;
+
+export type GetCdrUsersUserIdTicketsData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCdrUsersUserIdTicketsResponse = Array<app__modules__cdr__schemas_cdr__Ticket>;
+
+export type GetCdrUsersUserIdTicketsError = unknown;
+
+export type GetCdrUsersMeTicketsTicketIdSecretData = {
+    path: {
+        ticket_id: string;
+    };
+};
+
+export type GetCdrUsersMeTicketsTicketIdSecretResponse = TicketSecret;
+
+export type GetCdrUsersMeTicketsTicketIdSecretError = unknown;
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData = {
+    path: {
+        generator_id: string;
+        product_id: string;
+        secret: string;
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretResponse = app__modules__cdr__schemas_cdr__Ticket;
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretError = unknown;
+
+export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData = {
+    body: TicketScan;
+    path: {
+        generator_id: string;
+        product_id: string;
+        secret: string;
+        seller_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretResponse = void;
+
+export type PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretError = unknown;
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagData = {
+    path: {
+        generator_id: string;
+        product_id: string;
+        seller_id: string;
+        tag: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagResponse = Array<CoreUserSimple>;
+
+export type GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagError = unknown;
+
+export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdData = {
+    path: {
+        generator_id: string;
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdResponse = Array<(string)>;
+
+export type GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdError = unknown;
+
+export type PostCdrSellersSellerIdProductsProductIdTicketsData = {
+    body: GenerateTicketBase;
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdProductsProductIdTicketsResponse = app__modules__cdr__schemas_cdr__ProductComplete;
+
+export type PostCdrSellersSellerIdProductsProductIdTicketsError = unknown;
+
+export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdData = {
+    path: {
+        product_id: string;
+        seller_id: string;
+        ticket_generator_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdResponse = void;
+
+export type DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdError = unknown;
+
+export type GetCdrSellersSellerIdProductsProductIdDataData = {
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsProductIdDataResponse = Array<CustomDataFieldComplete>;
+
+export type GetCdrSellersSellerIdProductsProductIdDataError = unknown;
+
+export type PostCdrSellersSellerIdProductsProductIdDataData = {
+    body: CustomDataFieldBase;
+    path: {
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdProductsProductIdDataResponse = CustomDataFieldComplete;
+
+export type PostCdrSellersSellerIdProductsProductIdDataError = unknown;
+
+export type PatchCdrSellersSellerIdProductsProductIdDataFieldIdData = {
+    body: CustomDataFieldBase;
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdProductsProductIdDataFieldIdResponse = void;
+
+export type PatchCdrSellersSellerIdProductsProductIdDataFieldIdError = unknown;
+
+export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdData = {
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdResponse = void;
+
+export type DeleteCdrSellersSellerIdProductsProductIdDataFieldIdError = unknown;
+
+export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+        user_id: string;
+    };
+};
+
+export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = CustomDataComplete;
+
+export type GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
+
+export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
+    body: CustomDataBase;
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+        user_id: string;
+    };
+};
+
+export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = CustomDataComplete;
+
+export type PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
+
+export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
+    body: CustomDataBase;
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+        user_id: string;
+    };
+};
+
+export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = void;
+
+export type PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
+
+export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData = {
+    path: {
+        field_id: string;
+        product_id: string;
+        seller_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdResponse = void;
+
+export type DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdError = unknown;
+
+export type GetPhPaperIdPdfData = {
+    path: {
+        paper_id: string;
+    };
+};
+
+export type GetPhPaperIdPdfResponse = (Blob | File);
+
+export type GetPhPaperIdPdfError = unknown;
+
+export type PostPhPaperIdPdfData = {
+    path: {
+        paper_id: string;
+    };
+};
+
+export type PostPhPaperIdPdfResponse = void;
+
+export type PostPhPaperIdPdfError = unknown;
+
+export type GetPhResponse = Array<PaperComplete>;
+
+export type GetPhError = unknown;
+
+export type PostPhData = {
+    body: PaperBase;
+};
+
+export type PostPhResponse = PaperComplete;
+
+export type PostPhError = unknown;
+
+export type GetPhAdminResponse = Array<PaperComplete>;
+
+export type GetPhAdminError = unknown;
+
+export type GetPhPaperIdCoverData = {
+    path: {
+        paper_id: string;
+    };
+};
+
+export type GetPhPaperIdCoverResponse = unknown;
+
+export type GetPhPaperIdCoverError = unknown;
+
+export type PatchPhPaperIdData = {
+    body: PaperUpdate;
+    path: {
+        paper_id: string;
+    };
+};
+
+export type PatchPhPaperIdResponse = void;
+
+export type PatchPhPaperIdError = unknown;
+
+export type DeletePhPaperIdData = {
+    path: {
+        paper_id: string;
+    };
+};
+
+export type DeletePhPaperIdResponse = void;
+
+export type DeletePhPaperIdError = unknown;
 
 export type GetRaidParticipantsParticipantIdData = {
     path: {
@@ -4294,12 +4757,12 @@ export type GetRaidParticipantsParticipantIdData = {
     };
 };
 
-export type GetRaidParticipantsParticipantIdResponse = Participant;
+export type GetRaidParticipantsParticipantIdResponse = RaidParticipant;
 
 export type GetRaidParticipantsParticipantIdError = unknown;
 
 export type PatchRaidParticipantsParticipantIdData = {
-    body: ParticipantUpdate;
+    body: RaidParticipantUpdate;
     path: {
         participant_id: string;
     };
@@ -4310,22 +4773,22 @@ export type PatchRaidParticipantsParticipantIdResponse = void;
 export type PatchRaidParticipantsParticipantIdError = unknown;
 
 export type PostRaidParticipantsData = {
-    body: ParticipantBase;
+    body: RaidParticipantBase;
 };
 
-export type PostRaidParticipantsResponse = Participant;
+export type PostRaidParticipantsResponse = RaidParticipant;
 
 export type PostRaidParticipantsError = unknown;
 
-export type GetRaidTeamsResponse = Array<TeamPreview>;
+export type GetRaidTeamsResponse = Array<RaidTeamPreview>;
 
 export type GetRaidTeamsError = unknown;
 
 export type PostRaidTeamsData = {
-    body: TeamBase;
+    body: RaidTeamBase;
 };
 
-export type PostRaidTeamsResponse = Team;
+export type PostRaidTeamsResponse = RaidTeam;
 
 export type PostRaidTeamsError = unknown;
 
@@ -4333,17 +4796,13 @@ export type DeleteRaidTeamsResponse = void;
 
 export type DeleteRaidTeamsError = unknown;
 
-export type PostRaidTeamsGeneratePdfResponse = unknown;
-
-export type PostRaidTeamsGeneratePdfError = unknown;
-
 export type GetRaidParticipantsParticipantIdTeamData = {
     path: {
         participant_id: string;
     };
 };
 
-export type GetRaidParticipantsParticipantIdTeamResponse = Team;
+export type GetRaidParticipantsParticipantIdTeamResponse = RaidTeam;
 
 export type GetRaidParticipantsParticipantIdTeamError = unknown;
 
@@ -4353,12 +4812,12 @@ export type GetRaidTeamsTeamIdData = {
     };
 };
 
-export type GetRaidTeamsTeamIdResponse = Team;
+export type GetRaidTeamsTeamIdResponse = RaidTeam;
 
 export type GetRaidTeamsTeamIdError = unknown;
 
 export type PatchRaidTeamsTeamIdData = {
-    body: TeamUpdate;
+    body: RaidTeamUpdate;
     path: {
         team_id: string;
     };
@@ -4394,7 +4853,7 @@ export type GetRaidDocumentDocumentIdData = {
     };
 };
 
-export type GetRaidDocumentDocumentIdResponse = unknown;
+export type GetRaidDocumentDocumentIdResponse = (Blob | File);
 
 export type GetRaidDocumentDocumentIdError = unknown;
 
@@ -4479,7 +4938,7 @@ export type PostRaidTeamsTeamIdKickParticipantIdData = {
     };
 };
 
-export type PostRaidTeamsTeamIdKickParticipantIdResponse = Team;
+export type PostRaidTeamsTeamIdKickParticipantIdResponse = RaidTeam;
 
 export type PostRaidTeamsTeamIdKickParticipantIdError = unknown;
 
@@ -4490,7 +4949,7 @@ export type PostRaidTeamsMergeData = {
     };
 };
 
-export type PostRaidTeamsMergeResponse = Team;
+export type PostRaidTeamsMergeResponse = RaidTeam;
 
 export type PostRaidTeamsMergeError = unknown;
 
@@ -4530,189 +4989,1999 @@ export type PatchRaidPriceResponse = void;
 
 export type PatchRaidPriceError = unknown;
 
-export type GetRaidPayResponse = PaymentUrl;
+export type GetRaidPayResponse = app__core__checkout__schemas_checkout__PaymentUrl;
 
 export type GetRaidPayError = unknown;
 
-export type GetRecommendationRecommendationsResponse = Array<Recommendation>;
+export type GetRaidSecurityFilesZipResponse = (Blob | File);
 
-export type GetRecommendationRecommendationsError = unknown;
+export type GetRaidSecurityFilesZipError = unknown;
 
-export type PostRecommendationRecommendationsData = {
-    body: RecommendationBase;
+export type GetRaidTeamFilesZipResponse = (Blob | File);
+
+export type GetRaidTeamFilesZipError = unknown;
+
+export type GetCampaignSectionsResponse = Array<SectionComplete>;
+
+export type GetCampaignSectionsError = unknown;
+
+export type PostCampaignSectionsData = {
+    body: SectionBase;
 };
 
-export type PostRecommendationRecommendationsResponse = Recommendation;
+export type PostCampaignSectionsResponse = SectionComplete;
 
-export type PostRecommendationRecommendationsError = unknown;
+export type PostCampaignSectionsError = unknown;
 
-export type PatchRecommendationRecommendationsRecommendationIdData = {
-    body: RecommendationEdit;
+export type DeleteCampaignSectionsSectionIdData = {
     path: {
-        recommendation_id: string;
+        section_id: string;
     };
 };
 
-export type PatchRecommendationRecommendationsRecommendationIdResponse = void;
+export type DeleteCampaignSectionsSectionIdResponse = void;
 
-export type PatchRecommendationRecommendationsRecommendationIdError = unknown;
+export type DeleteCampaignSectionsSectionIdError = unknown;
 
-export type DeleteRecommendationRecommendationsRecommendationIdData = {
+export type GetCampaignListsResponse = Array<ListReturn>;
+
+export type GetCampaignListsError = unknown;
+
+export type PostCampaignListsData = {
+    body: ListBase;
+};
+
+export type PostCampaignListsResponse = ListReturn;
+
+export type PostCampaignListsError = unknown;
+
+export type DeleteCampaignListsListIdData = {
     path: {
-        recommendation_id: string;
+        list_id: string;
     };
 };
 
-export type DeleteRecommendationRecommendationsRecommendationIdResponse = void;
+export type DeleteCampaignListsListIdResponse = void;
 
-export type DeleteRecommendationRecommendationsRecommendationIdError = unknown;
+export type DeleteCampaignListsListIdError = unknown;
 
-export type GetRecommendationRecommendationsRecommendationIdPictureData = {
+export type PatchCampaignListsListIdData = {
+    body: ListEdit;
     path: {
-        recommendation_id: string;
+        list_id: string;
     };
 };
 
-export type GetRecommendationRecommendationsRecommendationIdPictureResponse = unknown;
+export type PatchCampaignListsListIdResponse = void;
 
-export type GetRecommendationRecommendationsRecommendationIdPictureError = unknown;
+export type PatchCampaignListsListIdError = unknown;
 
-export type PostRecommendationRecommendationsRecommendationIdPictureData = {
-    path: {
-        recommendation_id: string;
+export type DeleteCampaignListsData = {
+    query?: {
+        list_type?: ListType | null;
     };
 };
 
-export type PostRecommendationRecommendationsRecommendationIdPictureResponse = app__types__standard_responses__Result;
+export type DeleteCampaignListsResponse = void;
 
-export type PostRecommendationRecommendationsRecommendationIdPictureError = unknown;
+export type DeleteCampaignListsError = unknown;
 
-export type GetSeedLibrarySpeciesResponse = Array<SpeciesComplete>;
+export type GetCampaignVotersResponse = CorePermission;
 
-export type GetSeedLibrarySpeciesError = unknown;
+export type GetCampaignVotersError = unknown;
 
-export type PostSeedLibrarySpeciesData = {
-    body: SpeciesBase;
-};
+export type DeleteCampaignVotersResponse = void;
 
-export type PostSeedLibrarySpeciesResponse = SpeciesComplete;
+export type DeleteCampaignVotersError = unknown;
 
-export type PostSeedLibrarySpeciesError = unknown;
-
-export type GetSeedLibrarySpeciesTypesResponse = SpeciesTypesReturn;
-
-export type GetSeedLibrarySpeciesTypesError = unknown;
-
-export type PatchSeedLibrarySpeciesSpeciesIdData = {
-    body: SpeciesEdit;
+export type PostCampaignVotersGroupIdData = {
     path: {
-        species_id: string;
+        group_id: string;
     };
 };
 
-export type PatchSeedLibrarySpeciesSpeciesIdResponse = void;
+export type PostCampaignVotersGroupIdResponse = void;
 
-export type PatchSeedLibrarySpeciesSpeciesIdError = unknown;
+export type PostCampaignVotersGroupIdError = unknown;
 
-export type DeleteSeedLibrarySpeciesSpeciesIdData = {
+export type DeleteCampaignVotersGroupIdData = {
     path: {
-        species_id: string;
+        group_id: string;
     };
 };
 
-export type DeleteSeedLibrarySpeciesSpeciesIdResponse = void;
+export type DeleteCampaignVotersGroupIdResponse = void;
 
-export type DeleteSeedLibrarySpeciesSpeciesIdError = unknown;
+export type DeleteCampaignVotersGroupIdError = unknown;
 
-export type GetSeedLibraryPlantsWaitingResponse = Array<PlantSimple>;
+export type PostCampaignStatusOpenResponse = void;
 
-export type GetSeedLibraryPlantsWaitingError = unknown;
+export type PostCampaignStatusOpenError = unknown;
 
-export type GetSeedLibraryPlantsUsersMeResponse = Array<PlantSimple>;
+export type PostCampaignStatusCloseResponse = void;
 
-export type GetSeedLibraryPlantsUsersMeError = unknown;
+export type PostCampaignStatusCloseError = unknown;
 
-export type GetSeedLibraryPlantsUsersUserIdData = {
+export type PostCampaignStatusCountingResponse = void;
+
+export type PostCampaignStatusCountingError = unknown;
+
+export type PostCampaignStatusPublishedResponse = void;
+
+export type PostCampaignStatusPublishedError = unknown;
+
+export type PostCampaignStatusResetResponse = void;
+
+export type PostCampaignStatusResetError = unknown;
+
+export type GetCampaignVotesResponse = Array<(string)>;
+
+export type GetCampaignVotesError = unknown;
+
+export type PostCampaignVotesData = {
+    body: VoteBase;
+};
+
+export type PostCampaignVotesResponse = void;
+
+export type PostCampaignVotesError = unknown;
+
+export type GetCampaignResultsResponse = Array<app__modules__campaign__schemas_campaign__Result>;
+
+export type GetCampaignResultsError = unknown;
+
+export type GetCampaignStatusResponse = VoteStatus;
+
+export type GetCampaignStatusError = unknown;
+
+export type GetCampaignStatsSectionIdData = {
+    path: {
+        section_id: string;
+    };
+};
+
+export type GetCampaignStatsSectionIdResponse = VoteStats;
+
+export type GetCampaignStatsSectionIdError = unknown;
+
+export type PostCampaignListsListIdLogoData = {
+    path: {
+        list_id: string;
+    };
+};
+
+export type PostCampaignListsListIdLogoResponse = app__types__standard_responses__Result;
+
+export type PostCampaignListsListIdLogoError = unknown;
+
+export type GetCampaignListsListIdLogoData = {
+    path: {
+        list_id: string;
+    };
+};
+
+export type GetCampaignListsListIdLogoResponse = (Blob | File);
+
+export type GetCampaignListsListIdLogoError = unknown;
+
+export type GetAmapProductsResponse = Array<app__modules__amap__schemas_amap__ProductComplete>;
+
+export type GetAmapProductsError = unknown;
+
+export type PostAmapProductsData = {
+    body: ProductSimple;
+};
+
+export type PostAmapProductsResponse = app__modules__amap__schemas_amap__ProductComplete;
+
+export type PostAmapProductsError = unknown;
+
+export type GetAmapProductsProductIdData = {
+    path: {
+        product_id: string;
+    };
+};
+
+export type GetAmapProductsProductIdResponse = app__modules__amap__schemas_amap__ProductComplete;
+
+export type GetAmapProductsProductIdError = unknown;
+
+export type PatchAmapProductsProductIdData = {
+    body: app__modules__amap__schemas_amap__ProductEdit;
+    path: {
+        product_id: string;
+    };
+};
+
+export type PatchAmapProductsProductIdResponse = void;
+
+export type PatchAmapProductsProductIdError = unknown;
+
+export type DeleteAmapProductsProductIdData = {
+    path: {
+        product_id: string;
+    };
+};
+
+export type DeleteAmapProductsProductIdResponse = void;
+
+export type DeleteAmapProductsProductIdError = unknown;
+
+export type GetAmapDeliveriesResponse = Array<DeliveryReturn>;
+
+export type GetAmapDeliveriesError = unknown;
+
+export type PostAmapDeliveriesData = {
+    body: DeliveryBase;
+};
+
+export type PostAmapDeliveriesResponse = DeliveryReturn;
+
+export type PostAmapDeliveriesError = unknown;
+
+export type DeleteAmapDeliveriesDeliveryIdData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type DeleteAmapDeliveriesDeliveryIdResponse = void;
+
+export type DeleteAmapDeliveriesDeliveryIdError = unknown;
+
+export type PatchAmapDeliveriesDeliveryIdData = {
+    body: DeliveryUpdate;
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PatchAmapDeliveriesDeliveryIdResponse = void;
+
+export type PatchAmapDeliveriesDeliveryIdError = unknown;
+
+export type PostAmapDeliveriesDeliveryIdProductsData = {
+    body: DeliveryProductsUpdate;
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PostAmapDeliveriesDeliveryIdProductsResponse = void;
+
+export type PostAmapDeliveriesDeliveryIdProductsError = unknown;
+
+export type DeleteAmapDeliveriesDeliveryIdProductsData = {
+    body: DeliveryProductsUpdate;
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type DeleteAmapDeliveriesDeliveryIdProductsResponse = void;
+
+export type DeleteAmapDeliveriesDeliveryIdProductsError = unknown;
+
+export type GetAmapDeliveriesDeliveryIdOrdersData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type GetAmapDeliveriesDeliveryIdOrdersResponse = Array<OrderReturn>;
+
+export type GetAmapDeliveriesDeliveryIdOrdersError = unknown;
+
+export type GetAmapOrdersOrderIdData = {
+    path: {
+        order_id: string;
+    };
+};
+
+export type GetAmapOrdersOrderIdResponse = OrderReturn;
+
+export type GetAmapOrdersOrderIdError = unknown;
+
+export type PatchAmapOrdersOrderIdData = {
+    body: OrderEdit;
+    path: {
+        order_id: string;
+    };
+};
+
+export type PatchAmapOrdersOrderIdResponse = void;
+
+export type PatchAmapOrdersOrderIdError = unknown;
+
+export type DeleteAmapOrdersOrderIdData = {
+    path: {
+        order_id: string;
+    };
+};
+
+export type DeleteAmapOrdersOrderIdResponse = void;
+
+export type DeleteAmapOrdersOrderIdError = unknown;
+
+export type PostAmapOrdersData = {
+    body: OrderBase;
+};
+
+export type PostAmapOrdersResponse = OrderReturn;
+
+export type PostAmapOrdersError = unknown;
+
+export type PostAmapDeliveriesDeliveryIdOpenorderingData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PostAmapDeliveriesDeliveryIdOpenorderingResponse = void;
+
+export type PostAmapDeliveriesDeliveryIdOpenorderingError = unknown;
+
+export type PostAmapDeliveriesDeliveryIdLockData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PostAmapDeliveriesDeliveryIdLockResponse = void;
+
+export type PostAmapDeliveriesDeliveryIdLockError = unknown;
+
+export type PostAmapDeliveriesDeliveryIdDeliveredData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PostAmapDeliveriesDeliveryIdDeliveredResponse = void;
+
+export type PostAmapDeliveriesDeliveryIdDeliveredError = unknown;
+
+export type PostAmapDeliveriesDeliveryIdArchiveData = {
+    path: {
+        delivery_id: string;
+    };
+};
+
+export type PostAmapDeliveriesDeliveryIdArchiveResponse = void;
+
+export type PostAmapDeliveriesDeliveryIdArchiveError = unknown;
+
+export type GetAmapUsersCashResponse = Array<app__modules__amap__schemas_amap__CashComplete>;
+
+export type GetAmapUsersCashError = unknown;
+
+export type GetAmapUsersUserIdCashData = {
     path: {
         user_id: string;
     };
 };
 
-export type GetSeedLibraryPlantsUsersUserIdResponse = Array<PlantSimple>;
+export type GetAmapUsersUserIdCashResponse = app__modules__amap__schemas_amap__CashComplete;
 
-export type GetSeedLibraryPlantsUsersUserIdError = unknown;
+export type GetAmapUsersUserIdCashError = unknown;
 
-export type GetSeedLibraryPlantsPlantIdData = {
+export type PostAmapUsersUserIdCashData = {
+    body: app__modules__raffle__schemas_raffle__CashEdit;
     path: {
-        plant_id: string;
+        user_id: string;
     };
 };
 
-export type GetSeedLibraryPlantsPlantIdResponse = PlantComplete;
+export type PostAmapUsersUserIdCashResponse = app__modules__amap__schemas_amap__CashComplete;
 
-export type GetSeedLibraryPlantsPlantIdError = unknown;
+export type PostAmapUsersUserIdCashError = unknown;
 
-export type PatchSeedLibraryPlantsPlantIdData = {
-    body: PlantEdit;
+export type PatchAmapUsersUserIdCashData = {
+    body: app__modules__raffle__schemas_raffle__CashEdit;
     path: {
-        plant_id: string;
+        user_id: string;
     };
 };
 
-export type PatchSeedLibraryPlantsPlantIdResponse = void;
+export type PatchAmapUsersUserIdCashResponse = void;
 
-export type PatchSeedLibraryPlantsPlantIdError = unknown;
+export type PatchAmapUsersUserIdCashError = unknown;
 
-export type DeleteSeedLibraryPlantsPlantIdData = {
+export type GetAmapUsersUserIdOrdersData = {
     path: {
-        plant_id: string;
+        user_id: string;
     };
 };
 
-export type DeleteSeedLibraryPlantsPlantIdResponse = void;
+export type GetAmapUsersUserIdOrdersResponse = Array<OrderReturn>;
 
-export type DeleteSeedLibraryPlantsPlantIdError = unknown;
+export type GetAmapUsersUserIdOrdersError = unknown;
 
-export type PostSeedLibraryPlantsData = {
-    body: PlantCreation;
+export type GetAmapInformationResponse = Information;
+
+export type GetAmapInformationError = unknown;
+
+export type PatchAmapInformationData = {
+    body: InformationEdit;
 };
 
-export type PostSeedLibraryPlantsResponse = PlantComplete;
+export type PatchAmapInformationResponse = void;
 
-export type PostSeedLibraryPlantsError = unknown;
+export type PatchAmapInformationError = unknown;
 
-export type PatchSeedLibraryPlantsPlantIdAdminData = {
-    body: PlantEdit;
+export type GetCompetitionSportsResponse = Array<Sport>;
+
+export type GetCompetitionSportsError = unknown;
+
+export type PostCompetitionSportsData = {
+    body: SportBase;
+};
+
+export type PostCompetitionSportsResponse = Sport;
+
+export type PostCompetitionSportsError = unknown;
+
+export type PatchCompetitionSportsSportIdData = {
+    body: SportEdit;
     path: {
-        plant_id: string;
+        sport_id: string;
     };
 };
 
-export type PatchSeedLibraryPlantsPlantIdAdminResponse = void;
+export type PatchCompetitionSportsSportIdResponse = void;
 
-export type PatchSeedLibraryPlantsPlantIdAdminError = unknown;
+export type PatchCompetitionSportsSportIdError = unknown;
 
-export type PatchSeedLibraryPlantsPlantIdBorrowData = {
+export type DeleteCompetitionSportsSportIdData = {
     path: {
-        plant_id: string;
+        sport_id: string;
     };
 };
 
-export type PatchSeedLibraryPlantsPlantIdBorrowResponse = void;
+export type DeleteCompetitionSportsSportIdResponse = void;
 
-export type PatchSeedLibraryPlantsPlantIdBorrowError = unknown;
+export type DeleteCompetitionSportsSportIdError = unknown;
 
-export type GetSeedLibraryInformationResponse = SeedLibraryInformation;
+export type GetCompetitionEditionsResponse = Array<CompetitionEdition>;
 
-export type GetSeedLibraryInformationError = unknown;
+export type GetCompetitionEditionsError = unknown;
 
-export type PatchSeedLibraryInformationData = {
-    body: SeedLibraryInformation;
+export type PostCompetitionEditionsData = {
+    body: CompetitionEditionBase;
 };
 
-export type PatchSeedLibraryInformationResponse = void;
+export type PostCompetitionEditionsResponse = CompetitionEdition;
 
-export type PatchSeedLibraryInformationError = unknown;
+export type PostCompetitionEditionsError = unknown;
+
+export type GetCompetitionEditionsActiveResponse = CompetitionEdition | null;
+
+export type GetCompetitionEditionsActiveError = unknown;
+
+export type PostCompetitionEditionsEditionIdActivateData = {
+    path: {
+        edition_id: string;
+    };
+};
+
+export type PostCompetitionEditionsEditionIdActivateResponse = void;
+
+export type PostCompetitionEditionsEditionIdActivateError = unknown;
+
+export type PostCompetitionEditionsEditionIdInscriptionData = {
+    body: boolean;
+    path: {
+        edition_id: string;
+    };
+};
+
+export type PostCompetitionEditionsEditionIdInscriptionResponse = void;
+
+export type PostCompetitionEditionsEditionIdInscriptionError = unknown;
+
+export type PatchCompetitionEditionsEditionIdData = {
+    body: CompetitionEditionEdit;
+    path: {
+        edition_id: string;
+    };
+};
+
+export type PatchCompetitionEditionsEditionIdResponse = void;
+
+export type PatchCompetitionEditionsEditionIdError = unknown;
+
+export type GetCompetitionUsersResponse = Array<CompetitionUser>;
+
+export type GetCompetitionUsersError = unknown;
+
+export type PostCompetitionUsersData = {
+    body: CompetitionUserBase;
+};
+
+export type PostCompetitionUsersResponse = CompetitionUserSimple;
+
+export type PostCompetitionUsersError = unknown;
+
+export type GetCompetitionUsersSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionUsersSchoolsSchoolIdResponse = Array<CompetitionUser>;
+
+export type GetCompetitionUsersSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionUsersMeResponse = CompetitionUser;
+
+export type GetCompetitionUsersMeError = unknown;
+
+export type PatchCompetitionUsersMeData = {
+    body: CompetitionUserEdit;
+};
+
+export type PatchCompetitionUsersMeResponse = void;
+
+export type PatchCompetitionUsersMeError = unknown;
+
+export type GetCompetitionUsersUserIdData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCompetitionUsersUserIdResponse = CompetitionUser;
+
+export type GetCompetitionUsersUserIdError = unknown;
+
+export type PatchCompetitionUsersUserIdData = {
+    body: CompetitionUserEdit;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PatchCompetitionUsersUserIdResponse = void;
+
+export type PatchCompetitionUsersUserIdError = unknown;
+
+export type DeleteCompetitionUsersUserIdData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type DeleteCompetitionUsersUserIdResponse = void;
+
+export type DeleteCompetitionUsersUserIdError = unknown;
+
+export type PatchCompetitionUsersUserIdValidateData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type PatchCompetitionUsersUserIdValidateResponse = void;
+
+export type PatchCompetitionUsersUserIdValidateError = unknown;
+
+export type PatchCompetitionUsersUserIdInvalidateData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type PatchCompetitionUsersUserIdInvalidateResponse = void;
+
+export type PatchCompetitionUsersUserIdInvalidateError = unknown;
+
+export type GetCompetitionGroupsGroupData = {
+    path: {
+        group: CompetitionGroupType;
+    };
+};
+
+export type GetCompetitionGroupsGroupResponse = Array<UserGroupMembershipComplete>;
+
+export type GetCompetitionGroupsGroupError = unknown;
+
+export type GetCompetitionUsersMeGroupsResponse = Array<UserGroupMembership>;
+
+export type GetCompetitionUsersMeGroupsError = unknown;
+
+export type GetCompetitionUsersUserIdGroupsData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCompetitionUsersUserIdGroupsResponse = Array<UserGroupMembership>;
+
+export type GetCompetitionUsersUserIdGroupsError = unknown;
+
+export type PostCompetitionGroupsGroupUsersUserIdData = {
+    path: {
+        group: CompetitionGroupType;
+        user_id: string;
+    };
+};
+
+export type PostCompetitionGroupsGroupUsersUserIdResponse = UserGroupMembership;
+
+export type PostCompetitionGroupsGroupUsersUserIdError = unknown;
+
+export type DeleteCompetitionGroupsGroupUsersUserIdData = {
+    path: {
+        group: CompetitionGroupType;
+        user_id: string;
+    };
+};
+
+export type DeleteCompetitionGroupsGroupUsersUserIdResponse = void;
+
+export type DeleteCompetitionGroupsGroupUsersUserIdError = unknown;
+
+export type GetCompetitionSchoolsResponse = Array<SchoolExtension>;
+
+export type GetCompetitionSchoolsError = unknown;
+
+export type PostCompetitionSchoolsData = {
+    body: SchoolExtensionBase;
+};
+
+export type PostCompetitionSchoolsResponse = SchoolExtensionBase;
+
+export type PostCompetitionSchoolsError = unknown;
+
+export type GetCompetitionSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionSchoolsSchoolIdResponse = SchoolExtension;
+
+export type GetCompetitionSchoolsSchoolIdError = unknown;
+
+export type PatchCompetitionSchoolsSchoolIdData = {
+    body: SchoolExtensionEdit;
+    path: {
+        school_id: string;
+    };
+};
+
+export type PatchCompetitionSchoolsSchoolIdResponse = void;
+
+export type PatchCompetitionSchoolsSchoolIdError = unknown;
+
+export type DeleteCompetitionSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type DeleteCompetitionSchoolsSchoolIdResponse = void;
+
+export type DeleteCompetitionSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionSchoolsSchoolIdGeneralQuotaData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionSchoolsSchoolIdGeneralQuotaResponse = SchoolGeneralQuota;
+
+export type GetCompetitionSchoolsSchoolIdGeneralQuotaError = unknown;
+
+export type PostCompetitionSchoolsSchoolIdGeneralQuotaData = {
+    body: SchoolGeneralQuotaBase;
+    path: {
+        school_id: string;
+    };
+};
+
+export type PostCompetitionSchoolsSchoolIdGeneralQuotaResponse = SchoolGeneralQuota;
+
+export type PostCompetitionSchoolsSchoolIdGeneralQuotaError = unknown;
+
+export type PatchCompetitionSchoolsSchoolIdGeneralQuotaData = {
+    body: SchoolGeneralQuotaBase;
+    path: {
+        school_id: string;
+    };
+};
+
+export type PatchCompetitionSchoolsSchoolIdGeneralQuotaResponse = void;
+
+export type PatchCompetitionSchoolsSchoolIdGeneralQuotaError = unknown;
+
+export type GetCompetitionSportsSportIdQuotasData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionSportsSportIdQuotasResponse = Array<SchoolSportQuota>;
+
+export type GetCompetitionSportsSportIdQuotasError = unknown;
+
+export type GetCompetitionSchoolsSchoolIdSportsQuotasData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionSchoolsSchoolIdSportsQuotasResponse = Array<SchoolSportQuota>;
+
+export type GetCompetitionSchoolsSchoolIdSportsQuotasError = unknown;
+
+export type PostCompetitionSchoolsSchoolIdSportsSportIdQuotasData = {
+    body: SportQuotaInfo;
+    path: {
+        school_id: string;
+        sport_id: string;
+    };
+};
+
+export type PostCompetitionSchoolsSchoolIdSportsSportIdQuotasResponse = void;
+
+export type PostCompetitionSchoolsSchoolIdSportsSportIdQuotasError = unknown;
+
+export type PatchCompetitionSchoolsSchoolIdSportsSportIdQuotasData = {
+    body: SchoolSportQuotaEdit;
+    path: {
+        school_id: string;
+        sport_id: string;
+    };
+};
+
+export type PatchCompetitionSchoolsSchoolIdSportsSportIdQuotasResponse = void;
+
+export type PatchCompetitionSchoolsSchoolIdSportsSportIdQuotasError = unknown;
+
+export type DeleteCompetitionSchoolsSchoolIdSportsSportIdQuotasData = {
+    path: {
+        school_id: string;
+        sport_id: string;
+    };
+};
+
+export type DeleteCompetitionSchoolsSchoolIdSportsSportIdQuotasResponse = void;
+
+export type DeleteCompetitionSchoolsSchoolIdSportsSportIdQuotasError = unknown;
+
+export type GetCompetitionSchoolsSchoolIdProductQuotasData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionSchoolsSchoolIdProductQuotasResponse = Array<SchoolProductQuota>;
+
+export type GetCompetitionSchoolsSchoolIdProductQuotasError = unknown;
+
+export type PostCompetitionSchoolsSchoolIdProductQuotasData = {
+    body: SchoolProductQuotaBase;
+    path: {
+        school_id: string;
+    };
+};
+
+export type PostCompetitionSchoolsSchoolIdProductQuotasResponse = SchoolProductQuota;
+
+export type PostCompetitionSchoolsSchoolIdProductQuotasError = unknown;
+
+export type GetCompetitionProductsProductIdSchoolsQuotasData = {
+    path: {
+        product_id: string;
+    };
+};
+
+export type GetCompetitionProductsProductIdSchoolsQuotasResponse = Array<SchoolProductQuota>;
+
+export type GetCompetitionProductsProductIdSchoolsQuotasError = unknown;
+
+export type PatchCompetitionSchoolsSchoolIdProductQuotasProductIdData = {
+    body: SchoolProductQuotaEdit;
+    path: {
+        product_id: string;
+        school_id: string;
+    };
+};
+
+export type PatchCompetitionSchoolsSchoolIdProductQuotasProductIdResponse = void;
+
+export type PatchCompetitionSchoolsSchoolIdProductQuotasProductIdError = unknown;
+
+export type DeleteCompetitionSchoolsSchoolIdProductQuotasProductIdData = {
+    path: {
+        product_id: string;
+        school_id: string;
+    };
+};
+
+export type DeleteCompetitionSchoolsSchoolIdProductQuotasProductIdResponse = void;
+
+export type DeleteCompetitionSchoolsSchoolIdProductQuotasProductIdError = unknown;
+
+export type GetCompetitionTeamsResponse = Array<TeamComplete>;
+
+export type GetCompetitionTeamsError = unknown;
+
+export type PostCompetitionTeamsData = {
+    body: TeamInfo;
+};
+
+export type PostCompetitionTeamsResponse = Team;
+
+export type PostCompetitionTeamsError = unknown;
+
+export type GetCompetitionTeamsMeResponse = TeamComplete;
+
+export type GetCompetitionTeamsMeError = unknown;
+
+export type GetCompetitionTeamsSportsSportIdData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionTeamsSportsSportIdResponse = Array<TeamComplete>;
+
+export type GetCompetitionTeamsSportsSportIdError = unknown;
+
+export type GetCompetitionTeamsSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionTeamsSchoolsSchoolIdResponse = Array<TeamComplete>;
+
+export type GetCompetitionTeamsSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionTeamsSportsSportIdSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionTeamsSportsSportIdSchoolsSchoolIdResponse = Array<TeamComplete>;
+
+export type GetCompetitionTeamsSportsSportIdSchoolsSchoolIdError = unknown;
+
+export type PatchCompetitionTeamsTeamIdData = {
+    body: TeamEdit;
+    path: {
+        team_id: string;
+    };
+};
+
+export type PatchCompetitionTeamsTeamIdResponse = void;
+
+export type PatchCompetitionTeamsTeamIdError = unknown;
+
+export type DeleteCompetitionTeamsTeamIdData = {
+    path: {
+        team_id: string;
+    };
+};
+
+export type DeleteCompetitionTeamsTeamIdResponse = void;
+
+export type DeleteCompetitionTeamsTeamIdError = unknown;
+
+export type GetCompetitionParticipantsMeResponse = ParticipantComplete;
+
+export type GetCompetitionParticipantsMeError = unknown;
+
+export type GetCompetitionParticipantsSportsSportIdData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionParticipantsSportsSportIdResponse = Array<ParticipantComplete>;
+
+export type GetCompetitionParticipantsSportsSportIdError = unknown;
+
+export type GetCompetitionParticipantsSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionParticipantsSchoolsSchoolIdResponse = Array<ParticipantComplete>;
+
+export type GetCompetitionParticipantsSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionParticipantsUsersUserIdCertificateData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCompetitionParticipantsUsersUserIdCertificateResponse = (Blob | File);
+
+export type GetCompetitionParticipantsUsersUserIdCertificateError = unknown;
+
+export type PostCompetitionSportsSportIdParticipateData = {
+    body: ParticipantInfo;
+    path: {
+        sport_id: string;
+    };
+};
+
+export type PostCompetitionSportsSportIdParticipateResponse = Participant;
+
+export type PostCompetitionSportsSportIdParticipateError = unknown;
+
+export type PostCompetitionParticipantsSportsSportIdCertificateData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type PostCompetitionParticipantsSportsSportIdCertificateResponse = void;
+
+export type PostCompetitionParticipantsSportsSportIdCertificateError = unknown;
+
+export type DeleteCompetitionParticipantsSportsSportIdCertificateData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type DeleteCompetitionParticipantsSportsSportIdCertificateResponse = void;
+
+export type DeleteCompetitionParticipantsSportsSportIdCertificateError = unknown;
+
+export type PatchCompetitionParticipantsSportsSportIdUsersUserIdLicenseData = {
+    path: {
+        sport_id: string;
+        user_id: string;
+    };
+    query: {
+        is_license_valid: boolean;
+    };
+};
+
+export type PatchCompetitionParticipantsSportsSportIdUsersUserIdLicenseResponse = void;
+
+export type PatchCompetitionParticipantsSportsSportIdUsersUserIdLicenseError = unknown;
+
+export type DeleteCompetitionSportsSportIdWithdrawData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type DeleteCompetitionSportsSportIdWithdrawResponse = void;
+
+export type DeleteCompetitionSportsSportIdWithdrawError = unknown;
+
+export type DeleteCompetitionParticipantsUserIdSportsSportIdData = {
+    path: {
+        sport_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCompetitionParticipantsUserIdSportsSportIdResponse = void;
+
+export type DeleteCompetitionParticipantsUserIdSportsSportIdError = unknown;
+
+export type GetCompetitionLocationsResponse = Array<Location>;
+
+export type GetCompetitionLocationsError = unknown;
+
+export type PostCompetitionLocationsData = {
+    body: LocationBase;
+};
+
+export type PostCompetitionLocationsResponse = Location;
+
+export type PostCompetitionLocationsError = unknown;
+
+export type GetCompetitionLocationsLocationIdData = {
+    path: {
+        location_id: string;
+    };
+};
+
+export type GetCompetitionLocationsLocationIdResponse = LocationComplete;
+
+export type GetCompetitionLocationsLocationIdError = unknown;
+
+export type PatchCompetitionLocationsLocationIdData = {
+    body: LocationEdit;
+    path: {
+        location_id: string;
+    };
+};
+
+export type PatchCompetitionLocationsLocationIdResponse = void;
+
+export type PatchCompetitionLocationsLocationIdError = unknown;
+
+export type DeleteCompetitionLocationsLocationIdData = {
+    path: {
+        location_id: string;
+    };
+};
+
+export type DeleteCompetitionLocationsLocationIdResponse = void;
+
+export type DeleteCompetitionLocationsLocationIdError = unknown;
+
+export type GetCompetitionMatchesResponse = Array<MatchComplete>;
+
+export type GetCompetitionMatchesError = unknown;
+
+export type GetCompetitionMatchesSportsSportIdData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionMatchesSportsSportIdResponse = Array<MatchComplete>;
+
+export type GetCompetitionMatchesSportsSportIdError = unknown;
+
+export type PostCompetitionMatchesSportsSportIdData = {
+    body: MatchBase;
+    path: {
+        sport_id: string;
+    };
+};
+
+export type PostCompetitionMatchesSportsSportIdResponse = Match;
+
+export type PostCompetitionMatchesSportsSportIdError = unknown;
+
+export type GetCompetitionMatchesSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionMatchesSchoolsSchoolIdResponse = Array<MatchComplete>;
+
+export type GetCompetitionMatchesSchoolsSchoolIdError = unknown;
+
+export type PatchCompetitionMatchesMatchIdData = {
+    body: MatchEdit;
+    path: {
+        match_id: string;
+    };
+};
+
+export type PatchCompetitionMatchesMatchIdResponse = void;
+
+export type PatchCompetitionMatchesMatchIdError = unknown;
+
+export type DeleteCompetitionMatchesMatchIdData = {
+    path: {
+        match_id: string;
+    };
+};
+
+export type DeleteCompetitionMatchesMatchIdResponse = void;
+
+export type DeleteCompetitionMatchesMatchIdError = unknown;
+
+export type GetCompetitionPodiumsGlobalResponse = Array<SchoolResult>;
+
+export type GetCompetitionPodiumsGlobalError = unknown;
+
+export type GetCompetitionPodiumsSportsSportIdData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionPodiumsSportsSportIdResponse = Array<TeamSportResultComplete>;
+
+export type GetCompetitionPodiumsSportsSportIdError = unknown;
+
+export type PostCompetitionPodiumsSportsSportIdData = {
+    body: SportPodiumRankings;
+    path: {
+        sport_id: string;
+    };
+};
+
+export type PostCompetitionPodiumsSportsSportIdResponse = Array<TeamSportResult>;
+
+export type PostCompetitionPodiumsSportsSportIdError = unknown;
+
+export type DeleteCompetitionPodiumsSportsSportIdData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type DeleteCompetitionPodiumsSportsSportIdResponse = void;
+
+export type DeleteCompetitionPodiumsSportsSportIdError = unknown;
+
+export type GetCompetitionPodiumsPompomsResponse = Array<SchoolResult>;
+
+export type GetCompetitionPodiumsPompomsError = unknown;
+
+export type PostCompetitionPodiumsPompomsData = {
+    body: Array<SchoolResult>;
+};
+
+export type PostCompetitionPodiumsPompomsResponse = Array<SchoolResult>;
+
+export type PostCompetitionPodiumsPompomsError = unknown;
+
+export type DeleteCompetitionPodiumsPompomsResponse = void;
+
+export type DeleteCompetitionPodiumsPompomsError = unknown;
+
+export type GetCompetitionPodiumsSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionPodiumsSchoolsSchoolIdResponse = Array<TeamSportResultComplete>;
+
+export type GetCompetitionPodiumsSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionProductsResponse = Array<app__modules__sport_competition__schemas_sport_competition__ProductComplete>;
+
+export type GetCompetitionProductsError = unknown;
+
+export type PostCompetitionProductsData = {
+    body: app__modules__sport_competition__schemas_sport_competition__ProductBase;
+};
+
+export type PostCompetitionProductsResponse = app__modules__sport_competition__schemas_sport_competition__ProductComplete;
+
+export type PostCompetitionProductsError = unknown;
+
+export type PatchCompetitionProductsProductIdData = {
+    body: app__modules__sport_competition__schemas_sport_competition__ProductEdit;
+    path: {
+        product_id: string;
+    };
+};
+
+export type PatchCompetitionProductsProductIdResponse = void;
+
+export type PatchCompetitionProductsProductIdError = unknown;
+
+export type DeleteCompetitionProductsProductIdData = {
+    path: {
+        product_id: string;
+    };
+};
+
+export type DeleteCompetitionProductsProductIdResponse = void;
+
+export type DeleteCompetitionProductsProductIdError = unknown;
+
+export type GetCompetitionProductsAvailableResponse = Array<app__modules__sport_competition__schemas_sport_competition__ProductVariantComplete>;
+
+export type GetCompetitionProductsAvailableError = unknown;
+
+export type PostCompetitionProductsProductIdVariantsData = {
+    body: app__modules__sport_competition__schemas_sport_competition__ProductVariantBase;
+    path: {
+        product_id: string;
+    };
+};
+
+export type PostCompetitionProductsProductIdVariantsResponse = ProductVariant;
+
+export type PostCompetitionProductsProductIdVariantsError = unknown;
+
+export type PatchCompetitionProductsVariantsVariantIdData = {
+    body: app__modules__sport_competition__schemas_sport_competition__ProductVariantEdit;
+    path: {
+        variant_id: string;
+    };
+};
+
+export type PatchCompetitionProductsVariantsVariantIdResponse = void;
+
+export type PatchCompetitionProductsVariantsVariantIdError = unknown;
+
+export type DeleteCompetitionProductsVariantsVariantIdData = {
+    path: {
+        variant_id: string;
+    };
+};
+
+export type DeleteCompetitionProductsVariantsVariantIdResponse = void;
+
+export type DeleteCompetitionProductsVariantsVariantIdError = unknown;
+
+export type GetCompetitionPurchasesSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionPurchasesSchoolsSchoolIdResponse = {
+    [key: string]: Array<app__modules__sport_competition__schemas_sport_competition__PurchaseComplete>;
+};
+
+export type GetCompetitionPurchasesSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionPurchasesUsersUserIdData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCompetitionPurchasesUsersUserIdResponse = Array<Purchase>;
+
+export type GetCompetitionPurchasesUsersUserIdError = unknown;
+
+export type PostCompetitionPurchasesUsersUserIdData = {
+    body: app__modules__sport_competition__schemas_sport_competition__PurchaseBase;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PostCompetitionPurchasesUsersUserIdResponse = Purchase;
+
+export type PostCompetitionPurchasesUsersUserIdError = unknown;
+
+export type GetCompetitionPurchasesMeResponse = Array<Purchase>;
+
+export type GetCompetitionPurchasesMeError = unknown;
+
+export type PostCompetitionPurchasesMeData = {
+    body: app__modules__sport_competition__schemas_sport_competition__PurchaseBase;
+};
+
+export type PostCompetitionPurchasesMeResponse = Purchase;
+
+export type PostCompetitionPurchasesMeError = unknown;
+
+export type PatchCompetitionPurchasesUsersUserIdVariantsVariantIdData = {
+    body: PurchaseEdit;
+    path: {
+        user_id: string;
+        variant_id: string;
+    };
+};
+
+export type PatchCompetitionPurchasesUsersUserIdVariantsVariantIdResponse = void;
+
+export type PatchCompetitionPurchasesUsersUserIdVariantsVariantIdError = unknown;
+
+export type DeleteCompetitionPurchasesProductVariantIdData = {
+    path: {
+        product_variant_id: string;
+    };
+};
+
+export type DeleteCompetitionPurchasesProductVariantIdResponse = void;
+
+export type DeleteCompetitionPurchasesProductVariantIdError = unknown;
+
+export type DeleteCompetitionUsersUserIdPurchasesProductVariantIdData = {
+    path: {
+        product_variant_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCompetitionUsersUserIdPurchasesProductVariantIdResponse = void;
+
+export type DeleteCompetitionUsersUserIdPurchasesProductVariantIdError = unknown;
+
+export type GetCompetitionPaymentsSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionPaymentsSchoolsSchoolIdResponse = {
+    [key: string]: Array<app__modules__sport_competition__schemas_sport_competition__PaymentComplete>;
+};
+
+export type GetCompetitionPaymentsSchoolsSchoolIdError = unknown;
+
+export type GetCompetitionUsersUserIdPaymentsData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetCompetitionUsersUserIdPaymentsResponse = Array<app__modules__sport_competition__schemas_sport_competition__PaymentComplete>;
+
+export type GetCompetitionUsersUserIdPaymentsError = unknown;
+
+export type PostCompetitionUsersUserIdPaymentsData = {
+    body: app__modules__sport_competition__schemas_sport_competition__PaymentBase;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PostCompetitionUsersUserIdPaymentsResponse = app__modules__sport_competition__schemas_sport_competition__PaymentComplete;
+
+export type PostCompetitionUsersUserIdPaymentsError = unknown;
+
+export type DeleteCompetitionUsersUserIdPaymentsPaymentIdData = {
+    path: {
+        payment_id: string;
+        user_id: string;
+    };
+};
+
+export type DeleteCompetitionUsersUserIdPaymentsPaymentIdResponse = void;
+
+export type DeleteCompetitionUsersUserIdPaymentsPaymentIdError = unknown;
+
+export type PostCompetitionPayResponse = app__core__checkout__schemas_checkout__PaymentUrl;
+
+export type PostCompetitionPayError = unknown;
+
+export type GetCompetitionVolunteersShiftsResponse = Array<VolunteerShiftComplete>;
+
+export type GetCompetitionVolunteersShiftsError = unknown;
+
+export type PostCompetitionVolunteersShiftsData = {
+    body: VolunteerShiftBase;
+};
+
+export type PostCompetitionVolunteersShiftsResponse = VolunteerShift;
+
+export type PostCompetitionVolunteersShiftsError = unknown;
+
+export type PatchCompetitionVolunteersShiftsShiftIdData = {
+    body: VolunteerShiftEdit;
+    path: {
+        shift_id: string;
+    };
+};
+
+export type PatchCompetitionVolunteersShiftsShiftIdResponse = void;
+
+export type PatchCompetitionVolunteersShiftsShiftIdError = unknown;
+
+export type DeleteCompetitionVolunteersShiftsShiftIdData = {
+    path: {
+        shift_id: string;
+    };
+};
+
+export type DeleteCompetitionVolunteersShiftsShiftIdResponse = void;
+
+export type DeleteCompetitionVolunteersShiftsShiftIdError = unknown;
+
+export type GetCompetitionVolunteersMeResponse = Array<VolunteerRegistrationComplete>;
+
+export type GetCompetitionVolunteersMeError = unknown;
+
+export type PostCompetitionVolunteersShiftsShiftIdRegisterData = {
+    path: {
+        shift_id: string;
+    };
+};
+
+export type PostCompetitionVolunteersShiftsShiftIdRegisterResponse = void;
+
+export type PostCompetitionVolunteersShiftsShiftIdRegisterError = unknown;
+
+export type GetCompetitionDataExportUsersData = {
+    query?: {
+        exclude_non_validated?: boolean;
+        included_fields?: Array<ExcelExportParams>;
+    };
+};
+
+export type GetCompetitionDataExportUsersResponse = (Blob | File);
+
+export type GetCompetitionDataExportUsersError = unknown;
+
+export type GetCompetitionDataExportSchoolsSchoolIdUsersData = {
+    path: {
+        school_id: string;
+    };
+    query?: {
+        exclude_non_validated?: boolean;
+        included_fields?: Array<ExcelExportParams>;
+    };
+};
+
+export type GetCompetitionDataExportSchoolsSchoolIdUsersResponse = (Blob | File);
+
+export type GetCompetitionDataExportSchoolsSchoolIdUsersError = unknown;
+
+export type GetCompetitionDataExportParticipantsCaptainsResponse = (Blob | File);
+
+export type GetCompetitionDataExportParticipantsCaptainsError = unknown;
+
+export type GetCompetitionDataExportSchoolsSchoolIdQuotasData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetCompetitionDataExportSchoolsSchoolIdQuotasResponse = (Blob | File);
+
+export type GetCompetitionDataExportSchoolsSchoolIdQuotasError = unknown;
+
+export type GetCompetitionDataExportSportsSportIdQuotasData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionDataExportSportsSportIdQuotasResponse = (Blob | File);
+
+export type GetCompetitionDataExportSportsSportIdQuotasError = unknown;
+
+export type GetCompetitionDataExportSportsSportIdParticipantsData = {
+    path: {
+        sport_id: string;
+    };
+};
+
+export type GetCompetitionDataExportSportsSportIdParticipantsResponse = (Blob | File);
+
+export type GetCompetitionDataExportSportsSportIdParticipantsError = unknown;
+
+export type GetTombolaRafflesResponse = Array<RaffleComplete>;
+
+export type GetTombolaRafflesError = unknown;
+
+export type PostTombolaRafflesData = {
+    body: RaffleBase;
+};
+
+export type PostTombolaRafflesResponse = RaffleComplete;
+
+export type PostTombolaRafflesError = unknown;
+
+export type PatchTombolaRafflesRaffleIdData = {
+    body: RaffleEdit;
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type PatchTombolaRafflesRaffleIdResponse = void;
+
+export type PatchTombolaRafflesRaffleIdError = unknown;
+
+export type DeleteTombolaRafflesRaffleIdData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type DeleteTombolaRafflesRaffleIdResponse = void;
+
+export type DeleteTombolaRafflesRaffleIdError = unknown;
+
+export type GetTombolaGroupGroupIdRafflesData = {
+    path: {
+        group_id: string;
+    };
+};
+
+export type GetTombolaGroupGroupIdRafflesResponse = Array<RaffleComplete>;
+
+export type GetTombolaGroupGroupIdRafflesError = unknown;
+
+export type GetTombolaRafflesRaffleIdStatsData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type GetTombolaRafflesRaffleIdStatsResponse = RaffleStats;
+
+export type GetTombolaRafflesRaffleIdStatsError = unknown;
+
+export type PostTombolaRafflesRaffleIdLogoData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type PostTombolaRafflesRaffleIdLogoResponse = app__types__standard_responses__Result;
+
+export type PostTombolaRafflesRaffleIdLogoError = unknown;
+
+export type GetTombolaRafflesRaffleIdLogoData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type GetTombolaRafflesRaffleIdLogoResponse = (Blob | File);
+
+export type GetTombolaRafflesRaffleIdLogoError = unknown;
+
+export type GetTombolaPackTicketsResponse = Array<PackTicketSimple>;
+
+export type GetTombolaPackTicketsError = unknown;
+
+export type PostTombolaPackTicketsData = {
+    body: PackTicketBase;
+};
+
+export type PostTombolaPackTicketsResponse = PackTicketSimple;
+
+export type PostTombolaPackTicketsError = unknown;
+
+export type PatchTombolaPackTicketsPackticketIdData = {
+    body: PackTicketEdit;
+    path: {
+        packticket_id: string;
+    };
+};
+
+export type PatchTombolaPackTicketsPackticketIdResponse = void;
+
+export type PatchTombolaPackTicketsPackticketIdError = unknown;
+
+export type DeleteTombolaPackTicketsPackticketIdData = {
+    path: {
+        packticket_id: string;
+    };
+};
+
+export type DeleteTombolaPackTicketsPackticketIdResponse = void;
+
+export type DeleteTombolaPackTicketsPackticketIdError = unknown;
+
+export type GetTombolaRafflesRaffleIdPackTicketsData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type GetTombolaRafflesRaffleIdPackTicketsResponse = Array<PackTicketSimple>;
+
+export type GetTombolaRafflesRaffleIdPackTicketsError = unknown;
+
+export type GetTombolaTicketsResponse = Array<TicketSimple>;
+
+export type GetTombolaTicketsError = unknown;
+
+export type PostTombolaTicketsBuyPackIdData = {
+    path: {
+        pack_id: string;
+    };
+};
+
+export type PostTombolaTicketsBuyPackIdResponse = Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+
+export type PostTombolaTicketsBuyPackIdError = unknown;
+
+export type GetTombolaUsersUserIdTicketsData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetTombolaUsersUserIdTicketsResponse = Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+
+export type GetTombolaUsersUserIdTicketsError = unknown;
+
+export type GetTombolaRafflesRaffleIdTicketsData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type GetTombolaRafflesRaffleIdTicketsResponse = Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+
+export type GetTombolaRafflesRaffleIdTicketsError = unknown;
+
+export type GetTombolaPrizesResponse = Array<PrizeSimple>;
+
+export type GetTombolaPrizesError = unknown;
+
+export type PostTombolaPrizesData = {
+    body: PrizeBase;
+};
+
+export type PostTombolaPrizesResponse = PrizeSimple;
+
+export type PostTombolaPrizesError = unknown;
+
+export type PatchTombolaPrizesPrizeIdData = {
+    body: PrizeEdit;
+    path: {
+        prize_id: string;
+    };
+};
+
+export type PatchTombolaPrizesPrizeIdResponse = void;
+
+export type PatchTombolaPrizesPrizeIdError = unknown;
+
+export type DeleteTombolaPrizesPrizeIdData = {
+    path: {
+        prize_id: string;
+    };
+};
+
+export type DeleteTombolaPrizesPrizeIdResponse = void;
+
+export type DeleteTombolaPrizesPrizeIdError = unknown;
+
+export type GetTombolaRafflesRaffleIdPrizesData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type GetTombolaRafflesRaffleIdPrizesResponse = Array<PrizeSimple>;
+
+export type GetTombolaRafflesRaffleIdPrizesError = unknown;
+
+export type PostTombolaPrizesPrizeIdPictureData = {
+    path: {
+        prize_id: string;
+    };
+};
+
+export type PostTombolaPrizesPrizeIdPictureResponse = app__types__standard_responses__Result;
+
+export type PostTombolaPrizesPrizeIdPictureError = unknown;
+
+export type GetTombolaPrizesPrizeIdPictureData = {
+    path: {
+        prize_id: string;
+    };
+};
+
+export type GetTombolaPrizesPrizeIdPictureResponse = (Blob | File);
+
+export type GetTombolaPrizesPrizeIdPictureError = unknown;
+
+export type GetTombolaUsersCashResponse = Array<app__modules__raffle__schemas_raffle__CashComplete>;
+
+export type GetTombolaUsersCashError = unknown;
+
+export type GetTombolaUsersUserIdCashData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetTombolaUsersUserIdCashResponse = app__modules__raffle__schemas_raffle__CashComplete;
+
+export type GetTombolaUsersUserIdCashError = unknown;
+
+export type PostTombolaUsersUserIdCashData = {
+    body: app__modules__raffle__schemas_raffle__CashEdit;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PostTombolaUsersUserIdCashResponse = app__modules__raffle__schemas_raffle__CashComplete;
+
+export type PostTombolaUsersUserIdCashError = unknown;
+
+export type PatchTombolaUsersUserIdCashData = {
+    body: app__modules__raffle__schemas_raffle__CashEdit;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PatchTombolaUsersUserIdCashResponse = void;
+
+export type PatchTombolaUsersUserIdCashError = unknown;
+
+export type PostTombolaPrizesPrizeIdDrawData = {
+    path: {
+        prize_id: string;
+    };
+};
+
+export type PostTombolaPrizesPrizeIdDrawResponse = Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+
+export type PostTombolaPrizesPrizeIdDrawError = unknown;
+
+export type PatchTombolaRafflesRaffleIdOpenData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type PatchTombolaRafflesRaffleIdOpenResponse = void;
+
+export type PatchTombolaRafflesRaffleIdOpenError = unknown;
+
+export type PatchTombolaRafflesRaffleIdLockData = {
+    path: {
+        raffle_id: string;
+    };
+};
+
+export type PatchTombolaRafflesRaffleIdLockResponse = void;
+
+export type PatchTombolaRafflesRaffleIdLockError = unknown;
+
+export type GetFlappybirdScoresResponse = Array<FlappyBirdScoreInDB>;
+
+export type GetFlappybirdScoresError = unknown;
+
+export type PostFlappybirdScoresData = {
+    body: FlappyBirdScoreBase;
+};
+
+export type PostFlappybirdScoresResponse = FlappyBirdScoreInDB;
+
+export type PostFlappybirdScoresError = unknown;
+
+export type GetFlappybirdScoresMeResponse = FlappyBirdScoreCompleteFeedBack;
+
+export type GetFlappybirdScoresMeError = unknown;
+
+export type DeleteFlappybirdScoresTargetedUserIdData = {
+    path: {
+        targeted_user_id: string;
+    };
+};
+
+export type DeleteFlappybirdScoresTargetedUserIdResponse = void;
+
+export type DeleteFlappybirdScoresTargetedUserIdError = unknown;
+
+export type GetTicketsEventsResponse = Array<EventSimple>;
+
+export type GetTicketsEventsError = unknown;
+
+export type GetTicketsEventsEventIdData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type GetTicketsEventsEventIdResponse = EventPublic;
+
+export type GetTicketsEventsEventIdError = unknown;
+
+export type PostTicketsEventsEventIdCheckoutData = {
+    body: Checkout;
+    path: {
+        event_id: string;
+    };
+};
+
+export type PostTicketsEventsEventIdCheckoutResponse = CheckoutResponse;
+
+export type PostTicketsEventsEventIdCheckoutError = unknown;
+
+export type GetTicketsUserMeTicketsResponse = Array<app__core__tickets__schemas_tickets__TicketComplete>;
+
+export type GetTicketsUserMeTicketsError = unknown;
+
+export type PostTicketsUserMeTicketsChangeOverRequestData = {
+    body: TicketChangeOverInvitation;
+};
+
+export type PostTicketsUserMeTicketsChangeOverRequestResponse = void;
+
+export type PostTicketsUserMeTicketsChangeOverRequestError = unknown;
+
+export type GetTicketsUserMeTicketsChangeOverAcceptData = {
+    query: {
+        token: string;
+    };
+};
+
+export type GetTicketsAdminEventsEventIdData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type GetTicketsAdminEventsEventIdResponse = EventAdmin;
+
+export type GetTicketsAdminEventsEventIdError = unknown;
+
+export type PatchTicketsAdminEventsEventIdData = {
+    body: EventUpdate;
+    path: {
+        event_id: string;
+    };
+};
+
+export type PatchTicketsAdminEventsEventIdResponse = void;
+
+export type PatchTicketsAdminEventsEventIdError = unknown;
+
+export type DeleteTicketsAdminEventsEventIdData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type DeleteTicketsAdminEventsEventIdResponse = void;
+
+export type DeleteTicketsAdminEventsEventIdError = unknown;
+
+export type PostTicketsAdminEventsData = {
+    body: EventCreate;
+};
+
+export type PostTicketsAdminEventsResponse = EventAdmin;
+
+export type PostTicketsAdminEventsError = unknown;
+
+export type PostTicketsAdminEventsEventIdSessionsData = {
+    body: SessionCreate;
+    path: {
+        event_id: string;
+    };
+};
+
+export type PostTicketsAdminEventsEventIdSessionsResponse = SessionComplete;
+
+export type PostTicketsAdminEventsEventIdSessionsError = unknown;
+
+export type PatchTicketsAdminEventsEventIdSessionsSessionIdData = {
+    body: SessionUpdate;
+    path: {
+        event_id: string;
+        session_id: string;
+    };
+};
+
+export type PatchTicketsAdminEventsEventIdSessionsSessionIdResponse = void;
+
+export type PatchTicketsAdminEventsEventIdSessionsSessionIdError = unknown;
+
+export type DeleteTicketsAdminEventsEventIdSessionsSessionIdData = {
+    path: {
+        event_id: string;
+        session_id: string;
+    };
+};
+
+export type DeleteTicketsAdminEventsEventIdSessionsSessionIdResponse = void;
+
+export type DeleteTicketsAdminEventsEventIdSessionsSessionIdError = unknown;
+
+export type PostTicketsAdminEventsEventIdCategoriesData = {
+    body: CategoryCreate;
+    path: {
+        event_id: string;
+    };
+};
+
+export type PostTicketsAdminEventsEventIdCategoriesResponse = CategoryComplete;
+
+export type PostTicketsAdminEventsEventIdCategoriesError = unknown;
+
+export type PatchTicketsAdminEventsEventIdCategoriesCategoryIdData = {
+    body: CategoryUpdate;
+    path: {
+        category_id: string;
+        event_id: string;
+    };
+};
+
+export type PatchTicketsAdminEventsEventIdCategoriesCategoryIdResponse = void;
+
+export type PatchTicketsAdminEventsEventIdCategoriesCategoryIdError = unknown;
+
+export type DeleteTicketsAdminEventsEventIdCategoriesCategoryIdData = {
+    path: {
+        category_id: string;
+        event_id: string;
+    };
+};
+
+export type DeleteTicketsAdminEventsEventIdCategoriesCategoryIdResponse = void;
+
+export type DeleteTicketsAdminEventsEventIdCategoriesCategoryIdError = unknown;
+
+export type PostTicketsAdminEventsEventIdQuestionsData = {
+    body: QuestionCreate;
+    path: {
+        event_id: string;
+    };
+};
+
+export type PostTicketsAdminEventsEventIdQuestionsResponse = Question;
+
+export type PostTicketsAdminEventsEventIdQuestionsError = unknown;
+
+export type PatchTicketsAdminEventsEventIdQuestionsQuestionIdData = {
+    body: QuestionUpdate;
+    path: {
+        event_id: string;
+        question_id: string;
+    };
+};
+
+export type PatchTicketsAdminEventsEventIdQuestionsQuestionIdResponse = void;
+
+export type PatchTicketsAdminEventsEventIdQuestionsQuestionIdError = unknown;
+
+export type DeleteTicketsAdminEventsEventIdQuestionsQuestionIdData = {
+    path: {
+        event_id: string;
+        question_id: string;
+    };
+};
+
+export type DeleteTicketsAdminEventsEventIdQuestionsQuestionIdResponse = void;
+
+export type DeleteTicketsAdminEventsEventIdQuestionsQuestionIdError = unknown;
+
+export type GetTicketsAdminEventsEventIdTicketsData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type GetTicketsAdminEventsEventIdTicketsResponse = Array<app__core__tickets__schemas_tickets__Ticket>;
+
+export type GetTicketsAdminEventsEventIdTicketsError = unknown;
+
+export type GetTicketsAdminEventsEventIdTicketsCsvData = {
+    path: {
+        event_id: string;
+    };
+};
+
+export type GetTicketsAdminEventsEventIdTicketsCsvResponse = (Blob | File);
+
+export type GetTicketsAdminEventsEventIdTicketsCsvError = unknown;
+
+export type PostTicketsAdminTicketsTicketIdCheckData = {
+    path: {
+        ticket_id: string;
+    };
+};
+
+export type PostTicketsAdminTicketsTicketIdCheckResponse = app__core__tickets__schemas_tickets__Ticket;
+
+export type PostTicketsAdminTicketsTicketIdCheckError = unknown;
+
+export type PostTicketsAdminTicketsTicketIdScanData = {
+    path: {
+        ticket_id: string;
+    };
+};
+
+export type PostTicketsAdminTicketsTicketIdScanResponse = void;
+
+export type PostTicketsAdminTicketsTicketIdScanError = unknown;
+
+export type GetTicketsAdminStoreStoreIdEventsData = {
+    path: {
+        store_id: string;
+    };
+};
+
+export type GetTicketsAdminStoreStoreIdEventsResponse = Array<EventSimple>;
+
+export type GetTicketsAdminStoreStoreIdEventsError = unknown;
+
+export type GetTicketsAdminAssociationAssociationIdEventsData = {
+    path: {
+        association_id: string;
+    };
+};
+
+export type GetTicketsAdminAssociationAssociationIdEventsResponse = Array<EventSimple>;
+
+export type GetTicketsAdminAssociationAssociationIdEventsError = unknown;
 
 export type GetAssociationsResponse = Array<Association>;
 
@@ -4757,7 +7026,7 @@ export type GetAssociationsAssociationIdLogoData = {
     };
 };
 
-export type GetAssociationsAssociationIdLogoResponse = unknown;
+export type GetAssociationsAssociationIdLogoResponse = (Blob | File);
 
 export type GetAssociationsAssociationIdLogoError = unknown;
 
@@ -4812,7 +7081,9 @@ export type PostAuthIntrospectResponse = IntrospectTokenResponse;
 
 export type PostAuthIntrospectError = unknown;
 
-export type GetAuthUserinfoResponse = unknown;
+export type GetAuthUserinfoResponse = {
+    [key: string]: unknown;
+};
 
 export type GetAuthUserinfoError = unknown;
 
@@ -4828,43 +7099,39 @@ export type GetWellKnownOpenidConfigurationResponse = unknown;
 
 export type GetWellKnownOpenidConfigurationError = unknown;
 
-export type PostCheckoutHelloassoWebhookResponse = void;
-
-export type PostCheckoutHelloassoWebhookError = unknown;
-
 export type GetInformationResponse = CoreInformation;
 
 export type GetInformationError = unknown;
 
-export type GetPrivacyResponse = unknown;
+export type GetPrivacyResponse = string;
 
 export type GetPrivacyError = unknown;
 
-export type GetTermsAndConditionsResponse = unknown;
+export type GetTermsAndConditionsResponse = string;
 
 export type GetTermsAndConditionsError = unknown;
 
-export type GetMypaymentTermsOfServiceResponse = unknown;
+export type GetMypaymentTermsOfServiceResponse = string;
 
 export type GetMypaymentTermsOfServiceError = unknown;
 
-export type GetSupportResponse = unknown;
+export type GetSupportResponse = string;
 
 export type GetSupportError = unknown;
 
-export type GetSecurityTxtResponse = unknown;
+export type GetSecurityTxtResponse = string;
 
 export type GetSecurityTxtError = unknown;
 
-export type GetWellKnownSecurityTxtResponse = unknown;
+export type GetWellKnownSecurityTxtResponse = string;
 
 export type GetWellKnownSecurityTxtError = unknown;
 
-export type GetRobotsTxtResponse = unknown;
+export type GetRobotsTxtResponse = string;
 
 export type GetRobotsTxtError = unknown;
 
-export type GetAccountDeletionResponse = unknown;
+export type GetAccountDeletionResponse = string;
 
 export type GetAccountDeletionError = unknown;
 
@@ -4872,89 +7139,97 @@ export type GetVariablesResponse = CoreVariables;
 
 export type GetVariablesError = unknown;
 
-export type GetFaviconIcoResponse = unknown;
+export type GetFaviconIcoResponse = (Blob | File);
 
 export type GetFaviconIcoError = unknown;
 
-export type GetModuleVisibilityResponse = Array<ModuleVisibility>;
-
-export type GetModuleVisibilityError = unknown;
-
-export type PostModuleVisibilityData = {
-    body: ModuleVisibilityCreate;
+export type PostNotificationDevicesData = {
+    body: Body_post_notification_devices;
 };
 
-export type PostModuleVisibilityResponse = unknown;
+export type PostNotificationDevicesResponse = void;
 
-export type PostModuleVisibilityError = unknown;
+export type PostNotificationDevicesError = unknown;
 
-export type GetModuleVisibilityMeResponse = Array<(string)>;
-
-export type GetModuleVisibilityMeError = unknown;
-
-export type DeleteModuleVisibilityRootGroupsGroupIdData = {
-    path: {
-        group_id: string;
-        root: string;
+export type GetNotificationDevicesData = {
+    query?: {
+        user_id?: string | null;
     };
 };
 
-export type DeleteModuleVisibilityRootGroupsGroupIdResponse = void;
+export type GetNotificationDevicesResponse = Array<FirebaseDevice>;
 
-export type DeleteModuleVisibilityRootGroupsGroupIdError = unknown;
+export type GetNotificationDevicesError = unknown;
 
-export type DeleteModuleVisibilityRootAccountTypesAccountTypeData = {
+export type DeleteNotificationDevicesFirebaseTokenData = {
     path: {
-        account_type: AccountType;
-        root: string;
+        firebase_token: string;
     };
 };
 
-export type DeleteModuleVisibilityRootAccountTypesAccountTypeResponse = void;
+export type DeleteNotificationDevicesFirebaseTokenResponse = void;
 
-export type DeleteModuleVisibilityRootAccountTypesAccountTypeError = unknown;
+export type DeleteNotificationDevicesFirebaseTokenError = unknown;
 
-export type GetFeedNewsResponse = Array<News>;
-
-export type GetFeedNewsError = unknown;
-
-export type GetFeedNewsNewsIdImageData = {
+export type PostNotificationTopicsTopicIdSubscribeData = {
     path: {
-        news_id: string;
+        topic_id: string;
     };
 };
 
-export type GetFeedNewsNewsIdImageResponse = unknown;
+export type PostNotificationTopicsTopicIdSubscribeResponse = void;
 
-export type GetFeedNewsNewsIdImageError = unknown;
+export type PostNotificationTopicsTopicIdSubscribeError = unknown;
 
-export type GetFeedAdminNewsResponse = Array<News>;
-
-export type GetFeedAdminNewsError = unknown;
-
-export type PostFeedAdminNewsNewsIdApproveData = {
+export type PostNotificationTopicsTopicIdUnsubscribeData = {
     path: {
-        news_id: string;
+        topic_id: string;
     };
 };
 
-export type PostFeedAdminNewsNewsIdApproveResponse = void;
+export type PostNotificationTopicsTopicIdUnsubscribeResponse = void;
 
-export type PostFeedAdminNewsNewsIdApproveError = unknown;
+export type PostNotificationTopicsTopicIdUnsubscribeError = unknown;
 
-export type PostFeedAdminNewsNewsIdRejectData = {
-    path: {
-        news_id: string;
+export type GetNotificationTopicsResponse = Array<TopicUser>;
+
+export type GetNotificationTopicsError = unknown;
+
+export type PostNotificationSendData = {
+    body: GroupNotificationRequest;
+};
+
+export type PostNotificationSendResponse = void;
+
+export type PostNotificationSendError = unknown;
+
+export type PostNotificationTestSendData = {
+    query?: {
+        user_id?: string | null;
     };
 };
 
-export type PostFeedAdminNewsNewsIdRejectResponse = void;
+export type PostNotificationTestSendResponse = void;
 
-export type PostFeedAdminNewsNewsIdRejectError = unknown;
+export type PostNotificationTestSendError = unknown;
 
-export type GetGoogleApiOauth2CallbackResponse = unknown;
+export type PostNotificationTestSendFutureData = {
+    query?: {
+        user_id?: string | null;
+    };
+};
 
-export type GetGoogleApiOauth2CallbackError = unknown;
+export type PostNotificationTestSendFutureResponse = void;
+
+export type PostNotificationTestSendFutureError = unknown;
+
+export type PostNotificationTestSendTopicResponse = void;
+
+export type PostNotificationTestSendTopicError = unknown;
+
+export type PostNotificationTestSendTopicFutureResponse = void;
+
+export type PostNotificationTestSendTopicFutureError = unknown;
 
 export type GetGroupsResponse = Array<CoreGroupSimple>;
 
@@ -5047,122 +7322,47 @@ export type GetGroupsGroupIdLogoData = {
     };
 };
 
-export type GetGroupsGroupIdLogoResponse = unknown;
+export type GetGroupsGroupIdLogoResponse = (Blob | File);
 
 export type GetGroupsGroupIdLogoError = unknown;
 
-export type GetMembershipsResponse = Array<MembershipSimple>;
+export type GetPermissionsListResponse = Array<(string)>;
 
-export type GetMembershipsError = unknown;
+export type GetPermissionsListError = unknown;
 
-export type PostMembershipsData = {
-    body: app__core__memberships__schemas_memberships__MembershipBase;
+export type GetPermissionsResponse = Array<CorePermission>;
+
+export type GetPermissionsError = unknown;
+
+export type PostPermissionsData = {
+    body: CoreGroupPermission | CoreAccountTypePermission;
 };
 
-export type PostMembershipsResponse = MembershipSimple;
+export type PostPermissionsResponse = void;
 
-export type PostMembershipsError = unknown;
+export type PostPermissionsError = unknown;
 
-export type GetMembershipsAssociationMembershipIdMembersData = {
+export type DeletePermissionsData = {
+    body: CoreGroupPermission | CoreAccountTypePermission;
+};
+
+export type DeletePermissionsResponse = void;
+
+export type DeletePermissionsError = unknown;
+
+export type GetPermissionsPermissionNameData = {
     path: {
-        association_membership_id: string;
-    };
-    query?: {
-        maximalEndDate?: string;
-        maximalStartDate?: string;
-        minimalEndDate?: string;
-        minimalStartDate?: string;
+        permission_name: string;
     };
 };
 
-export type GetMembershipsAssociationMembershipIdMembersResponse = Array<UserMembershipComplete>;
+export type GetPermissionsPermissionNameResponse = CorePermission;
 
-export type GetMembershipsAssociationMembershipIdMembersError = unknown;
+export type GetPermissionsPermissionNameError = unknown;
 
-export type PatchMembershipsAssociationMembershipIdData = {
-    body: app__core__memberships__schemas_memberships__MembershipBase;
-    path: {
-        association_membership_id: string;
-    };
-};
+export type PostCheckoutHelloassoWebhookResponse = void;
 
-export type PatchMembershipsAssociationMembershipIdResponse = void;
-
-export type PatchMembershipsAssociationMembershipIdError = unknown;
-
-export type DeleteMembershipsAssociationMembershipIdData = {
-    path: {
-        association_membership_id: string;
-    };
-};
-
-export type DeleteMembershipsAssociationMembershipIdResponse = void;
-
-export type DeleteMembershipsAssociationMembershipIdError = unknown;
-
-export type GetMembershipsUsersUserIdData = {
-    path: {
-        user_id: string;
-    };
-};
-
-export type GetMembershipsUsersUserIdResponse = Array<UserMembershipComplete>;
-
-export type GetMembershipsUsersUserIdError = unknown;
-
-export type PostMembershipsUsersUserIdData = {
-    body: UserMembershipBase;
-    path: {
-        user_id: string;
-    };
-};
-
-export type PostMembershipsUsersUserIdResponse = UserMembershipComplete;
-
-export type PostMembershipsUsersUserIdError = unknown;
-
-export type GetMembershipsUsersUserIdAssociationMembershipIdData = {
-    path: {
-        association_membership_id: string;
-        user_id: string;
-    };
-};
-
-export type GetMembershipsUsersUserIdAssociationMembershipIdResponse = Array<UserMembershipComplete>;
-
-export type GetMembershipsUsersUserIdAssociationMembershipIdError = unknown;
-
-export type PostMembershipsAssociationMembershipIdAddBatchData = {
-    body: Array<MembershipUserMappingEmail>;
-    path: {
-        association_membership_id: string;
-    };
-};
-
-export type PostMembershipsAssociationMembershipIdAddBatchResponse = Array<MembershipUserMappingEmail>;
-
-export type PostMembershipsAssociationMembershipIdAddBatchError = unknown;
-
-export type PatchMembershipsUsersMembershipIdData = {
-    body: UserMembershipEdit;
-    path: {
-        membership_id: string;
-    };
-};
-
-export type PatchMembershipsUsersMembershipIdResponse = void;
-
-export type PatchMembershipsUsersMembershipIdError = unknown;
-
-export type DeleteMembershipsUsersMembershipIdData = {
-    path: {
-        membership_id: string;
-    };
-};
-
-export type DeleteMembershipsUsersMembershipIdResponse = void;
-
-export type DeleteMembershipsUsersMembershipIdError = unknown;
+export type PostCheckoutHelloassoWebhookError = unknown;
 
 export type GetMypaymentBankAccountHolderResponse = Structure;
 
@@ -5216,7 +7416,7 @@ export type PostMypaymentStructuresStructureIdInitManagerTransferData = {
     };
 };
 
-export type PostMypaymentStructuresStructureIdInitManagerTransferResponse = unknown;
+export type PostMypaymentStructuresStructureIdInitManagerTransferResponse = void;
 
 export type PostMypaymentStructuresStructureIdInitManagerTransferError = unknown;
 
@@ -5254,6 +7454,20 @@ export type GetMypaymentStoresStoreIdHistoryData = {
 export type GetMypaymentStoresStoreIdHistoryResponse = Array<History>;
 
 export type GetMypaymentStoresStoreIdHistoryError = unknown;
+
+export type GetMypaymentStoresStoreIdHistoryDataExportData = {
+    path: {
+        store_id: string;
+    };
+    query?: {
+        end_date?: string | null;
+        start_date?: string | null;
+    };
+};
+
+export type GetMypaymentStoresStoreIdHistoryDataExportResponse = unknown;
+
+export type GetMypaymentStoresStoreIdHistoryDataExportError = unknown;
 
 export type GetMypaymentUsersMeStoresResponse = Array<UserStore>;
 
@@ -5401,7 +7615,7 @@ export type PostMypaymentTransferInitData = {
     body: TransferInfo;
 };
 
-export type PostMypaymentTransferInitResponse = PaymentUrl;
+export type PostMypaymentTransferInitResponse = app__core__checkout__schemas_checkout__PaymentUrl;
 
 export type PostMypaymentTransferInitError = unknown;
 
@@ -5415,7 +7629,7 @@ export type GetMypaymentTransferRedirectData = {
     };
 };
 
-export type GetMypaymentTransferRedirectResponse = PaymentUrl;
+export type GetMypaymentTransferRedirectResponse = app__core__checkout__schemas_checkout__PaymentUrl;
 
 export type GetMypaymentTransferRedirectError = unknown;
 
@@ -5437,7 +7651,7 @@ export type PostMypaymentStoresStoreIdScanData = {
     };
 };
 
-export type PostMypaymentStoresStoreIdScanResponse = unknown;
+export type PostMypaymentStoresStoreIdScanResponse = TransactionBase;
 
 export type PostMypaymentStoresStoreIdScanError = unknown;
 
@@ -5461,6 +7675,37 @@ export type PostMypaymentTransactionsTransactionIdCancelData = {
 export type PostMypaymentTransactionsTransactionIdCancelResponse = void;
 
 export type PostMypaymentTransactionsTransactionIdCancelError = unknown;
+
+export type GetMypaymentRequestsData = {
+    query?: {
+        used?: boolean | null;
+    };
+};
+
+export type GetMypaymentRequestsResponse = Array<Request>;
+
+export type GetMypaymentRequestsError = unknown;
+
+export type PostMypaymentRequestsRequestIdAcceptData = {
+    body: SignedContent;
+    path: {
+        request_id: string;
+    };
+};
+
+export type PostMypaymentRequestsRequestIdAcceptResponse = void;
+
+export type PostMypaymentRequestsRequestIdAcceptError = unknown;
+
+export type PostMypaymentRequestsRequestIdRefuseData = {
+    path: {
+        request_id: string;
+    };
+};
+
+export type PostMypaymentRequestsRequestIdRefuseResponse = void;
+
+export type PostMypaymentRequestsRequestIdRefuseError = unknown;
 
 export type GetMypaymentInvoicesData = {
     query?: {
@@ -5508,7 +7753,7 @@ export type GetMypaymentInvoicesInvoiceIdData = {
     };
 };
 
-export type GetMypaymentInvoicesInvoiceIdResponse = unknown;
+export type GetMypaymentInvoicesInvoiceIdResponse = (Blob | File);
 
 export type GetMypaymentInvoicesInvoiceIdError = unknown;
 
@@ -5547,7 +7792,7 @@ export type PatchMypaymentInvoicesInvoiceIdReceivedError = unknown;
 
 export type GetMypaymentIntegrityCheckData = {
     headers: {
-        x_data_verifier_token: string;
+        'x-data-verifier-token': string;
     };
     query?: {
         isInitialisation?: boolean;
@@ -5559,118 +7804,167 @@ export type GetMypaymentIntegrityCheckResponse = IntegrityCheckData;
 
 export type GetMypaymentIntegrityCheckError = unknown;
 
-export type GetNotificationDevicesResponse = Array<FirebaseDevice>;
+export type GetFeedNewsResponse = Array<News>;
 
-export type GetNotificationDevicesError = unknown;
+export type GetFeedNewsError = unknown;
 
-export type PostNotificationDevicesData = {
-    body: Body_register_firebase_device_notification_devices_post;
-};
-
-export type PostNotificationDevicesResponse = void;
-
-export type PostNotificationDevicesError = unknown;
-
-export type DeleteNotificationDevicesFirebaseTokenData = {
+export type GetFeedNewsNewsIdImageData = {
     path: {
-        firebase_token: string;
+        news_id: string;
     };
 };
 
-export type DeleteNotificationDevicesFirebaseTokenResponse = void;
+export type GetFeedNewsNewsIdImageResponse = (Blob | File);
 
-export type DeleteNotificationDevicesFirebaseTokenError = unknown;
+export type GetFeedNewsNewsIdImageError = unknown;
 
-export type PostNotificationTopicsTopicIdSubscribeData = {
+export type GetFeedAdminNewsResponse = Array<News>;
+
+export type GetFeedAdminNewsError = unknown;
+
+export type PostFeedAdminNewsNewsIdApproveData = {
     path: {
-        topic_id: string;
+        news_id: string;
     };
 };
 
-export type PostNotificationTopicsTopicIdSubscribeResponse = void;
+export type PostFeedAdminNewsNewsIdApproveResponse = void;
 
-export type PostNotificationTopicsTopicIdSubscribeError = unknown;
+export type PostFeedAdminNewsNewsIdApproveError = unknown;
 
-export type PostNotificationTopicsTopicIdUnsubscribeData = {
+export type PostFeedAdminNewsNewsIdRejectData = {
     path: {
-        topic_id: string;
+        news_id: string;
     };
 };
 
-export type PostNotificationTopicsTopicIdUnsubscribeResponse = void;
+export type PostFeedAdminNewsNewsIdRejectResponse = void;
 
-export type PostNotificationTopicsTopicIdUnsubscribeError = unknown;
+export type PostFeedAdminNewsNewsIdRejectError = unknown;
 
-export type GetNotificationTopicsResponse = Array<TopicUser>;
+export type GetMembershipsResponse = Array<MembershipSimple>;
 
-export type GetNotificationTopicsError = unknown;
+export type GetMembershipsError = unknown;
 
-export type PostNotificationSendData = {
-    body: GroupNotificationRequest;
+export type PostMembershipsData = {
+    body: app__core__memberships__schemas_memberships__MembershipBase;
 };
 
-export type PostNotificationSendResponse = void;
+export type PostMembershipsResponse = MembershipSimple;
 
-export type PostNotificationSendError = unknown;
+export type PostMembershipsError = unknown;
 
-export type PostNotificationTestSendResponse = unknown;
-
-export type PostNotificationTestSendError = unknown;
-
-export type PostNotificationTestSendFutureResponse = void;
-
-export type PostNotificationTestSendFutureError = unknown;
-
-export type PostNotificationTestSendTopicResponse = void;
-
-export type PostNotificationTestSendTopicError = unknown;
-
-export type PostNotificationTestSendTopicFutureResponse = void;
-
-export type PostNotificationTestSendTopicFutureError = unknown;
-
-export type GetSchoolsResponse = Array<CoreSchool>;
-
-export type GetSchoolsError = unknown;
-
-export type PostSchoolsData = {
-    body: CoreSchoolBase;
-};
-
-export type PostSchoolsResponse = CoreSchool;
-
-export type PostSchoolsError = unknown;
-
-export type GetSchoolsSchoolIdData = {
+export type GetMembershipsAssociationMembershipIdMembersData = {
     path: {
-        school_id: string;
+        association_membership_id: string;
+    };
+    query?: {
+        maximalEndDate?: string;
+        maximalStartDate?: string;
+        minimalEndDate?: string;
+        minimalStartDate?: string;
     };
 };
 
-export type GetSchoolsSchoolIdResponse = CoreSchool;
+export type GetMembershipsAssociationMembershipIdMembersResponse = Array<UserMembershipComplete>;
 
-export type GetSchoolsSchoolIdError = unknown;
+export type GetMembershipsAssociationMembershipIdMembersError = unknown;
 
-export type PatchSchoolsSchoolIdData = {
-    body: CoreSchoolUpdate;
+export type PatchMembershipsAssociationMembershipIdData = {
+    body: app__core__memberships__schemas_memberships__MembershipBase;
     path: {
-        school_id: string;
+        association_membership_id: string;
     };
 };
 
-export type PatchSchoolsSchoolIdResponse = void;
+export type PatchMembershipsAssociationMembershipIdResponse = void;
 
-export type PatchSchoolsSchoolIdError = unknown;
+export type PatchMembershipsAssociationMembershipIdError = unknown;
 
-export type DeleteSchoolsSchoolIdData = {
+export type DeleteMembershipsAssociationMembershipIdData = {
     path: {
-        school_id: string;
+        association_membership_id: string;
     };
 };
 
-export type DeleteSchoolsSchoolIdResponse = void;
+export type DeleteMembershipsAssociationMembershipIdResponse = void;
 
-export type DeleteSchoolsSchoolIdError = unknown;
+export type DeleteMembershipsAssociationMembershipIdError = unknown;
+
+export type GetMembershipsUsersUserIdData = {
+    path: {
+        user_id: string;
+    };
+};
+
+export type GetMembershipsUsersUserIdResponse = Array<UserMembershipComplete>;
+
+export type GetMembershipsUsersUserIdError = unknown;
+
+export type PostMembershipsUsersUserIdData = {
+    body: UserMembershipBase;
+    path: {
+        user_id: string;
+    };
+};
+
+export type PostMembershipsUsersUserIdResponse = UserMembershipComplete;
+
+export type PostMembershipsUsersUserIdError = unknown;
+
+export type GetMembershipsUsersUserIdAssociationMembershipIdData = {
+    path: {
+        association_membership_id: string;
+        user_id: string;
+    };
+};
+
+export type GetMembershipsUsersUserIdAssociationMembershipIdResponse = Array<UserMembershipComplete>;
+
+export type GetMembershipsUsersUserIdAssociationMembershipIdError = unknown;
+
+export type PostMembershipsAssociationMembershipIdAddBatchData = {
+    body: Array<MembershipUserMappingEmail>;
+    path: {
+        association_membership_id: string;
+    };
+};
+
+export type PostMembershipsAssociationMembershipIdAddBatchResponse = Array<MembershipUserMappingEmail>;
+
+export type PostMembershipsAssociationMembershipIdAddBatchError = unknown;
+
+export type PatchMembershipsUsersMembershipIdData = {
+    body: UserMembershipEdit;
+    path: {
+        membership_id: string;
+    };
+};
+
+export type PatchMembershipsUsersMembershipIdResponse = void;
+
+export type PatchMembershipsUsersMembershipIdError = unknown;
+
+export type DeleteMembershipsUsersMembershipIdData = {
+    path: {
+        membership_id: string;
+    };
+};
+
+export type DeleteMembershipsUsersMembershipIdResponse = void;
+
+export type DeleteMembershipsUsersMembershipIdError = unknown;
+
+export type PostMembershipsMembershipIdGroupGroupIdSynchronizeData = {
+    path: {
+        group_id: string;
+        membership_id: string;
+    };
+};
+
+export type PostMembershipsMembershipIdGroupGroupIdSynchronizeResponse = void;
+
+export type PostMembershipsMembershipIdGroupGroupIdSynchronizeError = unknown;
 
 export type GetUsersData = {
     query?: {
@@ -5748,12 +8042,12 @@ export type PostUsersActivateResponse = app__types__standard_responses__Result;
 
 export type PostUsersActivateError = unknown;
 
-export type PostUsersS3InitResponse = unknown;
+export type PostUsersS3InitResponse = void;
 
 export type PostUsersS3InitError = unknown;
 
 export type PostUsersRecoverData = {
-    body: Body_recover_user_users_recover_post;
+    body: Body_post_users_recover;
 };
 
 export type PostUsersRecoverResponse = app__types__standard_responses__Result;
@@ -5782,7 +8076,7 @@ export type GetUsersMigrateMailConfirmData = {
     };
 };
 
-export type GetUsersMigrateMailConfirmResponse = unknown;
+export type GetUsersMigrateMailConfirmResponse = string;
 
 export type GetUsersMigrateMailConfirmError = unknown;
 
@@ -5837,7 +8131,7 @@ export type PatchUsersUserIdSuperAdminResponse = void;
 
 export type PatchUsersUserIdSuperAdminError = unknown;
 
-export type GetUsersMeProfilePictureResponse = unknown;
+export type GetUsersMeProfilePictureResponse = (Blob | File);
 
 export type GetUsersMeProfilePictureError = unknown;
 
@@ -5853,32 +8147,74 @@ export type GetUsersUserIdProfilePictureData = {
     };
 };
 
-export type GetUsersUserIdProfilePictureResponse = unknown;
+export type GetUsersUserIdProfilePictureResponse = (Blob | File);
 
 export type GetUsersUserIdProfilePictureError = unknown;
 
+export type GetSchoolsResponse = Array<CoreSchool>;
+
+export type GetSchoolsError = unknown;
+
+export type PostSchoolsData = {
+    body: CoreSchoolBase;
+};
+
+export type PostSchoolsResponse = CoreSchool;
+
+export type PostSchoolsError = unknown;
+
+export type GetSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type GetSchoolsSchoolIdResponse = CoreSchool;
+
+export type GetSchoolsSchoolIdError = unknown;
+
+export type PatchSchoolsSchoolIdData = {
+    body: CoreSchoolUpdate;
+    path: {
+        school_id: string;
+    };
+};
+
+export type PatchSchoolsSchoolIdResponse = void;
+
+export type PatchSchoolsSchoolIdError = unknown;
+
+export type DeleteSchoolsSchoolIdData = {
+    path: {
+        school_id: string;
+    };
+};
+
+export type DeleteSchoolsSchoolIdResponse = void;
+
+export type DeleteSchoolsSchoolIdError = unknown;
+
+export type GetGoogleApiOauth2CallbackResponse = string;
+
+export type GetGoogleApiOauth2CallbackError = unknown;
+
 export type $OpenApiTs = {
-    '/advert/adverts': {
+    '/recommendation/recommendations': {
         get: {
-            req: GetAdvertAdvertsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<AdvertComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
+                '200': Array<Recommendation>;
             };
         };
         post: {
-            req: PostAdvertAdvertsData;
+            req: PostRecommendationRecommendationsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': AdvertComplete;
+                '201': Recommendation;
                 /**
                  * Validation Error
                  */
@@ -5886,22 +8222,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/advert/adverts/{advert_id}': {
-        get: {
-            req: GetAdvertAdvertsAdvertIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': AdvertComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
+    '/recommendation/recommendations/{recommendation_id}': {
         patch: {
-            req: PatchAdvertAdvertsAdvertIdData;
+            req: PatchRecommendationRecommendationsRecommendationIdData;
             res: {
                 /**
                  * Successful Response
@@ -5914,7 +8237,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteAdvertAdvertsAdvertIdData;
+            req: DeleteRecommendationRecommendationsRecommendationIdData;
             res: {
                 /**
                  * Successful Response
@@ -5927,14 +8250,14 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/advert/adverts/{advert_id}/picture': {
+    '/recommendation/recommendations/{recommendation_id}/picture': {
         get: {
-            req: GetAdvertAdvertsAdvertIdPictureData;
+            req: GetRecommendationRecommendationsRecommendationIdPictureData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -5942,2037 +8265,12 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: PostAdvertAdvertsAdvertIdPictureData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/products': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__amap__schemas_amap__ProductComplete>;
-            };
-        };
-        post: {
-            req: PostAmapProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': app__modules__amap__schemas_amap__ProductComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/products/{product_id}': {
-        get: {
-            req: GetAmapProductsProductIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': app__modules__amap__schemas_amap__ProductComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchAmapProductsProductIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteAmapProductsProductIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<DeliveryReturn>;
-            };
-        };
-        post: {
-            req: PostAmapDeliveriesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': DeliveryReturn;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}': {
-        delete: {
-            req: DeleteAmapDeliveriesDeliveryIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchAmapDeliveriesDeliveryIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/products': {
-        post: {
-            req: PostAmapDeliveriesDeliveryIdProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteAmapDeliveriesDeliveryIdProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/orders': {
-        get: {
-            req: GetAmapDeliveriesDeliveryIdOrdersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<OrderReturn>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/orders/{order_id}': {
-        get: {
-            req: GetAmapOrdersOrderIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': OrderReturn;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchAmapOrdersOrderIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteAmapOrdersOrderIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/orders': {
-        post: {
-            req: PostAmapOrdersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': OrderReturn;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/openordering': {
-        post: {
-            req: PostAmapDeliveriesDeliveryIdOpenorderingData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/lock': {
-        post: {
-            req: PostAmapDeliveriesDeliveryIdLockData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/delivered': {
-        post: {
-            req: PostAmapDeliveriesDeliveryIdDeliveredData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/deliveries/{delivery_id}/archive': {
-        post: {
-            req: PostAmapDeliveriesDeliveryIdArchiveData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/users/cash': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CashComplete>;
-            };
-        };
-    };
-    '/amap/users/{user_id}/cash': {
-        get: {
-            req: GetAmapUsersUserIdCashData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': CashComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostAmapUsersUserIdCashData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CashComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchAmapUsersUserIdCashData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/users/{user_id}/orders': {
-        get: {
-            req: GetAmapUsersUserIdOrdersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<OrderReturn>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/amap/information': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Information;
-            };
-        };
-        patch: {
-            req: PatchAmapInformationData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/managers': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<Manager>;
-            };
-        };
-        post: {
-            req: PostBookingManagersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': Manager;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/managers/{manager_id}': {
-        patch: {
-            req: PatchBookingManagersManagerIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteBookingManagersManagerIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/managers/users/me': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<Manager>;
-            };
-        };
-    };
-    '/booking/bookings/users/me/manage': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<BookingReturnApplicant>;
-            };
-        };
-    };
-    '/booking/bookings/confirmed/users/me/manage': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<BookingReturnApplicant>;
-            };
-        };
-    };
-    '/booking/bookings/confirmed': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<BookingReturnSimpleApplicant>;
-            };
-        };
-    };
-    '/booking/bookings/users/me': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<BookingReturn>;
-            };
-        };
-    };
-    '/booking/bookings': {
-        post: {
-            req: PostBookingBookingsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': BookingReturn;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/bookings/{booking_id}': {
-        patch: {
-            req: PatchBookingBookingsBookingIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteBookingBookingsBookingIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/bookings/{booking_id}/reply/{decision}': {
-        patch: {
-            req: PatchBookingBookingsBookingIdReplyDecisionData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/rooms': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<RoomComplete>;
-            };
-        };
-        post: {
-            req: PostBookingRoomsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': RoomComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/booking/rooms/{room_id}': {
-        patch: {
-            req: PatchBookingRoomsRoomIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteBookingRoomsRoomIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<EventComplete>;
-            };
-        };
-        post: {
-            req: PostCalendarEventsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': EventCompleteTicketUrl;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/confirmed': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<EventComplete>;
-            };
-        };
-    };
-    '/calendar/events/associations/{association_id}': {
-        get: {
-            req: GetCalendarEventsAssociationsAssociationIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<EventCompleteTicketUrl>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/{event_id}': {
-        get: {
-            req: GetCalendarEventsEventIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': EventCompleteTicketUrl;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCalendarEventsEventIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCalendarEventsEventIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/{event_id}/ticket-url': {
-        get: {
-            req: GetCalendarEventsEventIdTicketUrlData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': EventTicketUrl;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/{event_id}/image': {
-        get: {
-            req: GetCalendarEventsEventIdImageData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCalendarEventsEventIdImageData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/events/{event_id}/reply/{decision}': {
-        patch: {
-            req: PatchCalendarEventsEventIdReplyDecisionData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/calendar/ical-url': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': IcalSecret;
-            };
-        };
-    };
-    '/calendar/ical/create': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/calendar/ical': {
-        get: {
-            req: GetCalendarIcalData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/sections': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SectionComplete>;
-            };
-        };
-        post: {
-            req: PostCampaignSectionsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': SectionComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/sections/{section_id}': {
-        delete: {
-            req: DeleteCampaignSectionsSectionIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/lists': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<ListReturn>;
-            };
-        };
-        post: {
-            req: PostCampaignListsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': ListReturn;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/lists/{list_id}': {
-        delete: {
-            req: DeleteCampaignListsListIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCampaignListsListIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/lists/': {
-        delete: {
-            req: DeleteCampaignListsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/voters': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<VoterGroup>;
-            };
-        };
-        post: {
-            req: PostCampaignVotersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': VoterGroup;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/voters/{group_id}': {
-        delete: {
-            req: DeleteCampaignVotersGroupIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/status/open': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/status/close': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/status/counting': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/status/published': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/status/reset': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/campaign/votes': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<(string)>;
-            };
-        };
-        post: {
-            req: PostCampaignVotesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/results': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__campaign__schemas_campaign__Result>;
-            };
-        };
-    };
-    '/campaign/status': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': VoteStatus;
-            };
-        };
-    };
-    '/campaign/stats/{section_id}': {
-        get: {
-            req: GetCampaignStatsSectionIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': VoteStats;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/campaign/lists/{list_id}/logo': {
-        post: {
-            req: PostCampaignListsListIdLogoData;
+            req: PostRecommendationRecommendationsRecommendationIdPictureData;
             res: {
                 /**
                  * Successful Response
                  */
                 '201': app__types__standard_responses__Result;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        get: {
-            req: GetCampaignListsListIdLogoData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CdrUserPreview>;
-            };
-        };
-    };
-    '/cdr/users/pending/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CdrUserPreview>;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/': {
-        get: {
-            req: GetCdrUsersUserIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': CdrUser;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCdrUsersUserIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SellerComplete>;
-            };
-        };
-        post: {
-            req: PostCdrSellersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': SellerComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/me/sellers/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SellerComplete>;
-            };
-        };
-    };
-    '/cdr/online/sellers/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SellerComplete>;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/results/': {
-        get: {
-            req: GetCdrSellersSellerIdResultsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/online/products/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-            };
-        };
-    };
-    '/cdr/products/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/': {
-        patch: {
-            req: PatchCdrSellersSellerIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrSellersSellerIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCdrSellersSellerIdProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': app__modules__cdr__schemas_cdr__ProductComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/online/sellers/{seller_id}/products/': {
-        get: {
-            req: GetCdrOnlineSellersSellerIdProductsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/': {
-        patch: {
-            req: PatchCdrSellersSellerIdProductsProductIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrSellersSellerIdProductsProductIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/variants/': {
-        post: {
-            req: PostCdrSellersSellerIdProductsProductIdVariantsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': ProductVariantComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/': {
-        patch: {
-            req: PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/documents/': {
-        get: {
-            req: GetCdrSellersSellerIdDocumentsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<DocumentComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCdrSellersSellerIdDocumentsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': DocumentComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/documents/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<DocumentComplete>;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/documents/{document_id}/': {
-        delete: {
-            req: DeleteCdrSellersSellerIdDocumentsDocumentIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/purchases/': {
-        get: {
-            req: GetCdrUsersUserIdPurchasesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PurchaseReturn>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/me/purchases/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PurchaseReturn>;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/users/{user_id}/purchases/': {
-        get: {
-            req: GetCdrSellersSellerIdUsersUserIdPurchasesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PurchaseReturn>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/purchases/{product_variant_id}/': {
-        post: {
-            req: PostCdrUsersUserIdPurchasesProductVariantIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': PurchaseComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrUsersUserIdPurchasesProductVariantIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/purchases/{product_variant_id}/validated/': {
-        patch: {
-            req: PatchCdrUsersUserIdPurchasesProductVariantIdValidatedData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/signatures/': {
-        get: {
-            req: GetCdrUsersUserIdSignaturesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SignatureComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/users/{user_id}/signatures/': {
-        get: {
-            req: GetCdrSellersSellerIdUsersUserIdSignaturesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<SignatureComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/signatures/{document_id}/': {
-        post: {
-            req: PostCdrUsersUserIdSignaturesDocumentIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': SignatureComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrUsersUserIdSignaturesDocumentIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/curriculums/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CurriculumComplete>;
-            };
-        };
-        post: {
-            req: PostCdrCurriculumsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CurriculumComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/curriculums/{curriculum_id}/': {
-        delete: {
-            req: DeleteCdrCurriculumsCurriculumIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/curriculums/{curriculum_id}/': {
-        post: {
-            req: PostCdrUsersUserIdCurriculumsCurriculumIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCdrUsersUserIdCurriculumsCurriculumIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrUsersUserIdCurriculumsCurriculumIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/payments/': {
-        get: {
-            req: GetCdrUsersUserIdPaymentsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PaymentComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCdrUsersUserIdPaymentsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': PaymentComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/payments/{payment_id}/': {
-        delete: {
-            req: DeleteCdrUsersUserIdPaymentsPaymentIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/pay/': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': PaymentUrl;
-            };
-        };
-    };
-    '/cdr/status/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Status;
-            };
-        };
-        patch: {
-            req: PatchCdrStatusData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/me/tickets/': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<Ticket>;
-            };
-        };
-    };
-    '/cdr/users/{user_id}/tickets/': {
-        get: {
-            req: GetCdrUsersUserIdTicketsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<Ticket>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/users/me/tickets/{ticket_id}/secret/': {
-        get: {
-            req: GetCdrUsersMeTicketsTicketIdSecretData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': TicketSecret;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{generator_id}/{secret}/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Ticket;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{generator_id}/lists/{tag}/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CoreUserSimple>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/tags/{generator_id}/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<(string)>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/': {
-        post: {
-            req: PostCdrSellersSellerIdProductsProductIdTicketsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': app__modules__cdr__schemas_cdr__ProductComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{ticket_generator_id}': {
-        delete: {
-            req: DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/data/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsProductIdDataData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CustomDataFieldComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCdrSellersSellerIdProductsProductIdDataData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CustomDataFieldComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/data/{field_id}/': {
-        delete: {
-            req: DeleteCdrSellersSellerIdProductsProductIdDataFieldIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cdr/sellers/{seller_id}/products/{product_id}/users/{user_id}/data/{field_id}/': {
-        get: {
-            req: GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': CustomDataComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CustomDataComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        patch: {
-            req: PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cinema/themoviedb/{themoviedb_id}': {
-        get: {
-            req: GetCinemaThemoviedbThemoviedbIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': TheMovieDB;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cinema/sessions': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CineSessionComplete>;
-            };
-        };
-        post: {
-            req: PostCinemaSessionsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CineSessionComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cinema/sessions/{session_id}': {
-        patch: {
-            req: PatchCinemaSessionsSessionIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteCinemaSessionsSessionIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/cinema/sessions/{session_id}/poster': {
-        post: {
-            req: PostCinemaSessionsSessionIdPosterData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': app__types__standard_responses__Result;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        get: {
-            req: GetCinemaSessionsSessionIdPosterData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/flappybird/scores': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<FlappyBirdScoreInDB>;
-            };
-        };
-        post: {
-            req: PostFlappybirdScoresData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': FlappyBirdScoreBase;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/flappybird/scores/me': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': FlappyBirdScoreCompleteFeedBack;
-            };
-        };
-    };
-    '/flappybird/scores/{targeted_user_id}': {
-        delete: {
-            req: DeleteFlappybirdScoresTargetedUserIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
                 /**
                  * Validation Error
                  */
@@ -8200,27 +8498,22 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/ph/{paper_id}/pdf': {
+    '/calendar/events/': {
         get: {
-            req: GetPhPaperIdPdfData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
+                '200': Array<EventCompleteTicketUrl>;
             };
         };
         post: {
-            req: PostPhPaperIdPdfData;
+            req: PostCalendarEventsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': unknown;
+                '201': EventCompleteTicketUrl;
                 /**
                  * Validation Error
                  */
@@ -8228,22 +8521,24 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/ph/': {
+    '/calendar/events/confirmed': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PaperComplete>;
+                '200': Array<EventCompleteTicketUrl>;
             };
         };
-        post: {
-            req: PostPhData;
+    };
+    '/calendar/events/associations/{association_id}': {
+        get: {
+            req: GetCalendarEventsAssociationsAssociationIdData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': PaperComplete;
+                '200': Array<EventCompleteTicketUrl>;
                 /**
                  * Validation Error
                  */
@@ -8251,34 +8546,22 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/ph/admin': {
+    '/calendar/events/{event_id}': {
         get: {
+            req: GetCalendarEventsEventIdData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PaperComplete>;
-            };
-        };
-    };
-    '/ph/{paper_id}/cover': {
-        get: {
-            req: GetPhPaperIdCoverData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
+                '200': EventCompleteTicketUrl;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
             };
         };
-    };
-    '/ph/{paper_id}': {
         patch: {
-            req: PatchPhPaperIdData;
+            req: PatchCalendarEventsEventIdData;
             res: {
                 /**
                  * Successful Response
@@ -8291,7 +8574,609 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeletePhPaperIdData;
+            req: DeleteCalendarEventsEventIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/calendar/events/{event_id}/ticket-url': {
+        get: {
+            req: GetCalendarEventsEventIdTicketUrlData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': EventTicketUrl;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/calendar/events/{event_id}/image': {
+        get: {
+            req: GetCalendarEventsEventIdImageData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCalendarEventsEventIdImageData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/calendar/events/{event_id}/reply/{decision}': {
+        patch: {
+            req: PatchCalendarEventsEventIdReplyDecisionData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/calendar/ical-url': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': IcalSecret;
+            };
+        };
+    };
+    '/calendar/ical/create': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/calendar/ical': {
+        get: {
+            req: GetCalendarIcalData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cinema/themoviedb/{themoviedb_id}': {
+        get: {
+            req: GetCinemaThemoviedbThemoviedbIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': TheMovieDB;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cinema/sessions': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CineSessionComplete>;
+            };
+        };
+        post: {
+            req: PostCinemaSessionsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CineSessionComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cinema/sessions/{session_id}': {
+        patch: {
+            req: PatchCinemaSessionsSessionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': unknown;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCinemaSessionsSessionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cinema/sessions/{session_id}/poster': {
+        post: {
+            req: PostCinemaSessionsSessionIdPosterData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__types__standard_responses__Result;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        get: {
+            req: GetCinemaSessionsSessionIdPosterData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/managers': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Manager>;
+            };
+        };
+        post: {
+            req: PostBookingManagersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Manager;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/managers/{manager_id}': {
+        patch: {
+            req: PatchBookingManagersManagerIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteBookingManagersManagerIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/managers/users/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Manager>;
+            };
+        };
+    };
+    '/booking/bookings/users/me/manage': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<BookingReturnApplicant>;
+            };
+        };
+    };
+    '/booking/bookings/confirmed/users/me/manage': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<BookingReturnApplicant>;
+            };
+        };
+    };
+    '/booking/bookings/confirmed': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<BookingReturnSimpleApplicant>;
+            };
+        };
+    };
+    '/booking/bookings/users/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<BookingReturn>;
+            };
+        };
+    };
+    '/booking/bookings': {
+        post: {
+            req: PostBookingBookingsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': BookingReturn;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/bookings/{booking_id}': {
+        patch: {
+            req: PatchBookingBookingsBookingIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteBookingBookingsBookingIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/bookings/{booking_id}/reply/{decision}': {
+        patch: {
+            req: PatchBookingBookingsBookingIdReplyDecisionData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/rooms': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<RoomComplete>;
+            };
+        };
+        post: {
+            req: PostBookingRoomsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': RoomComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/booking/rooms/{room_id}': {
+        patch: {
+            req: PatchBookingRoomsRoomIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteBookingRoomsRoomIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/species/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SpeciesComplete>;
+            };
+        };
+        post: {
+            req: PostSeedLibrarySpeciesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SpeciesComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/species/types': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': SpeciesTypesReturn;
+            };
+        };
+    };
+    '/seed_library/species/{species_id}': {
+        patch: {
+            req: PatchSeedLibrarySpeciesSpeciesIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteSeedLibrarySpeciesSpeciesIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/plants/waiting': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PlantSimple>;
+            };
+        };
+    };
+    '/seed_library/plants/users/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PlantSimple>;
+            };
+        };
+    };
+    '/seed_library/plants/users/{user_id}': {
+        get: {
+            req: GetSeedLibraryPlantsUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PlantSimple>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/plants/{plant_id}': {
+        get: {
+            req: GetSeedLibraryPlantsPlantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': PlantComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchSeedLibraryPlantsPlantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteSeedLibraryPlantsPlantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/plants/': {
+        post: {
+            req: PostSeedLibraryPlantsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': PlantSimple;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/plants/{plant_id}/admin': {
+        patch: {
+            req: PatchSeedLibraryPlantsPlantIdAdminData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/plants/{plant_id}/borrow': {
+        patch: {
+            req: PatchSeedLibraryPlantsPlantIdBorrowData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/seed_library/information': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': SeedLibraryInformation;
+            };
+        };
+        patch: {
+            req: PatchSeedLibraryInformationData;
             res: {
                 /**
                  * Successful Response
@@ -8554,7 +9439,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -8562,22 +9447,27 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/raffles': {
+    '/advert/adverts': {
         get: {
+            req: GetAdvertAdvertsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<RaffleComplete>;
+                '200': Array<AdvertComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
             };
         };
         post: {
-            req: PostTombolaRafflesData;
+            req: PostAdvertAdvertsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': RaffleComplete;
+                '201': AdvertComplete;
                 /**
                  * Validation Error
                  */
@@ -8585,9 +9475,22 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/raffles/{raffle_id}': {
+    '/advert/adverts/{advert_id}': {
+        get: {
+            req: GetAdvertAdvertsAdvertIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': AdvertComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
         patch: {
-            req: PatchTombolaRafflesRaffleIdData;
+            req: PatchAdvertAdvertsAdvertIdData;
             res: {
                 /**
                  * Successful Response
@@ -8600,7 +9503,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteTombolaRafflesRaffleIdData;
+            req: DeleteAdvertAdvertsAdvertIdData;
             res: {
                 /**
                  * Successful Response
@@ -8613,80 +9516,27 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/group/{group_id}/raffles': {
+    '/advert/adverts/{advert_id}/picture': {
         get: {
-            req: GetTombolaGroupGroupIdRafflesData;
+            req: GetAdvertAdvertsAdvertIdPictureData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<RaffleComplete>;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/raffles/{raffle_id}/stats': {
-        get: {
-            req: GetTombolaRafflesRaffleIdStatsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': RaffleStats;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/raffles/{raffle_id}/logo': {
-        post: {
-            req: PostTombolaRafflesRaffleIdLogoData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': app__types__standard_responses__Result;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        get: {
-            req: GetTombolaRafflesRaffleIdLogoData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/pack_tickets': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PackTicketSimple>;
             };
         };
         post: {
-            req: PostTombolaPackTicketsData;
+            req: PostAdvertAdvertsAdvertIdPictureData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': PackTicketSimple;
+                '204': void;
                 /**
                  * Validation Error
                  */
@@ -8694,9 +9544,135 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/pack_tickets/{packticket_id}': {
+    '/cdr/users/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CdrUserPreview>;
+            };
+        };
+    };
+    '/cdr/users/pending/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CdrUserPreview>;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/': {
+        get: {
+            req: GetCdrUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CdrUser;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
         patch: {
-            req: PatchTombolaPackTicketsPackticketIdData;
+            req: PatchCdrUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SellerComplete>;
+            };
+        };
+        post: {
+            req: PostCdrSellersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SellerComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/me/sellers/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SellerComplete>;
+            };
+        };
+    };
+    '/cdr/online/sellers/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SellerComplete>;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/results/': {
+        get: {
+            req: GetCdrSellersSellerIdResultsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/online/products/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+            };
+        };
+    };
+    '/cdr/products/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/': {
+        patch: {
+            req: PatchCdrSellersSellerIdData;
             res: {
                 /**
                  * Successful Response
@@ -8709,7 +9685,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteTombolaPackTicketsPackticketIdData;
+            req: DeleteCdrSellersSellerIdData;
             res: {
                 /**
                  * Successful Response
@@ -8722,92 +9698,27 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/raffles/{raffle_id}/pack_tickets': {
+    '/cdr/sellers/{seller_id}/products/': {
         get: {
-            req: GetTombolaRafflesRaffleIdPackTicketsData;
+            req: GetCdrSellersSellerIdProductsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PackTicketSimple>;
+                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/tickets': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<TicketSimple>;
-            };
-        };
-    };
-    '/tombola/tickets/buy/{pack_id}': {
-        post: {
-            req: PostTombolaTicketsBuyPackIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': Array<TicketComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/users/{user_id}/tickets': {
-        get: {
-            req: GetTombolaUsersUserIdTicketsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<TicketComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/raffles/{raffle_id}/tickets': {
-        get: {
-            req: GetTombolaRafflesRaffleIdTicketsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<TicketComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/prizes': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PrizeSimple>;
             };
         };
         post: {
-            req: PostTombolaPrizesData;
+            req: PostCdrSellersSellerIdProductsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': PrizeSimple;
+                '201': app__modules__cdr__schemas_cdr__ProductComplete;
                 /**
                  * Validation Error
                  */
@@ -8815,9 +9726,24 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/prizes/{prize_id}': {
+    '/cdr/online/sellers/{seller_id}/products/': {
+        get: {
+            req: GetCdrOnlineSellersSellerIdProductsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__ProductComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/': {
         patch: {
-            req: PatchTombolaPrizesPrizeIdData;
+            req: PatchCdrSellersSellerIdProductsProductIdData;
             res: {
                 /**
                  * Successful Response
@@ -8830,7 +9756,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteTombolaPrizesPrizeIdData;
+            req: DeleteCdrSellersSellerIdProductsProductIdData;
             res: {
                 /**
                  * Successful Response
@@ -8843,14 +9769,14 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/raffles/{raffle_id}/prizes': {
-        get: {
-            req: GetTombolaRafflesRaffleIdPrizesData;
+    '/cdr/sellers/{seller_id}/products/{product_id}/variants/': {
+        post: {
+            req: PostCdrSellersSellerIdProductsProductIdVariantsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PrizeSimple>;
+                '201': app__modules__cdr__schemas_cdr__ProductVariantComplete;
                 /**
                  * Validation Error
                  */
@@ -8858,22 +9784,748 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/prizes/{prize_id}/picture': {
-        post: {
-            req: PostTombolaPrizesPrizeIdPictureData;
+    '/cdr/sellers/{seller_id}/products/{product_id}/variants/{variant_id}/': {
+        patch: {
+            req: PatchCdrSellersSellerIdProductsProductIdVariantsVariantIdData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': app__types__standard_responses__Result;
+                '204': void;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
             };
         };
+        delete: {
+            req: DeleteCdrSellersSellerIdProductsProductIdVariantsVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/documents/': {
         get: {
-            req: GetTombolaPrizesPrizeIdPictureData;
+            req: GetCdrSellersSellerIdDocumentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<DocumentComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCdrSellersSellerIdDocumentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': DocumentComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/documents/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<DocumentComplete>;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/documents/{document_id}/': {
+        delete: {
+            req: DeleteCdrSellersSellerIdDocumentsDocumentIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/purchases/': {
+        get: {
+            req: GetCdrUsersUserIdPurchasesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PurchaseReturn>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/me/purchases/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PurchaseReturn>;
+            };
+        };
+    };
+    '/cdr/me/purchases/all': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PurchaseReturn>;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/users/{user_id}/purchases/': {
+        get: {
+            req: GetCdrSellersSellerIdUsersUserIdPurchasesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PurchaseReturn>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/purchases/{product_variant_id}/': {
+        post: {
+            req: PostCdrUsersUserIdPurchasesProductVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__cdr__schemas_cdr__PurchaseComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCdrUsersUserIdPurchasesProductVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/batch-purchases/': {
+        post: {
+            req: PostCdrBatchPurchasesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/purchases/{product_variant_id}/validated/': {
+        patch: {
+            req: PatchCdrUsersUserIdPurchasesProductVariantIdValidatedData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/batch-validation/': {
+        post: {
+            req: PostCdrBatchValidationData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/signatures/': {
+        get: {
+            req: GetCdrUsersUserIdSignaturesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SignatureComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/users/{user_id}/signatures/': {
+        get: {
+            req: GetCdrSellersSellerIdUsersUserIdSignaturesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SignatureComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/signatures/{document_id}/': {
+        post: {
+            req: PostCdrUsersUserIdSignaturesDocumentIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SignatureComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCdrUsersUserIdSignaturesDocumentIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/curriculums/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CurriculumComplete>;
+            };
+        };
+        post: {
+            req: PostCdrCurriculumsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CurriculumComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/curriculums/{curriculum_id}/': {
+        delete: {
+            req: DeleteCdrCurriculumsCurriculumIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/curriculums/{curriculum_id}/': {
+        post: {
+            req: PostCdrUsersUserIdCurriculumsCurriculumIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCdrUsersUserIdCurriculumsCurriculumIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCdrUsersUserIdCurriculumsCurriculumIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/payments/': {
+        get: {
+            req: GetCdrUsersUserIdPaymentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__PaymentComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCdrUsersUserIdPaymentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__cdr__schemas_cdr__PaymentComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/payments/{payment_id}/': {
+        delete: {
+            req: DeleteCdrUsersUserIdPaymentsPaymentIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/pay/': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__core__checkout__schemas_checkout__PaymentUrl;
+            };
+        };
+    };
+    '/cdr/year/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CdrYear;
+            };
+        };
+        patch: {
+            req: PatchCdrYearData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/status/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Status;
+            };
+        };
+        patch: {
+            req: PatchCdrStatusData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/me/tickets/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__Ticket>;
+            };
+        };
+    };
+    '/cdr/users/{user_id}/tickets/': {
+        get: {
+            req: GetCdrUsersUserIdTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__cdr__schemas_cdr__Ticket>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/users/me/tickets/{ticket_id}/secret/': {
+        get: {
+            req: GetCdrUsersMeTicketsTicketIdSecretData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': TicketSecret;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{generator_id}/{secret}/': {
+        get: {
+            req: GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__modules__cdr__schemas_cdr__Ticket;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCdrSellersSellerIdProductsProductIdTicketsGeneratorIdSecretData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{generator_id}/lists/{tag}/': {
+        get: {
+            req: GetCdrSellersSellerIdProductsProductIdTicketsGeneratorIdListsTagData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CoreUserSimple>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/tags/{generator_id}/': {
+        get: {
+            req: GetCdrSellersSellerIdProductsProductIdTagsGeneratorIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<(string)>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/': {
+        post: {
+            req: PostCdrSellersSellerIdProductsProductIdTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__cdr__schemas_cdr__ProductComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/tickets/{ticket_generator_id}': {
+        delete: {
+            req: DeleteCdrSellersSellerIdProductsProductIdTicketsTicketGeneratorIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/data/': {
+        get: {
+            req: GetCdrSellersSellerIdProductsProductIdDataData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CustomDataFieldComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCdrSellersSellerIdProductsProductIdDataData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CustomDataFieldComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/data/{field_id}/': {
+        patch: {
+            req: PatchCdrSellersSellerIdProductsProductIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCdrSellersSellerIdProductsProductIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/cdr/sellers/{seller_id}/products/{product_id}/users/{user_id}/data/{field_id}/': {
+        get: {
+            req: GetCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CustomDataComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CustomDataComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCdrSellersSellerIdProductsProductIdUsersUserIdDataFieldIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/ph/{paper_id}/pdf': {
+        get: {
+            req: GetPhPaperIdPdfData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostPhPaperIdPdfData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/ph/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PaperComplete>;
+            };
+        };
+        post: {
+            req: PostPhData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': PaperComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/ph/admin': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PaperComplete>;
+            };
+        };
+    };
+    '/ph/{paper_id}/cover': {
+        get: {
+            req: GetPhPaperIdCoverData;
             res: {
                 /**
                  * Successful Response
@@ -8886,45 +10538,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/tombola/users/cash': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<CashComplete>;
-            };
-        };
-    };
-    '/tombola/users/{user_id}/cash': {
-        get: {
-            req: GetTombolaUsersUserIdCashData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': CashComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        post: {
-            req: PostTombolaUsersUserIdCashData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': CashComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
+    '/ph/{paper_id}': {
         patch: {
-            req: PatchTombolaUsersUserIdCashData;
+            req: PatchPhPaperIdData;
             res: {
                 /**
                  * Successful Response
@@ -8936,40 +10552,8 @@ export type $OpenApiTs = {
                 '422': HTTPValidationError;
             };
         };
-    };
-    '/tombola/prizes/{prize_id}/draw': {
-        post: {
-            req: PostTombolaPrizesPrizeIdDrawData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': Array<TicketComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/raffles/{raffle_id}/open': {
-        patch: {
-            req: PatchTombolaRafflesRaffleIdOpenData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/tombola/raffles/{raffle_id}/lock': {
-        patch: {
-            req: PatchTombolaRafflesRaffleIdLockData;
+        delete: {
+            req: DeletePhPaperIdData;
             res: {
                 /**
                  * Successful Response
@@ -8989,7 +10573,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': Participant;
+                '200': RaidParticipant;
                 /**
                  * Validation Error
                  */
@@ -9017,7 +10601,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': Participant;
+                '201': RaidParticipant;
                 /**
                  * Validation Error
                  */
@@ -9031,7 +10615,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': Array<TeamPreview>;
+                '200': Array<RaidTeamPreview>;
             };
         };
         post: {
@@ -9040,7 +10624,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': Team;
+                '201': RaidTeam;
                 /**
                  * Validation Error
                  */
@@ -9056,16 +10640,6 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/raid/teams/generate-pdf': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-            };
-        };
-    };
     '/raid/participants/{participant_id}/team': {
         get: {
             req: GetRaidParticipantsParticipantIdTeamData;
@@ -9073,7 +10647,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': Team;
+                '200': RaidTeam;
                 /**
                  * Validation Error
                  */
@@ -9088,7 +10662,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': Team;
+                '200': RaidTeam;
                 /**
                  * Validation Error
                  */
@@ -9144,7 +10718,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -9264,7 +10838,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': Team;
+                '201': RaidTeam;
                 /**
                  * Validation Error
                  */
@@ -9279,7 +10853,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': Team;
+                '201': RaidTeam;
                 /**
                  * Validation Error
                  */
@@ -9362,26 +10936,46 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': PaymentUrl;
+                '201': app__core__checkout__schemas_checkout__PaymentUrl;
             };
         };
     };
-    '/recommendation/recommendations': {
+    '/raid/security_files_zip': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<Recommendation>;
+                '200': (Blob | File);
             };
         };
-        post: {
-            req: PostRecommendationRecommendationsData;
+    };
+    '/raid/team_files_zip': {
+        get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '201': Recommendation;
+                '200': (Blob | File);
+            };
+        };
+    };
+    '/campaign/sections': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SectionComplete>;
+            };
+        };
+        post: {
+            req: PostCampaignSectionsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SectionComplete;
                 /**
                  * Validation Error
                  */
@@ -9389,9 +10983,108 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/recommendation/recommendations/{recommendation_id}': {
+    '/campaign/sections/{section_id}': {
+        delete: {
+            req: DeleteCampaignSectionsSectionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/campaign/lists': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<ListReturn>;
+            };
+        };
+        post: {
+            req: PostCampaignListsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': ListReturn;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/campaign/lists/{list_id}': {
+        delete: {
+            req: DeleteCampaignListsListIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
         patch: {
-            req: PatchRecommendationRecommendationsRecommendationIdData;
+            req: PatchCampaignListsListIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/campaign/lists/': {
+        delete: {
+            req: DeleteCampaignListsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/campaign/voters': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CorePermission;
+            };
+        };
+        delete: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/campaign/voters/{group_id}': {
+        post: {
+            req: PostCampaignVotersGroupIdData;
             res: {
                 /**
                  * Successful Response
@@ -9404,7 +11097,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteRecommendationRecommendationsRecommendationIdData;
+            req: DeleteCampaignVotersGroupIdData;
             res: {
                 /**
                  * Successful Response
@@ -9417,22 +11110,117 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/recommendation/recommendations/{recommendation_id}/picture': {
-        get: {
-            req: GetRecommendationRecommendationsRecommendationIdPictureData;
+    '/campaign/status/open': {
+        post: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '204': void;
+            };
+        };
+    };
+    '/campaign/status/close': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/campaign/status/counting': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/campaign/status/published': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/campaign/status/reset': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/campaign/votes': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<(string)>;
+            };
+        };
+        post: {
+            req: PostCampaignVotesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
             };
         };
+    };
+    '/campaign/results': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__campaign__schemas_campaign__Result>;
+            };
+        };
+    };
+    '/campaign/status': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': VoteStatus;
+            };
+        };
+    };
+    '/campaign/stats/{section_id}': {
+        get: {
+            req: GetCampaignStatsSectionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': VoteStats;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/campaign/lists/{list_id}/logo': {
         post: {
-            req: PostRecommendationRecommendationsRecommendationIdPictureData;
+            req: PostCampaignListsListIdLogoData;
             res: {
                 /**
                  * Successful Response
@@ -9444,23 +11232,13 @@ export type $OpenApiTs = {
                 '422': HTTPValidationError;
             };
         };
-    };
-    '/seed_library/species/': {
         get: {
+            req: GetCampaignListsListIdLogoData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<SpeciesComplete>;
-            };
-        };
-        post: {
-            req: PostSeedLibrarySpeciesData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': SpeciesComplete;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -9468,19 +11246,45 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/species/types': {
+    '/amap/products': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': SpeciesTypesReturn;
+                '200': Array<app__modules__amap__schemas_amap__ProductComplete>;
+            };
+        };
+        post: {
+            req: PostAmapProductsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__amap__schemas_amap__ProductComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
             };
         };
     };
-    '/seed_library/species/{species_id}': {
+    '/amap/products/{product_id}': {
+        get: {
+            req: GetAmapProductsProductIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__modules__amap__schemas_amap__ProductComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
         patch: {
-            req: PatchSeedLibrarySpeciesSpeciesIdData;
+            req: PatchAmapProductsProductIdData;
             res: {
                 /**
                  * Successful Response
@@ -9493,7 +11297,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteSeedLibrarySpeciesSpeciesIdData;
+            req: DeleteAmapProductsProductIdData;
             res: {
                 /**
                  * Successful Response
@@ -9506,34 +11310,22 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/plants/waiting': {
+    '/amap/deliveries': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PlantSimple>;
+                '200': Array<DeliveryReturn>;
             };
         };
-    };
-    '/seed_library/plants/users/me': {
-        get: {
+        post: {
+            req: PostAmapDeliveriesData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<PlantSimple>;
-            };
-        };
-    };
-    '/seed_library/plants/users/{user_id}': {
-        get: {
-            req: GetSeedLibraryPlantsUsersUserIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<PlantSimple>;
+                '201': DeliveryReturn;
                 /**
                  * Validation Error
                  */
@@ -9541,14 +11333,14 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/plants/{plant_id}': {
-        get: {
-            req: GetSeedLibraryPlantsPlantIdData;
+    '/amap/deliveries/{delivery_id}': {
+        delete: {
+            req: DeleteAmapDeliveriesDeliveryIdData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': PlantComplete;
+                '204': void;
                 /**
                  * Validation Error
                  */
@@ -9556,7 +11348,22 @@ export type $OpenApiTs = {
             };
         };
         patch: {
-            req: PatchSeedLibraryPlantsPlantIdData;
+            req: PatchAmapDeliveriesDeliveryIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/deliveries/{delivery_id}/products': {
+        post: {
+            req: PostAmapDeliveriesDeliveryIdProductsData;
             res: {
                 /**
                  * Successful Response
@@ -9569,7 +11376,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteSeedLibraryPlantsPlantIdData;
+            req: DeleteAmapDeliveriesDeliveryIdProductsData;
             res: {
                 /**
                  * Successful Response
@@ -9582,14 +11389,70 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/plants/': {
+    '/amap/deliveries/{delivery_id}/orders': {
+        get: {
+            req: GetAmapDeliveriesDeliveryIdOrdersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<OrderReturn>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/orders/{order_id}': {
+        get: {
+            req: GetAmapOrdersOrderIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': OrderReturn;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchAmapOrdersOrderIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteAmapOrdersOrderIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/orders': {
         post: {
-            req: PostSeedLibraryPlantsData;
+            req: PostAmapOrdersData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': PlantComplete;
+                '201': OrderReturn;
                 /**
                  * Validation Error
                  */
@@ -9597,24 +11460,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/plants/{plant_id}/admin': {
-        patch: {
-            req: PatchSeedLibraryPlantsPlantIdAdminData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/seed_library/plants/{plant_id}/borrow': {
-        patch: {
-            req: PatchSeedLibraryPlantsPlantIdBorrowData;
+    '/amap/deliveries/{delivery_id}/openordering': {
+        post: {
+            req: PostAmapDeliveriesDeliveryIdOpenorderingData;
             res: {
                 /**
                  * Successful Response
@@ -9627,22 +11475,2471 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/seed_library/information': {
+    '/amap/deliveries/{delivery_id}/lock': {
+        post: {
+            req: PostAmapDeliveriesDeliveryIdLockData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/deliveries/{delivery_id}/delivered': {
+        post: {
+            req: PostAmapDeliveriesDeliveryIdDeliveredData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/deliveries/{delivery_id}/archive': {
+        post: {
+            req: PostAmapDeliveriesDeliveryIdArchiveData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/users/cash': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': SeedLibraryInformation;
+                '200': Array<app__modules__amap__schemas_amap__CashComplete>;
+            };
+        };
+    };
+    '/amap/users/{user_id}/cash': {
+        get: {
+            req: GetAmapUsersUserIdCashData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__modules__amap__schemas_amap__CashComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostAmapUsersUserIdCashData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__amap__schemas_amap__CashComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
             };
         };
         patch: {
-            req: PatchSeedLibraryInformationData;
+            req: PatchAmapUsersUserIdCashData;
             res: {
                 /**
                  * Successful Response
                  */
                 '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/users/{user_id}/orders': {
+        get: {
+            req: GetAmapUsersUserIdOrdersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<OrderReturn>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/amap/information': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Information;
+            };
+        };
+        patch: {
+            req: PatchAmapInformationData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/sports': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Sport>;
+            };
+        };
+        post: {
+            req: PostCompetitionSportsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Sport;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/sports/{sport_id}': {
+        patch: {
+            req: PatchCompetitionSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/editions': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CompetitionEdition>;
+            };
+        };
+        post: {
+            req: PostCompetitionEditionsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CompetitionEdition;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/editions/active': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CompetitionEdition | null;
+            };
+        };
+    };
+    '/competition/editions/{edition_id}/activate': {
+        post: {
+            req: PostCompetitionEditionsEditionIdActivateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/editions/{edition_id}/inscription': {
+        post: {
+            req: PostCompetitionEditionsEditionIdInscriptionData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/editions/{edition_id}': {
+        patch: {
+            req: PatchCompetitionEditionsEditionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CompetitionUser>;
+            };
+        };
+        post: {
+            req: PostCompetitionUsersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CompetitionUserSimple;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/schools/{school_id}': {
+        get: {
+            req: GetCompetitionUsersSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CompetitionUser>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CompetitionUser;
+            };
+        };
+        patch: {
+            req: PatchCompetitionUsersMeData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}': {
+        get: {
+            req: GetCompetitionUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CompetitionUser;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCompetitionUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}/validate': {
+        patch: {
+            req: PatchCompetitionUsersUserIdValidateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}/invalidate': {
+        patch: {
+            req: PatchCompetitionUsersUserIdInvalidateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/groups/{group}': {
+        get: {
+            req: GetCompetitionGroupsGroupData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<UserGroupMembershipComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/me/groups': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<UserGroupMembership>;
+            };
+        };
+    };
+    '/competition/users/{user_id}/groups': {
+        get: {
+            req: GetCompetitionUsersUserIdGroupsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<UserGroupMembership>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/groups/{group}/users/{user_id}': {
+        post: {
+            req: PostCompetitionGroupsGroupUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': UserGroupMembership;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionGroupsGroupUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolExtension>;
+            };
+        };
+        post: {
+            req: PostCompetitionSchoolsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SchoolExtensionBase;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}': {
+        get: {
+            req: GetCompetitionSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': SchoolExtension;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCompetitionSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}/general-quota': {
+        get: {
+            req: GetCompetitionSchoolsSchoolIdGeneralQuotaData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': SchoolGeneralQuota;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionSchoolsSchoolIdGeneralQuotaData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SchoolGeneralQuota;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCompetitionSchoolsSchoolIdGeneralQuotaData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/sports/{sport_id}/quotas': {
+        get: {
+            req: GetCompetitionSportsSportIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolSportQuota>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}/sports-quotas': {
+        get: {
+            req: GetCompetitionSchoolsSchoolIdSportsQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolSportQuota>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}/sports/{sport_id}/quotas': {
+        post: {
+            req: PostCompetitionSchoolsSchoolIdSportsSportIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCompetitionSchoolsSchoolIdSportsSportIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionSchoolsSchoolIdSportsSportIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}/product-quotas': {
+        get: {
+            req: GetCompetitionSchoolsSchoolIdProductQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolProductQuota>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionSchoolsSchoolIdProductQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SchoolProductQuota;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/products/{product_id}/schools-quotas': {
+        get: {
+            req: GetCompetitionProductsProductIdSchoolsQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolProductQuota>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/schools/{school_id}/product-quotas/{product_id}': {
+        patch: {
+            req: PatchCompetitionSchoolsSchoolIdProductQuotasProductIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionSchoolsSchoolIdProductQuotasProductIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/teams': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamComplete>;
+            };
+        };
+        post: {
+            req: PostCompetitionTeamsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Team;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/teams/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': TeamComplete;
+            };
+        };
+    };
+    '/competition/teams/sports/{sport_id}': {
+        get: {
+            req: GetCompetitionTeamsSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/teams/schools/{school_id}': {
+        get: {
+            req: GetCompetitionTeamsSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/teams/sports/{sport_id}/schools/{school_id}': {
+        get: {
+            req: GetCompetitionTeamsSportsSportIdSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/teams/{team_id}': {
+        patch: {
+            req: PatchCompetitionTeamsTeamIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionTeamsTeamIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': ParticipantComplete;
+            };
+        };
+    };
+    '/competition/participants/sports/{sport_id}': {
+        get: {
+            req: GetCompetitionParticipantsSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<ParticipantComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/schools/{school_id}': {
+        get: {
+            req: GetCompetitionParticipantsSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<ParticipantComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/users/{user_id}/certificate': {
+        get: {
+            req: GetCompetitionParticipantsUsersUserIdCertificateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/sports/{sport_id}/participate': {
+        post: {
+            req: PostCompetitionSportsSportIdParticipateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Participant;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/sports/{sport_id}/certificate': {
+        post: {
+            req: PostCompetitionParticipantsSportsSportIdCertificateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionParticipantsSportsSportIdCertificateData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/sports/{sport_id}/users/{user_id}/license': {
+        patch: {
+            req: PatchCompetitionParticipantsSportsSportIdUsersUserIdLicenseData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/sports/{sport_id}/withdraw': {
+        delete: {
+            req: DeleteCompetitionSportsSportIdWithdrawData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/participants/{user_id}/sports/{sport_id}': {
+        delete: {
+            req: DeleteCompetitionParticipantsUserIdSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/locations': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Location>;
+            };
+        };
+        post: {
+            req: PostCompetitionLocationsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Location;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/locations/{location_id}': {
+        get: {
+            req: GetCompetitionLocationsLocationIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': LocationComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchCompetitionLocationsLocationIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionLocationsLocationIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/matches': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<MatchComplete>;
+            };
+        };
+    };
+    '/competition/matches/sports/{sport_id}': {
+        get: {
+            req: GetCompetitionMatchesSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<MatchComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionMatchesSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Match;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/matches/schools/{school_id}': {
+        get: {
+            req: GetCompetitionMatchesSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<MatchComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/matches/{match_id}': {
+        patch: {
+            req: PatchCompetitionMatchesMatchIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionMatchesMatchIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/podiums/global': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolResult>;
+            };
+        };
+    };
+    '/competition/podiums/sports/{sport_id}': {
+        get: {
+            req: GetCompetitionPodiumsSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamSportResultComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionPodiumsSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Array<TeamSportResult>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionPodiumsSportsSportIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/podiums/pompoms': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<SchoolResult>;
+            };
+        };
+        post: {
+            req: PostCompetitionPodiumsPompomsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Array<SchoolResult>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/competition/podiums/schools/{school_id}': {
+        get: {
+            req: GetCompetitionPodiumsSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TeamSportResultComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/products': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__sport_competition__schemas_sport_competition__ProductComplete>;
+            };
+        };
+        post: {
+            req: PostCompetitionProductsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__sport_competition__schemas_sport_competition__ProductComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/products/{product_id}': {
+        patch: {
+            req: PatchCompetitionProductsProductIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionProductsProductIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/products/available': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__sport_competition__schemas_sport_competition__ProductVariantComplete>;
+            };
+        };
+    };
+    '/competition/products/{product_id}/variants': {
+        post: {
+            req: PostCompetitionProductsProductIdVariantsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': ProductVariant;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/products/variants/{variant_id}': {
+        patch: {
+            req: PatchCompetitionProductsVariantsVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionProductsVariantsVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/purchases/schools/{school_id}': {
+        get: {
+            req: GetCompetitionPurchasesSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': {
+                    [key: string]: Array<app__modules__sport_competition__schemas_sport_competition__PurchaseComplete>;
+                };
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/purchases/users/{user_id}': {
+        get: {
+            req: GetCompetitionPurchasesUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Purchase>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionPurchasesUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Purchase;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/purchases/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Purchase>;
+            };
+        };
+        post: {
+            req: PostCompetitionPurchasesMeData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Purchase;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/purchases/users/{user_id}/variants/{variant_id}': {
+        patch: {
+            req: PatchCompetitionPurchasesUsersUserIdVariantsVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/purchases/{product_variant_id}': {
+        delete: {
+            req: DeleteCompetitionPurchasesProductVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}/purchases/{product_variant_id}': {
+        delete: {
+            req: DeleteCompetitionUsersUserIdPurchasesProductVariantIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/payments/schools/{school_id}': {
+        get: {
+            req: GetCompetitionPaymentsSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': {
+                    [key: string]: Array<app__modules__sport_competition__schemas_sport_competition__PaymentComplete>;
+                };
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}/payments': {
+        get: {
+            req: GetCompetitionUsersUserIdPaymentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__sport_competition__schemas_sport_competition__PaymentComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostCompetitionUsersUserIdPaymentsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__sport_competition__schemas_sport_competition__PaymentComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/users/{user_id}/payments/{payment_id}': {
+        delete: {
+            req: DeleteCompetitionUsersUserIdPaymentsPaymentIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/pay': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__core__checkout__schemas_checkout__PaymentUrl;
+            };
+        };
+    };
+    '/competition/volunteers/shifts': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<VolunteerShiftComplete>;
+            };
+        };
+        post: {
+            req: PostCompetitionVolunteersShiftsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': VolunteerShift;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/volunteers/shifts/{shift_id}': {
+        patch: {
+            req: PatchCompetitionVolunteersShiftsShiftIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteCompetitionVolunteersShiftsShiftIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/volunteers/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<VolunteerRegistrationComplete>;
+            };
+        };
+    };
+    '/competition/volunteers/shifts/{shift_id}/register': {
+        post: {
+            req: PostCompetitionVolunteersShiftsShiftIdRegisterData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/data-export/users': {
+        get: {
+            req: GetCompetitionDataExportUsersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/data-export/schools/{school_id}/users': {
+        get: {
+            req: GetCompetitionDataExportSchoolsSchoolIdUsersData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/data-export/participants/captains': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+            };
+        };
+    };
+    '/competition/data-export/schools/{school_id}/quotas': {
+        get: {
+            req: GetCompetitionDataExportSchoolsSchoolIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/data-export/sports/{sport_id}/quotas': {
+        get: {
+            req: GetCompetitionDataExportSportsSportIdQuotasData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/competition/data-export/sports/{sport_id}/participants': {
+        get: {
+            req: GetCompetitionDataExportSportsSportIdParticipantsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<RaffleComplete>;
+            };
+        };
+        post: {
+            req: PostTombolaRafflesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': RaffleComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}': {
+        patch: {
+            req: PatchTombolaRafflesRaffleIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTombolaRafflesRaffleIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/group/{group_id}/raffles': {
+        get: {
+            req: GetTombolaGroupGroupIdRafflesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<RaffleComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/stats': {
+        get: {
+            req: GetTombolaRafflesRaffleIdStatsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': RaffleStats;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/logo': {
+        post: {
+            req: PostTombolaRafflesRaffleIdLogoData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__types__standard_responses__Result;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        get: {
+            req: GetTombolaRafflesRaffleIdLogoData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/pack_tickets': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PackTicketSimple>;
+            };
+        };
+        post: {
+            req: PostTombolaPackTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': PackTicketSimple;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/pack_tickets/{packticket_id}': {
+        patch: {
+            req: PatchTombolaPackTicketsPackticketIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTombolaPackTicketsPackticketIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/pack_tickets': {
+        get: {
+            req: GetTombolaRafflesRaffleIdPackTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PackTicketSimple>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/tickets': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<TicketSimple>;
+            };
+        };
+    };
+    '/tombola/tickets/buy/{pack_id}': {
+        post: {
+            req: PostTombolaTicketsBuyPackIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/users/{user_id}/tickets': {
+        get: {
+            req: GetTombolaUsersUserIdTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/tickets': {
+        get: {
+            req: GetTombolaRafflesRaffleIdTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/prizes': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PrizeSimple>;
+            };
+        };
+        post: {
+            req: PostTombolaPrizesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': PrizeSimple;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/prizes/{prize_id}': {
+        patch: {
+            req: PatchTombolaPrizesPrizeIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTombolaPrizesPrizeIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/prizes': {
+        get: {
+            req: GetTombolaRafflesRaffleIdPrizesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<PrizeSimple>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/prizes/{prize_id}/picture': {
+        post: {
+            req: PostTombolaPrizesPrizeIdPictureData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__types__standard_responses__Result;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        get: {
+            req: GetTombolaPrizesPrizeIdPictureData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/users/cash': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__modules__raffle__schemas_raffle__CashComplete>;
+            };
+        };
+    };
+    '/tombola/users/{user_id}/cash': {
+        get: {
+            req: GetTombolaUsersUserIdCashData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__modules__raffle__schemas_raffle__CashComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostTombolaUsersUserIdCashData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': app__modules__raffle__schemas_raffle__CashComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchTombolaUsersUserIdCashData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/prizes/{prize_id}/draw': {
+        post: {
+            req: PostTombolaPrizesPrizeIdDrawData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Array<app__modules__raffle__schemas_raffle__TicketComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/open': {
+        patch: {
+            req: PatchTombolaRafflesRaffleIdOpenData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tombola/raffles/{raffle_id}/lock': {
+        patch: {
+            req: PatchTombolaRafflesRaffleIdLockData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/flappybird/scores': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<FlappyBirdScoreInDB>;
+            };
+        };
+        post: {
+            req: PostFlappybirdScoresData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': FlappyBirdScoreInDB;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/flappybird/scores/me': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': FlappyBirdScoreCompleteFeedBack;
+            };
+        };
+    };
+    '/flappybird/scores/{targeted_user_id}': {
+        delete: {
+            req: DeleteFlappybirdScoresTargetedUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/events': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<EventSimple>;
+            };
+        };
+    };
+    '/tickets/events/{event_id}': {
+        get: {
+            req: GetTicketsEventsEventIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': EventPublic;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/events/{event_id}/checkout': {
+        post: {
+            req: PostTicketsEventsEventIdCheckoutData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CheckoutResponse;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/user/me/tickets': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__core__tickets__schemas_tickets__TicketComplete>;
+            };
+        };
+    };
+    '/tickets/user/me/tickets/change-over/request': {
+        post: {
+            req: PostTicketsUserMeTicketsChangeOverRequestData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/user/me/tickets/change-over/accept': {
+        get: {
+            req: GetTicketsUserMeTicketsChangeOverAcceptData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '307': unknown;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}': {
+        get: {
+            req: GetTicketsAdminEventsEventIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': EventAdmin;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchTicketsAdminEventsEventIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTicketsAdminEventsEventIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events': {
+        post: {
+            req: PostTicketsAdminEventsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': EventAdmin;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/sessions': {
+        post: {
+            req: PostTicketsAdminEventsEventIdSessionsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': SessionComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/sessions/{session_id}': {
+        patch: {
+            req: PatchTicketsAdminEventsEventIdSessionsSessionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTicketsAdminEventsEventIdSessionsSessionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/categories': {
+        post: {
+            req: PostTicketsAdminEventsEventIdCategoriesData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CategoryComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/categories/{category_id}': {
+        patch: {
+            req: PatchTicketsAdminEventsEventIdCategoriesCategoryIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTicketsAdminEventsEventIdCategoriesCategoryIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/questions': {
+        post: {
+            req: PostTicketsAdminEventsEventIdQuestionsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Question;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/questions/{question_id}': {
+        patch: {
+            req: PatchTicketsAdminEventsEventIdQuestionsQuestionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteTicketsAdminEventsEventIdQuestionsQuestionIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/tickets': {
+        get: {
+            req: GetTicketsAdminEventsEventIdTicketsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<app__core__tickets__schemas_tickets__Ticket>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/events/{event_id}/tickets/csv': {
+        get: {
+            req: GetTicketsAdminEventsEventIdTicketsCsvData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': (Blob | File);
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/tickets/{ticket_id}/check': {
+        post: {
+            req: PostTicketsAdminTicketsTicketIdCheckData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': app__core__tickets__schemas_tickets__Ticket;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/tickets/{ticket_id}/scan': {
+        post: {
+            req: PostTicketsAdminTicketsTicketIdScanData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/store/{store_id}/events': {
+        get: {
+            req: GetTicketsAdminStoreStoreIdEventsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<EventSimple>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/tickets/admin/association/{association_id}/events': {
+        get: {
+            req: GetTicketsAdminAssociationAssociationIdEventsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<EventSimple>;
                 /**
                  * Validation Error
                  */
@@ -9718,7 +14015,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -9820,7 +14117,9 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': {
+                    [key: string]: unknown;
+                };
             };
         };
     };
@@ -9854,16 +14153,6 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/checkout/helloasso/webhook': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
     '/information': {
         get: {
             res: {
@@ -9880,7 +14169,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9890,7 +14179,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9900,7 +14189,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9910,7 +14199,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9920,7 +14209,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9930,7 +14219,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9940,7 +14229,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9950,7 +14239,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
             };
         };
     };
@@ -9970,26 +14259,31 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
             };
         };
     };
-    '/module-visibility/': {
-        get: {
+    '/notification/devices': {
+        post: {
+            req: PostNotificationDevicesData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<ModuleVisibility>;
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
             };
         };
-        post: {
-            req: PostModuleVisibilityData;
+        get: {
+            req: GetNotificationDevicesData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': unknown;
+                '200': Array<FirebaseDevice>;
                 /**
                  * Validation Error
                  */
@@ -9997,19 +14291,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/module-visibility/me': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<(string)>;
-            };
-        };
-    };
-    '/module-visibility/{root}/groups/{group_id}': {
+    '/notification/devices/{firebase_token}': {
         delete: {
-            req: DeleteModuleVisibilityRootGroupsGroupIdData;
+            req: DeleteNotificationDevicesFirebaseTokenData;
             res: {
                 /**
                  * Successful Response
@@ -10022,59 +14306,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/module-visibility/{root}/account-types/{account_type}': {
-        delete: {
-            req: DeleteModuleVisibilityRootAccountTypesAccountTypeData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/feed/news': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<News>;
-            };
-        };
-    };
-    '/feed/news/{news_id}/image': {
-        get: {
-            req: GetFeedNewsNewsIdImageData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': unknown;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/feed/admin/news': {
-        get: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<News>;
-            };
-        };
-    };
-    '/feed/admin/news/{news_id}/approve': {
+    '/notification/topics/{topic_id}/subscribe': {
         post: {
-            req: PostFeedAdminNewsNewsIdApproveData;
+            req: PostNotificationTopicsTopicIdSubscribeData;
             res: {
                 /**
                  * Successful Response
@@ -10087,9 +14321,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/feed/admin/news/{news_id}/reject': {
+    '/notification/topics/{topic_id}/unsubscribe': {
         post: {
-            req: PostFeedAdminNewsNewsIdRejectData;
+            req: PostNotificationTopicsTopicIdUnsubscribeData;
             res: {
                 /**
                  * Successful Response
@@ -10102,13 +14336,78 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/google-api/oauth2callback': {
+    '/notification/topics': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': Array<TopicUser>;
+            };
+        };
+    };
+    '/notification/send': {
+        post: {
+            req: PostNotificationSendData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/notification/test/send': {
+        post: {
+            req: PostNotificationTestSendData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/notification/test/send/future': {
+        post: {
+            req: PostNotificationTestSendFutureData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/notification/test/send/topic': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+            };
+        };
+    };
+    '/notification/test/send/topic/future': {
+        post: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
             };
         };
     };
@@ -10252,7 +14551,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -10260,47 +14559,27 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/memberships/': {
+    '/permissions/list': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<MembershipSimple>;
+                '200': Array<(string)>;
+            };
+        };
+    };
+    '/permissions/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CorePermission>;
             };
         };
         post: {
-            req: PostMembershipsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': MembershipSimple;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/memberships/{association_membership_id}/members': {
-        get: {
-            req: GetMembershipsAssociationMembershipIdMembersData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<UserMembershipComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/memberships/{association_membership_id}': {
-        patch: {
-            req: PatchMembershipsAssociationMembershipIdData;
+            req: PostPermissionsData;
             res: {
                 /**
                  * Successful Response
@@ -10313,7 +14592,7 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteMembershipsAssociationMembershipIdData;
+            req: DeletePermissionsData;
             res: {
                 /**
                  * Successful Response
@@ -10326,89 +14605,28 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/memberships/users/{user_id}': {
+    '/permissions/{permission_name}': {
         get: {
-            req: GetMembershipsUsersUserIdData;
+            req: GetPermissionsPermissionNameData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<UserMembershipComplete>;
+                '200': CorePermission;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
             };
         };
+    };
+    '/checkout/helloasso/webhook': {
         post: {
-            req: PostMembershipsUsersUserIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': UserMembershipComplete;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/memberships/users/{user_id}/{association_membership_id}': {
-        get: {
-            req: GetMembershipsUsersUserIdAssociationMembershipIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '200': Array<UserMembershipComplete>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/memberships/{association_membership_id}/add-batch/': {
-        post: {
-            req: PostMembershipsAssociationMembershipIdAddBatchData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': Array<MembershipUserMappingEmail>;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/memberships/users/{membership_id}': {
-        patch: {
-            req: PatchMembershipsUsersMembershipIdData;
             res: {
                 /**
                  * Successful Response
                  */
                 '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-        delete: {
-            req: DeleteMembershipsUsersMembershipIdData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
             };
         };
     };
@@ -10493,7 +14711,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': unknown;
+                '204': void;
                 /**
                  * Validation Error
                  */
@@ -10539,6 +14757,21 @@ export type $OpenApiTs = {
                  * Successful Response
                  */
                 '200': Array<History>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/mypayment/stores/{store_id}/history/data-export': {
+        get: {
+            req: GetMypaymentStoresStoreIdHistoryDataExportData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': unknown;
                 /**
                  * Validation Error
                  */
@@ -10773,7 +15006,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': PaymentUrl;
+                '201': app__core__checkout__schemas_checkout__PaymentUrl;
                 /**
                  * Validation Error
                  */
@@ -10788,7 +15021,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': PaymentUrl;
+                '201': app__core__checkout__schemas_checkout__PaymentUrl;
                 /**
                  * Validation Error
                  */
@@ -10818,7 +15051,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': unknown;
+                '201': TransactionBase;
                 /**
                  * Validation Error
                  */
@@ -10844,6 +15077,51 @@ export type $OpenApiTs = {
     '/mypayment/transactions/{transaction_id}/cancel': {
         post: {
             req: PostMypaymentTransactionsTransactionIdCancelData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/mypayment/requests': {
+        get: {
+            req: GetMypaymentRequestsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<Request>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/mypayment/requests/{request_id}/accept': {
+        post: {
+            req: PostMypaymentRequestsRequestIdAcceptData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/mypayment/requests/{request_id}/refuse': {
+        post: {
+            req: PostMypaymentRequestsRequestIdRefuseData;
             res: {
                 /**
                  * Successful Response
@@ -10906,7 +15184,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -10972,22 +15250,24 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/notification/devices': {
+    '/feed/news': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<FirebaseDevice>;
+                '200': Array<News>;
             };
         };
-        post: {
-            req: PostNotificationDevicesData;
+    };
+    '/feed/news/{news_id}/image': {
+        get: {
+            req: GetFeedNewsNewsIdImageData;
             res: {
                 /**
                  * Successful Response
                  */
-                '204': void;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
@@ -10995,64 +15275,19 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/notification/devices/{firebase_token}': {
-        delete: {
-            req: DeleteNotificationDevicesFirebaseTokenData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/notification/topics/{topic_id}/subscribe': {
-        post: {
-            req: PostNotificationTopicsTopicIdSubscribeData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/notification/topics/{topic_id}/unsubscribe': {
-        post: {
-            req: PostNotificationTopicsTopicIdUnsubscribeData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-                /**
-                 * Validation Error
-                 */
-                '422': HTTPValidationError;
-            };
-        };
-    };
-    '/notification/topics': {
+    '/feed/admin/news': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<TopicUser>;
+                '200': Array<News>;
             };
         };
     };
-    '/notification/send': {
+    '/feed/admin/news/{news_id}/approve': {
         post: {
-            req: PostNotificationSendData;
+            req: PostFeedAdminNewsNewsIdApproveData;
             res: {
                 /**
                  * Successful Response
@@ -11065,62 +15300,37 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/notification/test/send': {
+    '/feed/admin/news/{news_id}/reject': {
         post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '201': unknown;
-            };
-        };
-    };
-    '/notification/test/send/future': {
-        post: {
+            req: PostFeedAdminNewsNewsIdRejectData;
             res: {
                 /**
                  * Successful Response
                  */
                 '204': void;
-            };
-        };
-    };
-    '/notification/test/send/topic': {
-        post: {
-            res: {
                 /**
-                 * Successful Response
+                 * Validation Error
                  */
-                '204': void;
+                '422': HTTPValidationError;
             };
         };
     };
-    '/notification/test/send/topic/future': {
-        post: {
-            res: {
-                /**
-                 * Successful Response
-                 */
-                '204': void;
-            };
-        };
-    };
-    '/schools/': {
+    '/memberships/': {
         get: {
             res: {
                 /**
                  * Successful Response
                  */
-                '200': Array<CoreSchool>;
+                '200': Array<MembershipSimple>;
             };
         };
         post: {
-            req: PostSchoolsData;
+            req: PostMembershipsData;
             res: {
                 /**
                  * Successful Response
                  */
-                '201': CoreSchool;
+                '201': MembershipSimple;
                 /**
                  * Validation Error
                  */
@@ -11128,22 +15338,24 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/schools/{school_id}': {
+    '/memberships/{association_membership_id}/members': {
         get: {
-            req: GetSchoolsSchoolIdData;
+            req: GetMembershipsAssociationMembershipIdMembersData;
             res: {
                 /**
                  * Successful Response
                  */
-                '200': CoreSchool;
+                '200': Array<UserMembershipComplete>;
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
             };
         };
+    };
+    '/memberships/{association_membership_id}': {
         patch: {
-            req: PatchSchoolsSchoolIdData;
+            req: PatchMembershipsAssociationMembershipIdData;
             res: {
                 /**
                  * Successful Response
@@ -11156,7 +15368,108 @@ export type $OpenApiTs = {
             };
         };
         delete: {
-            req: DeleteSchoolsSchoolIdData;
+            req: DeleteMembershipsAssociationMembershipIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/memberships/users/{user_id}': {
+        get: {
+            req: GetMembershipsUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<UserMembershipComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        post: {
+            req: PostMembershipsUsersUserIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': UserMembershipComplete;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/memberships/users/{user_id}/{association_membership_id}': {
+        get: {
+            req: GetMembershipsUsersUserIdAssociationMembershipIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<UserMembershipComplete>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/memberships/{association_membership_id}/add-batch/': {
+        post: {
+            req: PostMembershipsAssociationMembershipIdAddBatchData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': Array<MembershipUserMappingEmail>;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/memberships/users/{membership_id}': {
+        patch: {
+            req: PatchMembershipsUsersMembershipIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteMembershipsUsersMembershipIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/memberships/{membership_id}/group/{group_id}/synchronize': {
+        post: {
+            req: PostMembershipsMembershipIdGroupGroupIdSynchronizeData;
             res: {
                 /**
                  * Successful Response
@@ -11209,7 +15522,7 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/users/account-types': {
+    '/users/account-types/': {
         get: {
             res: {
                 /**
@@ -11308,7 +15621,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '201': unknown;
+                '204': void;
             };
         };
     };
@@ -11364,7 +15677,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': string;
                 /**
                  * Validation Error
                  */
@@ -11461,7 +15774,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
             };
         };
         post: {
@@ -11485,11 +15798,85 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                '200': unknown;
+                '200': (Blob | File);
                 /**
                  * Validation Error
                  */
                 '422': HTTPValidationError;
+            };
+        };
+    };
+    '/schools/': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': Array<CoreSchool>;
+            };
+        };
+        post: {
+            req: PostSchoolsData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '201': CoreSchool;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/schools/{school_id}': {
+        get: {
+            req: GetSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': CoreSchool;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        patch: {
+            req: PatchSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+        delete: {
+            req: DeleteSchoolsSchoolIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '204': void;
+                /**
+                 * Validation Error
+                 */
+                '422': HTTPValidationError;
+            };
+        };
+    };
+    '/google-api/oauth2callback': {
+        get: {
+            res: {
+                /**
+                 * Successful Response
+                 */
+                '200': string;
             };
         };
     };
