@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "@maizzle/framework": "5.0.8",
-    "tailwindcss-preset-email": "1.4.0"
+    "tailwindcss-preset-email": "^1.4.1"
   }
 }
