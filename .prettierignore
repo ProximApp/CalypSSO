@@ -1,8 +1,16 @@
 **/node_modules
 **/.next
 
+# Local-only settings
+.claude
+
 # Shadcn components
 web/src/components/ui
 
 # Generated Hyperion client
 web/src/api
+
+# Mail workspace: prettier-plugin-tailwindcss mis-resolves tailwind v3 under
+# the nested node_modules (nohoist) and crashes on any mail file. Mail keeps
+# its own maizzle/tailwind toolchain.
+mail/**
