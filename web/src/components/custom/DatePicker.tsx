@@ -54,17 +54,12 @@ export function DatePicker({
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setVisible(true)}
           onMouseLeave={() => setVisible(false)}
-          className="p-[2px] rounded-lg transition duration-300 group/input"
+          className="group/input rounded-lg p-[2px] transition duration-300"
         >
           <Button
             variant={"outline"}
             className={cn(
-              `flex h-10 w-full border-none bg-background rounded-md px-3 py-2 text-sm file:border-0 file:bg-transparent 
-          file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-2
-          focus-visible:outline-none focus-visible:ring-[2px]  
-           disabled:cursor-not-allowed disabled:opacity-50
-           dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
-           group-hover/input:shadow-none transition duration-400 justify-start text-left`,
+              `bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full justify-start rounded-md border-none px-3 py-2 text-left text-sm transition duration-400 group-hover/input:shadow-none file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-[2px] focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--color-neutral-700)]`,
               !date && "text-muted-foreground",
             )}
             type="button"
@@ -84,11 +79,11 @@ export function DatePicker({
           selected={date}
           onSelect={setDate}
           locale={fr}
-          captionLayout="dropdown-buttons"
-          fromDate={fromDate ?? new Date(1900)}
-          toDate={toDate ?? new Date()}
+          captionLayout="dropdown"
+          startMonth={fromDate ?? new Date(1900)}
+          endMonth={toDate ?? new Date()}
           defaultMonth={defaultDate}
-          initialFocus
+          autoFocus
         />
       </PopoverContent>
     </Popover>
