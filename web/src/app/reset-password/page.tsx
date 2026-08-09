@@ -23,9 +23,9 @@ const ResetPasswordPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
-    activation_code: z.string({
-      required_error: "Veuillez renseigner le code d'activation",
-    }),
+    activation_code: z
+      .string()
+      .min(1, "Veuillez renseigner le code d'activation"),
     password: zPassword,
   });
 
@@ -50,9 +50,7 @@ const ResetPasswordPage = () => {
         return;
       }
       const errorDetail = response.error as
-        | { detail: Array<{ msg: string }> }
-        | { detail: string }
-        | undefined;
+        { detail: Array<{ msg: string }> } | { detail: string } | undefined;
       toast({
         title: "Erreur",
         description: Array.isArray(errorDetail?.detail)

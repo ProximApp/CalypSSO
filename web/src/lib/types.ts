@@ -1,4 +1,4 @@
-import { zxcvbn, zxcvbnOptions } from "@zxcvbn-ts/core";
+import { ZxcvbnFactory } from "@zxcvbn-ts/core";
 import * as zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
 import * as zxcvbnEnPackage from "@zxcvbn-ts/language-en";
 import * as zxcvbnFrPackage from "@zxcvbn-ts/language-fr";
@@ -14,14 +14,13 @@ const options = {
   },
 };
 
-zxcvbnOptions.setOptions(options);
+export const zxcvbn = new ZxcvbnFactory(options);
 
 export const zPassword = z
-  .string({
-    required_error: "Le mot de passe n'est pas assez fort",
-  })
+  .string()
+  .min(1, "Le mot de passe n'est pas assez fort")
   .superRefine((value, ctx) => {
-    const zxcvbnResult = zxcvbn(value || "");
+    const zxcvbnResult = zxcvbn.check(value || "");
 
     if (zxcvbnResult.score >= 4) {
       return;

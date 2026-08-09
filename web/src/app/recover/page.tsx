@@ -22,12 +22,9 @@ const RecoverPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
     email: z
-      .string({
-        required_error: "Veuillez renseigner votre adresse email",
-      })
-      .email({
-        message: "Veuillez renseigner une adresse email valide",
-      }),
+      .string()
+      .min(1, "Veuillez renseigner votre adresse email")
+      .email("Veuillez renseigner une adresse email valide"),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,9 +46,7 @@ const RecoverPage = () => {
         return;
       }
       const errorDetail = response.error as
-        | { detail: Array<{ msg: string }> }
-        | { detail: string }
-        | undefined;
+        { detail: Array<{ msg: string }> } | { detail: string } | undefined;
       toast({
         title: "Erreur",
         description: Array.isArray(errorDetail?.detail)

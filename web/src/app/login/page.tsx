@@ -25,12 +25,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
-    password: z.string({
-      required_error: "Veuillez renseigner un mot de passe",
-    }),
-    email: z.string({
-      required_error: "Veuillez renseigner votre adresse email",
-    }),
+    password: z.string().min(1, "Veuillez renseigner un mot de passe"),
+    email: z.string().min(1, "Veuillez renseigner votre adresse email"),
     response_type: z.string().optional(),
     redirect_uri: z.string().optional(),
     client_id: z.string(),
@@ -160,7 +156,13 @@ const Login = () => {
             process.env.NEXT_PUBLIC_OVERRIDE_HYPERION_URL ||
             (typeof window !== "undefined" ? window.location.origin : "")
           }/auth/authorization-flow/authorize-validation`}
-          onSubmit={form.handleSubmit(onSubmitEmailPassword)}
+          onSubmit={
+            // react-hooks/refs false positive: handleSubmit returns a new
+            // function; formRef.current is only read when the submit event
+            // actually fires, never during render.
+            // eslint-disable-next-line react-hooks/refs
+            form.handleSubmit(onSubmitEmailPassword)
+          }
         >
           <div className="grid gap-4">
             <LoginCustomFormField

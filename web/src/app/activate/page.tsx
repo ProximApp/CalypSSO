@@ -42,47 +42,28 @@ const RegisterPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
-    activation_token: z.string({
-      required_error: "Veuillez renseigner le code d'activation",
-    }),
-    firstname: z
-      .string({
-        required_error: "Veuillez renseigner votre prénom",
-      })
-      .min(1, {
-        message: "Veuillez renseigner votre prénom",
-      }),
-    name: z
-      .string({
-        required_error: "Veuillez renseigner votre nom",
-      })
-      .min(1, {
-        message: "Veuillez renseigner votre nom",
-      }),
-    password: zPassword,
-    nickname: z
+    activation_token: z
       .string()
-      .min(1, {
-        message: "Veuillez renseigner votre prénom",
-      })
-      .optional(),
+      .min(1, "Veuillez renseigner le code d'activation"),
+    firstname: z.string().min(1, "Veuillez renseigner votre prénom"),
+    name: z.string().min(1, "Veuillez renseigner votre nom"),
+    password: zPassword,
+    nickname: z.string().min(1, "Veuillez renseigner votre prénom").optional(),
     birthday: z.date().optional(),
     phone: z
       .string()
-      .refine((value) => isValidPhoneNumber("+" + value), {
-        message: "Veuillez renseigner un numéro valide",
-      })
+      .refine(
+        (value) => isValidPhoneNumber("+" + value),
+        "Veuillez renseigner un numéro valide",
+      )
       .optional(), // phone
     floor: z.enum(FloorTypes).optional(),
     promo: z
       .string()
-      .refine(
-        (value) => {
-          const parsedValue = parseInt(value);
-          return !isNaN(parsedValue) && parsedValue >= 0;
-        },
-        { message: "Veuillez renseigner une promo valide" },
-      )
+      .refine((value) => {
+        const parsedValue = parseInt(value);
+        return !isNaN(parsedValue) && parsedValue >= 0;
+      }, "Veuillez renseigner une promo valide")
       .optional(),
   });
 
@@ -115,9 +96,7 @@ const RegisterPage = () => {
         return;
       }
       const errorDetail = response.error as
-        | { detail: Array<{ msg: string }> }
-        | { detail: string }
-        | undefined;
+        { detail: Array<{ msg: string }> } | { detail: string } | undefined;
       toast({
         title: "Erreur",
         description: Array.isArray(errorDetail?.detail)
@@ -204,7 +183,7 @@ const RegisterPage = () => {
                 mainActivationForm.fields.includes("floor")) && (
                 <>
                   <TextSeparator text="Informations sur votre scolarité" />
-                  <div className="mt-2 grid grid-cols-1 gap-4  md:grid-cols-2">
+                  <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
                     {mainActivationForm.fields.includes("promotion") && (
                       <CustomFormField
                         form={form}

@@ -33,12 +33,9 @@ const RegisterContent = () => {
   const email = searchParams.get("email");
 
   let emailField = z
-    .string({
-      required_error: "Veuillez renseigner votre adresse email",
-    })
-    .email({
-      message: "Veuillez renseigner une adresse email valide",
-    });
+    .string()
+    .min(1, "Veuillez renseigner votre adresse email")
+    .email("Veuillez renseigner une adresse email valide");
 
   if (!acceptExternalUser) {
     emailField = emailField.regex(
@@ -47,9 +44,7 @@ const RegisterContent = () => {
           .filter((regex): regex is string => regex !== null && regex !== "")
           .join("|")})`,
       ),
-      {
-        message: "Veuillez utiliser une adresse email liée à l'établissement",
-      },
+      "Veuillez utiliser une adresse email liée à l'établissement",
     );
   }
 
@@ -80,9 +75,7 @@ const RegisterContent = () => {
         return;
       }
       const errorDetail = response.error as
-        | { detail: Array<{ msg: string }> }
-        | { detail: string }
-        | undefined;
+        { detail: Array<{ msg: string }> } | { detail: string } | undefined;
       toast({
         title: "Erreur",
         description: Array.isArray(errorDetail?.detail)
@@ -104,7 +97,7 @@ const RegisterContent = () => {
       title={`Créer un compte ${projectName}`}
       description={"Vous n'avez besoin que de votre email pour commencer"}
     >
-      <div className="flex flex-row mb-4 text-center">
+      <div className="mb-4 flex flex-row text-center">
         <Button
           variant="outline"
           className={`mr-2 flex-1 ${!acceptExternalUser ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground" : ""}`}

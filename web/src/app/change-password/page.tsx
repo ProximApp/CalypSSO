@@ -25,12 +25,10 @@ const ChangePasswordContent = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = z.object({
-    email: z.string({
-      required_error: "Veuillez renseigner l'adresse email",
-    }),
-    old_password: z.string({
-      required_error: "Veuillez renseigner votre mot de passe actuel",
-    }),
+    email: z.string().min(1, "Veuillez renseigner l'adresse email"),
+    old_password: z
+      .string()
+      .min(1, "Veuillez renseigner votre mot de passe actuel"),
     new_password: zPassword,
   });
 
@@ -59,9 +57,7 @@ const ChangePasswordContent = () => {
         return;
       }
       const errorDetail = response.error as
-        | { detail: Array<{ msg: string }> }
-        | { detail: string }
-        | undefined;
+        { detail: Array<{ msg: string }> } | { detail: string } | undefined;
       toast({
         title: "Erreur",
         description: Array.isArray(errorDetail?.detail)
