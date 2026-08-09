@@ -35,17 +35,7 @@ const AssetPageContent = () => {
   }, [path]);
 
   return (
-    <article
-      className="prose lg:prose-lg
-        prose-p:text-justify prose-p:leading-6 prose-p:my-4
-        prose-ul:list-outside prose-ul:pl-4 prose-ul:my-0
-        prose-li:my-0 prose-li:pl-0
-        prose-headings:font-semibold prose-headings:my-4
-        prose-h2:text-2xl prose-h1:text-4xl
-        marker:text-foreground marker:mx-0
-        max-w-none mx-3 
-      "
-    >
+    <article className="prose lg:prose-lg prose-p:text-justify prose-p:leading-6 prose-p:my-4 prose-ul:list-outside prose-ul:pl-4 prose-ul:my-0 prose-li:my-0 prose-li:pl-0 prose-headings:font-semibold prose-headings:my-4 prose-h2:text-2xl prose-h1:text-4xl marker:text-foreground mx-3 max-w-none marker:mx-0">
       <Markdown>{text}</Markdown>
     </article>
   );
@@ -55,7 +45,7 @@ const AssetPage = () => {
   return (
     <CenteredCard title="Document" description="Consultez son contenu">
       <MotionField radius={400}>
-        <ScrollArea className="rounded-md bg-background h-[62vh]">
+        <ScrollArea className="bg-background h-[62vh] rounded-md">
           <Suspense>
             <AssetPageContent />
           </Suspense>
