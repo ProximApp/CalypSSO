@@ -6,8 +6,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Skeleton } from "../ui/skeleton";
-import { useSearchParams } from "next/navigation";
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import {
   ControllerRenderProps,
   FieldValues,
@@ -31,16 +30,6 @@ const LoginCustomFormFieldInternal = ({
   render,
   displayError,
 }: LoginCustomFormFieldProps) => {
-  const searchParams = useSearchParams();
-  useEffect(() => {
-    const credentialsError = !!searchParams.get("credentials_error");
-    if (credentialsError && form.watch(name) === undefined) {
-      form.setError(name, {
-        message: "Combinaison email / mot de passe invalide",
-      });
-    }
-  }, [displayError, form, name, searchParams]);
-
   return (
     <Suspense
       fallback={

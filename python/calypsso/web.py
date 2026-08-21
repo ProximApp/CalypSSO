@@ -107,7 +107,6 @@ def get_login_relative_url(
     nonce: str | None = None,
     code_challenge: str | None = None,
     code_challenge_method: str | None = None,
-    credentials_error: bool | None = None,
 ) -> str:
     """
     Return CalypSSO login page relative url: `calypsso/login?...`
@@ -121,7 +120,6 @@ def get_login_relative_url(
         "nonce": nonce,
         "code_challenge": code_challenge,
         "code_challenge_method": code_challenge_method,
-        "credentials_error": credentials_error,
     }
 
     return f"calypsso/login/?{urllib.parse.urlencode(exclude_none(params))}"
