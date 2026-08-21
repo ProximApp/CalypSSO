@@ -7,14 +7,180 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
 
+  # Maintain npm dependencies for root workspace
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    # Ignore major version bumps for critical packages we manage manually
+    ignore:
+      - dependency-name: "typescript"
+        versions: ["6.x", "7.x"]
+      - dependency-name: "@maizzle/framework"
+        versions: ["6.x"]
+      - dependency-name: "maizzle"
+        versions: ["6.x"]
+    # Allow all patch/minor updates, group minor and patch
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "eslint*"
+          - "prettier*"
+          - "@trivago/prettier-plugin-sort-imports"
+          - "prettier-plugin-tailwindcss"
+        update-types:
+          - "minor"
+          - "patch"
 
+  # Maintain npm dependencies for web workspace
+  - package-ecosystem: "npm"
+    directory: "web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "web"
+    # Ignore major version bumps for critical packages we manage manually
+    ignore:
+      - dependency-name: "typescript"
+        versions: ["6.x", "7.x"]
+      - dependency-name: "next"
+        versions: ["17.x"]
+      - dependency-name: "react"
+        versions: ["20.x"]
+      - dependency-name: "react-dom"
+        versions: ["20.x"]
+      - dependency-name: "tailwindcss"
+        versions: ["5.x"]
+      - dependency-name: "@tailwindcss/postcss"
+        versions: ["5.x"]
+      - dependency-name: "@tailwindcss/typography"
+        versions: ["1.x"]
+      - dependency-name: "eslint"
+        versions: ["11.x"]
+      - dependency-name: "eslint-config-next"
+        versions: ["17.x"]
+      - dependency-name: "zod"
+        versions: ["5.x"]
+      - dependency-name: "react-day-picker"
+        versions: ["11.x"]
+      - dependency-name: "date-fns"
+        versions: ["5.x"]
+      - dependency-name: "@zxcvbn-ts/core"
+        versions: ["5.x"]
+    # Group related dependencies
+    groups:
+      react-ecosystem:
+        patterns:
+          - "react*"
+          - "@types/react*"
+          - "@hookform/resolvers"
+          - "react-hook-form"
+          - "@radix-ui/*"
+          - "lucide-react"
+          - "class-variance-authority"
+          - "clsx"
+          - "tailwind-merge"
+        update-types:
+          - "minor"
+          - "patch"
+      tailwind-ecosystem:
+        patterns:
+          - "tailwindcss*"
+          - "@tailwindcss/*"
+          - "tw-animate-css"
+        update-types:
+          - "minor"
+          - "patch"
+      eslint-ecosystem:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+          - "eslint-config-prettier"
+          - "eslint-plugin*"
+        update-types:
+          - "minor"
+          - "patch"
+      date-utils:
+        patterns:
+          - "date-fns"
+          - "react-day-picker"
+        update-types:
+          - "minor"
+          - "patch"
+      zod-ecosystem:
+        patterns:
+          - "zod"
+          - "@zxcvbn-ts/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Maintain npm dependencies for mail workspace
+  - package-ecosystem: "npm"
+    directory: "mail"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "mail"
+    # Maizzle 6 is a Vue/Vite rewrite - defer major version
+    ignore:
+      - dependency-name: "@maizzle/framework"
+        versions: ["6.x"]
+      - dependency-name: "maizzle"
+        versions: ["6.x"]
+    groups:
+      mail-dependencies:
+        patterns:
+          - "tailwindcss-preset-email"
+          - "postcss*"
+          - "@tailwindcss/postcss"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Maintain Python dependencies
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "python"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "ruff"
+          - "mypy"
+          - "hatch*"
+          - "pytest*"
+        update-types:
+          - "minor"
+          - "patch"

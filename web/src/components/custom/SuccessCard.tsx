@@ -27,7 +27,7 @@ export const SuccessCard = ({
   const { appStoreUrl, playStoreUrl } = useContext(VariablesContext);
   return (
     <div className="m-4 flex h-screen [&>div]:w-full">
-      <Card className="m-auto rounded-xl border bg-white bg-opacity-80 shadow backdrop-blur">
+      <Card className="bg-card/80 m-auto rounded-xl border shadow backdrop-blur">
         <CardHeader>
           <CardTitle>
             <div className="flex w-full items-center">{icon}</div>

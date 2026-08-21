@@ -46,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-ring focus-visible:ring-offset-2
           focus-visible:outline-none focus-visible:ring-[2px]  
            disabled:cursor-not-allowed disabled:opacity-50
-           dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
+           dark:shadow-[0px_0px_1px_1px_var(--color-neutral-700)]
            group-hover/input:shadow-none transition duration-400
            `,
             className

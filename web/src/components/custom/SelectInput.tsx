@@ -12,7 +12,7 @@ export const CustomSelectTrigger = React.forwardRef<
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
-        "duration-400 flex h-10 w-full items-center justify-between rounded-md border border-none border-input bg-background px-3 py-2 text-sm ring-offset-background transition file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group-hover/input:shadow-none dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] [&>span]:line-clamp-1",
+        "border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring focus-visible:ring-ring flex h-10 w-full items-center justify-between rounded-md border border-none px-3 py-2 text-sm transition duration-400 group-hover/input:shadow-none file:border-0 file:bg-transparent file:text-sm file:font-medium focus:ring-2 focus:ring-offset-2 focus:outline-none focus-visible:ring-[2px] focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--color-neutral-700)] [&>span]:line-clamp-1",
         className,
       )}
       {...props}

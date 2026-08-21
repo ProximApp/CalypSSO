@@ -1,7 +1,7 @@
 "use client";
 
 import { PasswordInput } from "./PasswordInput";
-import { zxcvbn } from "@zxcvbn-ts/core";
+import { zxcvbn } from "@/lib/types";
 import * as React from "react";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
@@ -16,7 +16,7 @@ const PasswordInputWithStrength = React.forwardRef<
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (previousChange) {
-      const zxcvbnResult = zxcvbn(e.target.value);
+      const zxcvbnResult = zxcvbn.check(e.target.value);
       setScore(zxcvbnResult.score);
       previousChange(e);
     }
@@ -39,11 +39,11 @@ const PasswordInputWithStrength = React.forwardRef<
   return (
     <div>
       <PasswordInput {...props} ref={ref} />
-      <div className="grid grid-flow-col justify-stretch gap-4 mt-4 px-1">
+      <div className="mt-4 grid grid-flow-col justify-stretch gap-4 px-1">
         {[...Array(5)].map((_, index) => (
           <div
             key={index}
-            className={`px-1 h-2 rounded-xl transition-colors ${color(score, index, props.value?.toString()?.length || 0)}`}
+            className={`h-2 rounded-xl px-1 transition-colors ${color(score, index, props.value?.toString()?.length || 0)}`}
           />
         ))}
       </div>
