@@ -9,13 +9,13 @@ import {
 import { CenteredCard } from "@/components/custom/CenteredCard";
 import { MotionField } from "@/components/custom/MotionField";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { RequestResult } from "@hey-api/client-fetch";
 import { notFound, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { Suspense, useEffect, useState } from "react";
 import Markdown from "react-markdown";
 
-const assets: Record<string, () => RequestResult> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const assets: Record<string, (...args: any[]) => Promise<any>> = {
   privacy: getPrivacy,
   terms_and_conditions: getTermsAndConditions,
   mypayment_terms_of_service: getMypaymentTermsOfService,

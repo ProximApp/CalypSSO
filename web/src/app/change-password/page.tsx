@@ -53,13 +53,20 @@ const ChangePasswordContent = () => {
         },
       });
       setIsLoading(false);
-      if (response.response.status < 300) {
+      const status = response.response?.status;
+      if (status !== undefined && status < 300) {
         router.push("/change-password/success");
         return;
       }
+      const errorDetail = response.error as
+        | { detail: Array<{ msg: string }> }
+        | { detail: string }
+        | undefined;
       toast({
         title: "Erreur",
-        description: (response.error as { detail: string }).detail,
+        description: Array.isArray(errorDetail?.detail)
+          ? errorDetail.detail[0]?.msg
+          : errorDetail?.detail,
         variant: "destructive",
       });
     } catch (e) {

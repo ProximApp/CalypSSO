@@ -147,16 +147,29 @@ class MailTemplates:
             self.environment_variables,
             confirmation_url=confirmation_url,
         )
-    
-    def get_mail_ticket_change_over_account_does_not_exist(self, event_name: str, giver_name: str) -> str:
+
+    def get_mail_ticket_change_over_account_does_not_exist(
+        self,
+        event_name: str,
+        giver_name: str,
+    ) -> str:
         """
         Return the mail template to inform that the account requested to receive the ticket transfer does not exist.
         """
         return self.jinja_env.get_template(
             "ticket-change-over-account-does-not-exist.html",
-        ).render(self.environment_variables, event_name=event_name, giver_name=giver_name)
-    
-    def get_mail_ticket_change_over(self, event_name: str, giver_name: str, confirmation_url: str) -> str:
+        ).render(
+            self.environment_variables,
+            event_name=event_name,
+            giver_name=giver_name,
+        )
+
+    def get_mail_ticket_change_over(
+        self,
+        event_name: str,
+        giver_name: str,
+        confirmation_url: str,
+    ) -> str:
         """
         Return the mail template for ticket change-over confirmation.
         """
